@@ -1,4 +1,4 @@
-package com.app.pencatatan_keuangan;
+package com.app.uangku;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

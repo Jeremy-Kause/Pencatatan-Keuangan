@@ -1,4 +1,4 @@
-package com.app.pencatatan_keuangan;
+package com.app.uangku;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

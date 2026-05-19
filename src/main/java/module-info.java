@@ -1,8 +1,8 @@
-module com.app.pencatatan_keuangan {
+module com.app.uangku {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens com.app.pencatatan_keuangan to javafx.fxml;
-    exports com.app.pencatatan_keuangan;
+    opens com.app.uangku to javafx.fxml;
+    exports com.app.uangku;
 }
