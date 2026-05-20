@@ -75,7 +75,7 @@
                                     <TableColumn text="Tipe" prefWidth="110" />
                                     <TableColumn text="Nominal" prefWidth="120" />
                                     <TableColumn text="Deskripsi" prefWidth="160" />
-                                    <TableColumn text="Aksi" prefWidth="90" />
+                                    <TableColumn text="Aksi" prefWidth="170" />
                                 </columns>
                             </TableView>
                         </VBox>

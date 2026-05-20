@@ -22,6 +22,7 @@ import java.util.List;
 
 public class CategoryController extends BaseWireframeController {
     private final CategoryDAO categoryDAO = new CategoryDAO();
+    private Category selectedCategory;
 
     @FXML
     private TextField categoryNameField;
@@ -39,8 +40,15 @@ public class CategoryController extends BaseWireframeController {
     private Label categoryMessageLabel;
 
     @FXML
+    private Button saveCategoryButton;
+
+    @FXML
+    private Button cancelEditCategoryButton;
+
+    @FXML
     private void initialize() {
         categoryTypeComboBox.setItems(FXCollections.observableArrayList(TransactionType.values()));
+        updateFormState();
         loadCategories();
     }
 
@@ -74,15 +82,34 @@ public class CategoryController extends BaseWireframeController {
             }
 
             User user = SessionManager.getCurrentUser().orElseThrow();
-            if (categoryDAO.existsByUserIdAndTypeAndName(user.getIdUser(), type, name)) {
+            boolean duplicate = selectedCategory == null
+                    ? categoryDAO.existsByUserIdAndTypeAndName(user.getIdUser(), type, name)
+                    : categoryDAO.existsByUserIdAndTypeAndNameExceptId(
+                    user.getIdUser(),
+                    type,
+                    name,
+                    selectedCategory.getIdCategory()
+            );
+            if (duplicate) {
                 setMessage(categoryMessageLabel, "Kategori dengan nama yang sama sudah ada.");
                 return;
             }
-            categoryDAO.create(new Category(user.getIdUser(), name, type));
-            categoryNameField.clear();
-            categoryTypeComboBox.setValue(null);
+
+            if (selectedCategory == null) {
+                categoryDAO.create(new Category(user.getIdUser(), name, type));
+                setMessage(categoryMessageLabel, "Kategori berhasil disimpan.");
+            } else {
+                selectedCategory.setName(name);
+                selectedCategory.setType(type);
+                if (!categoryDAO.update(selectedCategory)) {
+                    setMessage(categoryMessageLabel, "Kategori tidak ditemukan.");
+                    return;
+                }
+                setMessage(categoryMessageLabel, "Kategori berhasil diperbarui.");
+            }
+
+            clearForm();
             loadCategories();
-            setMessage(categoryMessageLabel, "Kategori berhasil disimpan.");
         } catch (SQLException exception) {
             setMessage(categoryMessageLabel, "Gagal menyimpan kategori: " + exception.getMessage());
         }
@@ -134,6 +161,10 @@ public class CategoryController extends BaseWireframeController {
         Label nameLabel = new Label(category.getName());
         nameLabel.getStyleClass().add("placeholder-title");
 
+        Button editButton = new Button("Edit");
+        editButton.getStyleClass().add("secondary-button");
+        editButton.setOnAction(event -> startEditCategory(category));
+
         Button deleteButton = new Button("Hapus");
         deleteButton.getStyleClass().add("secondary-button");
         deleteButton.setOnAction(event -> deleteCategory(category));
@@ -141,7 +172,7 @@ public class CategoryController extends BaseWireframeController {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        HBox row = new HBox(10, nameLabel, spacer, deleteButton);
+        HBox row = new HBox(10, nameLabel, spacer, editButton, deleteButton);
         row.setAlignment(Pos.CENTER_LEFT);
         row.getStyleClass().add("category-card");
         return row;
@@ -155,10 +186,50 @@ public class CategoryController extends BaseWireframeController {
             }
 
             categoryDAO.deleteById(category.getIdCategory(), category.getIdUser());
+            if (selectedCategory != null && selectedCategory.getIdCategory() == category.getIdCategory()) {
+                clearForm();
+            }
             loadCategories();
             setMessage(categoryMessageLabel, "Kategori berhasil dihapus.");
         } catch (SQLException exception) {
             setMessage(categoryMessageLabel, "Gagal menghapus kategori: " + exception.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleCancelEditCategory() {
+        clearForm();
+        setMessage(categoryMessageLabel, "Mode edit kategori dibatalkan.");
+    }
+
+    private void startEditCategory(Category category) {
+        selectedCategory = new Category(
+                category.getIdCategory(),
+                category.getIdUser(),
+                category.getName(),
+                category.getType()
+        );
+        categoryNameField.setText(category.getName());
+        categoryTypeComboBox.setValue(category.getType());
+        updateFormState();
+        setMessage(categoryMessageLabel, "Sedang mengubah kategori yang dipilih.");
+    }
+
+    private void clearForm() {
+        selectedCategory = null;
+        categoryNameField.clear();
+        categoryTypeComboBox.setValue(null);
+        updateFormState();
+    }
+
+    private void updateFormState() {
+        boolean editing = selectedCategory != null;
+        if (saveCategoryButton != null) {
+            saveCategoryButton.setText(editing ? "Perbarui Kategori" : "Simpan Kategori");
+        }
+        if (cancelEditCategoryButton != null) {
+            cancelEditCategoryButton.setVisible(editing);
+            cancelEditCategoryButton.setManaged(editing);
         }
     }
 }

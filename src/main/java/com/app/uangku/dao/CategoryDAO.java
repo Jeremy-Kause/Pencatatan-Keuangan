@@ -81,6 +81,23 @@ public class CategoryDAO {
         }
     }
 
+    public boolean update(Category category) throws SQLException {
+        String sql = """
+                UPDATE categories
+                SET name = ?, type = ?
+                WHERE id_category = ? AND id_user = ?
+                """;
+
+        try (Connection connection = DatabaseHelper.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, category.getName());
+            statement.setString(2, category.getType().toDatabaseValue());
+            statement.setInt(3, category.getIdCategory());
+            statement.setInt(4, category.getIdUser());
+            return statement.executeUpdate() > 0;
+        }
+    }
+
     public boolean deleteById(int idCategory, int idUser) throws SQLException {
         String sql = "DELETE FROM categories WHERE id_category = ? AND id_user = ?";
 
@@ -124,6 +141,32 @@ public class CategoryDAO {
             statement.setInt(1, idUser);
             statement.setString(2, type.toDatabaseValue());
             statement.setString(3, name.trim());
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
+            }
+        }
+    }
+
+    public boolean existsByUserIdAndTypeAndNameExceptId(
+            int idUser,
+            TransactionType type,
+            String name,
+            int excludedIdCategory
+    ) throws SQLException {
+        String sql = """
+                SELECT 1
+                FROM categories
+                WHERE id_user = ? AND type = ? AND LOWER(name) = LOWER(?) AND id_category <> ?
+                LIMIT 1
+                """;
+
+        try (Connection connection = DatabaseHelper.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idUser);
+            statement.setString(2, type.toDatabaseValue());
+            statement.setString(3, name.trim());
+            statement.setInt(4, excludedIdCategory);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 return resultSet.next();
