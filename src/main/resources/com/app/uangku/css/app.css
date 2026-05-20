@@ -408,6 +408,11 @@
     -fx-padding: 16;
 }
 
+.category-card {
+    -fx-padding: 20 24 20 24;
+    -fx-min-height: 78px;
+}
+
 .success-text {
     -fx-text-fill: #3F6212;
     -fx-font-weight: 800;
