@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="app-shell" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.DashboardController">
+    <left>
+        <VBox prefWidth="220" spacing="20" styleClass="sidebar">
+            <Label text="UangKu" styleClass="sidebar-brand" />
+            <VBox spacing="8" VBox.vgrow="ALWAYS">
+                <Button id="activeNav" text="Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard" />
+                <Button text="Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions" />
+                <Button text="Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories" />
+                <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
+                <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
+            </VBox>
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="page-scroll">
+            <content>
+                <VBox spacing="24" styleClass="content">
+                    <HBox alignment="CENTER_LEFT">
+                        <VBox spacing="4">
+                            <Label text="Dashboard" styleClass="page-title" />
+                            <Label text="Ringkasan keuangan" styleClass="page-subtitle" />
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                    </HBox>
+
+                    <GridPane hgap="16" vgap="16">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS" />
+                            <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS" />
+                            <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS" />
+                        </columnConstraints>
+                        <VBox id="incomeCard" spacing="8" styleClass="metric-card" GridPane.columnIndex="0">
+                            <Label text="Saldo Pemasukan" styleClass="metric-label" />
+                            <Label fx:id="incomeSummaryLabel" text="Rp 1.000.000" styleClass="metric-value" />
+                        </VBox>
+                        <VBox id="balanceCard" spacing="8" styleClass="metric-card" GridPane.columnIndex="1">
+                            <Label text="Total Saldo" styleClass="metric-label" />
+                            <Label fx:id="balanceSummaryLabel" text="Rp 1.500.000" styleClass="metric-value" />
+                        </VBox>
+                        <VBox id="expenseCard" spacing="8" styleClass="metric-card" GridPane.columnIndex="2">
+                            <Label text="Saldo Pengeluaran" styleClass="metric-label" />
+                            <Label fx:id="expenseSummaryLabel" text="Rp 500.000" styleClass="metric-value" />
+                        </VBox>
+                    </GridPane>
+
+                    <GridPane hgap="18" vgap="18">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="65" hgrow="ALWAYS" />
+                            <ColumnConstraints percentWidth="35" hgrow="ALWAYS" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints vgrow="ALWAYS" />
+                        </rowConstraints>
+
+                        <VBox spacing="14" styleClass="panel" GridPane.columnIndex="0">
+                            <Label text="Transaksi Terbaru" styleClass="section-title" />
+                            <TableView fx:id="recentTransactionsTable" prefHeight="315">
+                                <placeholder>
+                                    <Label text="KONTEN 1" />
+                                </placeholder>
+                                <columns>
+                                    <TableColumn text="Tanggal" prefWidth="100" />
+                                    <TableColumn text="Kategori" prefWidth="135" />
+                                    <TableColumn text="Tipe" prefWidth="110" />
+                                    <TableColumn text="Nominal" prefWidth="125" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+
+                        <VBox spacing="16" GridPane.columnIndex="1">
+                            <VBox alignment="CENTER_LEFT" spacing="8" styleClass="placeholder-card">
+                                <Label text="KONTEN 2" styleClass="placeholder-title" />
+                                <Label text="Ringkasan anggaran bulan ini" styleClass="muted-text" wrapText="true" />
+                            </VBox>
+                            <VBox alignment="CENTER_LEFT" spacing="8" styleClass="placeholder-card">
+                                <Label text="KONTEN 3" styleClass="placeholder-title" />
+                                <Label text="Kategori pengeluaran terbesar" styleClass="muted-text" wrapText="true" />
+                            </VBox>
+                            <VBox alignment="CENTER_LEFT" spacing="8" styleClass="placeholder-card">
+                                <Label text="KONTEN 4" styleClass="placeholder-title" />
+                                <Label text="Catatan atau reminder pembayaran" styleClass="muted-text" wrapText="true" />
+                            </VBox>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>
