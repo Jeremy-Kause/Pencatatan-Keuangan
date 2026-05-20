@@ -413,6 +413,12 @@
     -fx-min-height: 78px;
 }
 
+.budget-card {
+    -fx-alignment: center;
+    -fx-padding: 24;
+    -fx-min-height: 176px;
+}
+
 .success-text {
     -fx-text-fill: #3F6212;
     -fx-font-weight: 800;
