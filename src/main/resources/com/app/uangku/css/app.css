@@ -236,13 +236,13 @@
 }
 
 .content {
-    -fx-padding: 30 34 34 34;
+    -fx-padding: 26 34 10 34;
 }
 
 .page-title {
     -fx-text-fill: #27272A;
-    -fx-font-size: 30px;
-    -fx-font-weight: 800;
+    -fx-font-size: 42px;
+    -fx-font-weight: 400;
 }
 
 .page-subtitle {
@@ -277,7 +277,8 @@
 }
 
 .metric-card {
-    -fx-padding: 18;
+    -fx-padding: 12 16 20 16;
+    -fx-min-height: 120px;
 }
 
 .metric-label {
@@ -287,39 +288,56 @@
 
 .metric-value {
     -fx-text-fill: #27272A;
+    -fx-font-size: 31px;
+    -fx-font-weight: 400;
+}
+
+#balanceCard,
+#incomeCard,
+#expenseCard {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E2E5;
+}
+
+.metric-icon {
+    -fx-alignment: center;
+    -fx-background-radius: 6px;
     -fx-font-size: 24px;
     -fx-font-weight: 800;
+    -fx-min-width: 48px;
+    -fx-pref-width: 48px;
+    -fx-max-width: 48px;
+    -fx-min-height: 48px;
+    -fx-pref-height: 48px;
+    -fx-max-height: 48px;
 }
 
-#incomeCard {
+#balanceIcon,
+#incomeIcon {
     -fx-background-color: #D7F5D3;
-    -fx-border-color: #65A30D;
+    -fx-text-fill: #3F6212;
 }
 
-#balanceCard {
-    -fx-background-color: #E7E5E4;
-    -fx-border-color: #27272A;
-}
-
-#expenseCard {
+#expenseIcon {
     -fx-background-color: #FDF2F2;
-    -fx-border-color: #B91C1C;
+    -fx-text-fill: #B91C1C;
 }
 
 .section-title {
     -fx-text-fill: #27272A;
-    -fx-font-size: 18px;
-    -fx-font-weight: 800;
+    -fx-font-size: 27px;
+    -fx-font-weight: 400;
 }
 
 .placeholder-card {
-    -fx-padding: 20;
-    -fx-min-height: 96px;
+    -fx-padding: 18 28 18 28;
+    -fx-min-height: 78px;
 }
 
 .placeholder-title {
-    -fx-text-fill: #3F6212;
-    -fx-font-weight: 800;
+    -fx-text-fill: #000000;
+    -fx-font-size: 22px;
+    -fx-font-weight: 400;
 }
 
 .filter-bar {

@@ -4,15 +4,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane styleClass="app-shell" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.DashboardController">
@@ -47,65 +44,55 @@
                         <Region HBox.hgrow="ALWAYS" />
                     </HBox>
 
-                    <GridPane hgap="16" vgap="16">
+                    <GridPane hgap="46" vgap="16">
                         <columnConstraints>
                             <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS" />
                             <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS" />
                             <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS" />
                         </columnConstraints>
-                        <VBox id="incomeCard" spacing="8" styleClass="metric-card" GridPane.columnIndex="0">
-                            <Label text="Saldo Pemasukan" styleClass="metric-label" />
-                            <Label fx:id="incomeSummaryLabel" text="Rp 1.000.000" styleClass="metric-value" />
+                        <VBox id="balanceCard" spacing="36" styleClass="metric-card" GridPane.columnIndex="0">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Total Saldo" styleClass="metric-label" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label text="&#9635;" id="balanceIcon" styleClass="metric-icon" />
+                            </HBox>
+                            <Label fx:id="balanceSummaryLabel" text="RP 1.500.000" styleClass="metric-value" />
                         </VBox>
-                        <VBox id="balanceCard" spacing="8" styleClass="metric-card" GridPane.columnIndex="1">
-                            <Label text="Total Saldo" styleClass="metric-label" />
-                            <Label fx:id="balanceSummaryLabel" text="Rp 1.500.000" styleClass="metric-value" />
+                        <VBox id="incomeCard" spacing="36" styleClass="metric-card" GridPane.columnIndex="1">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Saldo Pemasukan" styleClass="metric-label" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label text="&#8599;" id="incomeIcon" styleClass="metric-icon" />
+                            </HBox>
+                            <Label fx:id="incomeSummaryLabel" text="RP 1.000.000" styleClass="metric-value" />
                         </VBox>
-                        <VBox id="expenseCard" spacing="8" styleClass="metric-card" GridPane.columnIndex="2">
-                            <Label text="Saldo Pengeluaran" styleClass="metric-label" />
-                            <Label fx:id="expenseSummaryLabel" text="Rp 500.000" styleClass="metric-value" />
+                        <VBox id="expenseCard" spacing="36" styleClass="metric-card" GridPane.columnIndex="2">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Saldo Pengeluaran" styleClass="metric-label" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label text="&#8600;" id="expenseIcon" styleClass="metric-icon" />
+                            </HBox>
+                            <Label fx:id="expenseSummaryLabel" text="RP 500.000" styleClass="metric-value" />
                         </VBox>
                     </GridPane>
 
-                    <GridPane hgap="18" vgap="18">
-                        <columnConstraints>
-                            <ColumnConstraints percentWidth="65" hgrow="ALWAYS" />
-                            <ColumnConstraints percentWidth="35" hgrow="ALWAYS" />
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints vgrow="ALWAYS" />
-                        </rowConstraints>
-
-                        <VBox spacing="14" styleClass="panel" GridPane.columnIndex="0">
-                            <Label text="Transaksi Terbaru" styleClass="section-title" />
-                            <TableView fx:id="recentTransactionsTable" prefHeight="315">
-                                <placeholder>
-                                    <Label text="KONTEN 1" />
-                                </placeholder>
-                                <columns>
-                                    <TableColumn text="Tanggal" prefWidth="100" />
-                                    <TableColumn text="Kategori" prefWidth="135" />
-                                    <TableColumn text="Tipe" prefWidth="110" />
-                                    <TableColumn text="Nominal" prefWidth="125" />
-                                </columns>
-                            </TableView>
-                        </VBox>
-
-                        <VBox spacing="16" GridPane.columnIndex="1">
-                            <VBox alignment="CENTER_LEFT" spacing="8" styleClass="placeholder-card">
+                    <VBox spacing="14">
+                        <Label text="Transaksi Terbaru" styleClass="section-title" />
+                        <VBox spacing="7">
+                            <HBox alignment="CENTER_LEFT" styleClass="placeholder-card">
+                                <Label text="KONTEN 1" styleClass="placeholder-title" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" styleClass="placeholder-card">
                                 <Label text="KONTEN 2" styleClass="placeholder-title" />
-                                <Label text="Ringkasan anggaran bulan ini" styleClass="muted-text" wrapText="true" />
-                            </VBox>
-                            <VBox alignment="CENTER_LEFT" spacing="8" styleClass="placeholder-card">
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" styleClass="placeholder-card">
                                 <Label text="KONTEN 3" styleClass="placeholder-title" />
-                                <Label text="Kategori pengeluaran terbesar" styleClass="muted-text" wrapText="true" />
-                            </VBox>
-                            <VBox alignment="CENTER_LEFT" spacing="8" styleClass="placeholder-card">
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" styleClass="placeholder-card">
                                 <Label text="KONTEN 4" styleClass="placeholder-title" />
-                                <Label text="Catatan atau reminder pembayaran" styleClass="muted-text" wrapText="true" />
-                            </VBox>
+                            </HBox>
                         </VBox>
-                    </GridPane>
+                    </VBox>
                 </VBox>
             </content>
         </ScrollPane>
