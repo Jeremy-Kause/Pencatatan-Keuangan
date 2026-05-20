@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,54 +18,104 @@
 
 <BorderPane styleClass="app-shell" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.BudgetController">
     <left>
-        <VBox prefWidth="252" spacing="0" styleClass="sidebar">
-            <HBox alignment="CENTER_LEFT" spacing="14" styleClass="sidebar-brand-row">
-                <Label text="&#9635;" styleClass="sidebar-logo" />
-                <Label text="UangKu" styleClass="sidebar-brand" />
-            </HBox>
-            <Region styleClass="sidebar-separator" />
-            <VBox spacing="12" styleClass="sidebar-nav" VBox.vgrow="ALWAYS">
-                <Button text="&#9638; Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard" />
-                <Button text="&#9636; Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions" />
-                <Button text="&#9671; Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories" />
-                <Button id="activeNav" text="&#9635; Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
-                <Button text="&#9684; Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
+        <VBox prefWidth="220" spacing="20" styleClass="sidebar">
+            <Label text="UangKu" styleClass="sidebar-brand" />
+            <VBox spacing="8" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard" />
+                <Button text="Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions" />
+                <Button text="Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories" />
+                <Button id="activeNav" text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
+                <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
             </VBox>
-            <Region styleClass="sidebar-separator" />
-            <Button text="&#8618; Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
         </VBox>
     </left>
 
     <center>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="page-scroll">
             <content>
-                <VBox spacing="100" styleClass="content">
+                <VBox spacing="22" styleClass="content">
                     <HBox alignment="CENTER_LEFT">
                         <VBox spacing="4">
                             <Label text="Anggaran" styleClass="page-title" />
                             <Label text="Atur batas pengeluaran per kategori bulan ini" styleClass="page-subtitle" />
                         </VBox>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button id="actionButton" text="+  Tambah Anggaran" styleClass="primary-button" />
+                        <Button text="Tambah Anggaran" styleClass="primary-button" />
                     </HBox>
 
-                    <GridPane hgap="64" vgap="42">
+                    <GridPane hgap="18" vgap="18">
                         <columnConstraints>
-                            <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />
-                            <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />
+                            <ColumnConstraints percentWidth="34" hgrow="ALWAYS" />
+                            <ColumnConstraints percentWidth="66" hgrow="ALWAYS" />
                         </columnConstraints>
-                        <HBox alignment="CENTER" styleClass="budget-card" GridPane.columnIndex="0">
-                            <Label text="KONTEN 1" styleClass="placeholder-title" />
-                        </HBox>
-                        <HBox alignment="CENTER" styleClass="budget-card" GridPane.columnIndex="1">
-                            <Label text="KONTEN 2" styleClass="placeholder-title" />
-                        </HBox>
-                        <HBox alignment="CENTER" styleClass="budget-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                            <Label text="KONTEN 3" styleClass="placeholder-title" />
-                        </HBox>
-                        <HBox alignment="CENTER" styleClass="budget-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <Label text="KONTEN 4" styleClass="placeholder-title" />
-                        </HBox>
+
+                        <VBox spacing="12" styleClass="panel" GridPane.columnIndex="0">
+                            <Label text="Tambah Anggaran" styleClass="section-title" />
+                            <VBox spacing="7">
+                                <Label text="Kategori Pengeluaran" styleClass="field-label" />
+                                <ComboBox fx:id="budgetCategoryComboBox" promptText="Pilih kategori" maxWidth="Infinity" />
+                            </VBox>
+                            <VBox spacing="7">
+                                <Label text="Bulan" styleClass="field-label" />
+                                <TextField fx:id="budgetMonthField" promptText="Mei 2026" />
+                            </VBox>
+                            <VBox spacing="7">
+                                <Label text="Limit Anggaran" styleClass="field-label" />
+                                <TextField fx:id="budgetLimitField" promptText="Rp" />
+                            </VBox>
+                            <Button text="Simpan Anggaran" maxWidth="Infinity" styleClass="primary-button" />
+                        </VBox>
+
+                        <VBox spacing="18" GridPane.columnIndex="1">
+                            <GridPane hgap="14" vgap="14">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />
+                                    <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />
+                                </columnConstraints>
+
+                                <VBox spacing="10" styleClass="budget-card" GridPane.columnIndex="0">
+                                    <Label text="KONTEN 1" styleClass="placeholder-title" />
+                                    <Label text="Makan dan minum" styleClass="muted-text" />
+                                    <ProgressBar progress="0.72" maxWidth="Infinity" />
+                                    <Label text="Aman" styleClass="success-text" />
+                                </VBox>
+                                <VBox spacing="10" styleClass="budget-card" GridPane.columnIndex="1">
+                                    <Label text="KONTEN 2" styleClass="placeholder-title" />
+                                    <Label text="Transportasi" styleClass="muted-text" />
+                                    <ProgressBar progress="0.91" maxWidth="Infinity" />
+                                    <Label text="Mendekati limit" styleClass="danger-text" />
+                                </VBox>
+                                <VBox spacing="10" styleClass="budget-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                    <Label text="KONTEN 3" styleClass="placeholder-title" />
+                                    <Label text="Belanja bulanan" styleClass="muted-text" />
+                                    <ProgressBar progress="0.48" maxWidth="Infinity" />
+                                    <Label text="Aman" styleClass="success-text" />
+                                </VBox>
+                                <VBox spacing="10" styleClass="budget-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label text="KONTEN 4" styleClass="placeholder-title" />
+                                    <Label text="Hiburan" styleClass="muted-text" />
+                                    <ProgressBar progress="1.0" maxWidth="Infinity" />
+                                    <Label text="Melebihi limit" styleClass="danger-text" />
+                                </VBox>
+                            </GridPane>
+
+                            <VBox spacing="12" styleClass="panel">
+                                <Label text="Daftar Anggaran" styleClass="section-title" />
+                                <TableView fx:id="budgetTable" prefHeight="190">
+                                    <placeholder>
+                                        <Label text="Data anggaran akan tampil di sini" />
+                                    </placeholder>
+                                    <columns>
+                                        <TableColumn text="Kategori" prefWidth="160" />
+                                        <TableColumn text="Bulan" prefWidth="110" />
+                                        <TableColumn text="Limit" prefWidth="130" />
+                                        <TableColumn text="Terpakai" prefWidth="130" />
+                                        <TableColumn text="Status" prefWidth="120" />
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </VBox>
                     </GridPane>
                 </VBox>
             </content>

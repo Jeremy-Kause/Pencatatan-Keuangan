@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -9,55 +11,71 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane styleClass="app-shell" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.ReportController">
     <left>
-        <VBox prefWidth="252" spacing="0" styleClass="sidebar">
-            <HBox alignment="CENTER_LEFT" spacing="14" styleClass="sidebar-brand-row">
-                <Label text="&#9635;" styleClass="sidebar-logo" />
-                <Label text="UangKu" styleClass="sidebar-brand" />
-            </HBox>
-            <Region styleClass="sidebar-separator" />
-            <VBox spacing="12" styleClass="sidebar-nav" VBox.vgrow="ALWAYS">
-                <Button text="&#9638; Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard" />
-                <Button text="&#9636; Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions" />
-                <Button text="&#9671; Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories" />
-                <Button text="&#9635; Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
-                <Button id="activeNav" text="&#9684; Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
+        <VBox prefWidth="220" spacing="20" styleClass="sidebar">
+            <Label text="UangKu" styleClass="sidebar-brand" />
+            <VBox spacing="8" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard" />
+                <Button text="Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions" />
+                <Button text="Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories" />
+                <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
+                <Button id="activeNav" text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
             </VBox>
-            <Region styleClass="sidebar-separator" />
-            <Button text="&#8618; Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
         </VBox>
     </left>
 
     <center>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="page-scroll">
             <content>
-                <VBox spacing="100" styleClass="content">
+                <VBox spacing="22" styleClass="content">
                     <HBox alignment="CENTER_LEFT">
                         <VBox spacing="4">
                             <Label text="Laporan" styleClass="page-title" />
                             <Label text="Analisis pengeluaran berdasarkan kategori" styleClass="page-subtitle" />
                         </VBox>
                         <Region HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="reportMonthComboBox" promptText="Bulan ini" prefWidth="160" />
                     </HBox>
 
-                    <GridPane hgap="72" vgap="18">
+                    <GridPane hgap="18" vgap="18">
                         <columnConstraints>
-                            <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />
-                            <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />
+                            <ColumnConstraints percentWidth="62" hgrow="ALWAYS" />
+                            <ColumnConstraints percentWidth="38" hgrow="ALWAYS" />
                         </columnConstraints>
 
-                        <VBox alignment="CENTER" spacing="8" styleClass="report-card" GridPane.columnIndex="0">
-                            <Label text="KONTEN 1 isi" styleClass="placeholder-title" />
-                            <Label text="piechart" styleClass="placeholder-title" />
+                        <VBox spacing="14" styleClass="panel" GridPane.columnIndex="0">
+                            <Label text="KONTEN 1 isi piechart" styleClass="section-title" />
+                            <StackPane prefHeight="430">
+                                <PieChart fx:id="expensePieChart" title="Pengeluaran per Kategori" labelsVisible="true" legendVisible="true" />
+                            </StackPane>
                         </VBox>
 
-                        <VBox alignment="CENTER" spacing="8" styleClass="report-card" GridPane.columnIndex="1">
-                            <Label text="KONTEN 2 isi" styleClass="placeholder-title" />
-                            <Label text="statistik data dari" styleClass="placeholder-title" />
-                            <Label text="pie chart" styleClass="placeholder-title" />
+                        <VBox spacing="14" styleClass="panel" GridPane.columnIndex="1">
+                            <Label text="KONTEN 2 isi statistik data dari pie chart" styleClass="section-title" wrapText="true" />
+                            <VBox spacing="10">
+                                <VBox spacing="6" styleClass="stat-card">
+                                    <Label text="Total Pengeluaran" styleClass="metric-label" />
+                                    <Label fx:id="reportTotalExpenseLabel" text="Rp 500.000" styleClass="metric-value" />
+                                </VBox>
+                                <VBox spacing="6" styleClass="stat-card">
+                                    <Label text="Kategori Terbesar" styleClass="metric-label" />
+                                    <Label fx:id="topCategoryLabel" text="Makan dan Minum" styleClass="section-title" />
+                                    <Label text="42% dari total pengeluaran" styleClass="muted-text" />
+                                </VBox>
+                                <VBox spacing="6" styleClass="stat-card">
+                                    <Label text="Jumlah Transaksi" styleClass="metric-label" />
+                                    <Label fx:id="transactionCountLabel" text="18 transaksi" styleClass="section-title" />
+                                </VBox>
+                                <VBox spacing="6" styleClass="stat-card">
+                                    <Label text="Catatan" styleClass="metric-label" />
+                                    <Label text="Data laporan akan diisi dari TransactionDAO saat integrasi backend." styleClass="muted-text" wrapText="true" />
+                                </VBox>
+                            </VBox>
                         </VBox>
                     </GridPane>
                 </VBox>
