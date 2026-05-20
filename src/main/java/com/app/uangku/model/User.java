@@ -1,6 +1,6 @@
 package com.app.uangku.model;
 
-public class User {
+public class  User {
     private int idUser;
     private String username;
     private String password;

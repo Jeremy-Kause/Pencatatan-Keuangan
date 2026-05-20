@@ -43,6 +43,26 @@ public class TransactionDAO {
         return transaction;
     }
 
+    public boolean update(Transaction transaction) throws SQLException {
+        String sql = """
+                UPDATE transactions
+                SET id_category = ?, amount = ?, date = ?, description = ?, type = ?
+                WHERE id_transaction = ? AND id_user = ?
+                """;
+
+        try (Connection connection = DatabaseHelper.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, transaction.getIdCategory());
+            statement.setDouble(2, transaction.getAmount());
+            statement.setString(3, transaction.getDate().toString());
+            statement.setString(4, transaction.getDescription());
+            statement.setString(5, transaction.getType().toDatabaseValue());
+            statement.setInt(6, transaction.getIdTransaction());
+            statement.setInt(7, transaction.getIdUser());
+            return statement.executeUpdate() > 0;
+        }
+    }
+
     public List<Transaction> findByUserId(int idUser) throws SQLException {
         String sql = selectWithCategory() + """
                 WHERE t.id_user = ?

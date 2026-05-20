@@ -31,6 +31,7 @@ public class TransactionController extends BaseWireframeController {
     private final CategoryDAO categoryDAO = new CategoryDAO();
     private final TransactionDAO transactionDAO = new TransactionDAO();
     private final ObservableList<Category> allCategories = FXCollections.observableArrayList();
+    private Transaction selectedTransaction;
 
     @FXML
     private TextField searchTransactionField;
@@ -46,6 +47,12 @@ public class TransactionController extends BaseWireframeController {
 
     @FXML
     private ComboBox<Category> categoryFilterComboBox;
+
+    @FXML
+    private DatePicker startDateFilterPicker;
+
+    @FXML
+    private DatePicker endDateFilterPicker;
 
     @FXML
     private TableView<Transaction> transactionsTable;
@@ -67,6 +74,12 @@ public class TransactionController extends BaseWireframeController {
 
     @FXML
     private Label transactionMessageLabel;
+
+    @FXML
+    private Button saveTransactionButton;
+
+    @FXML
+    private Button cancelEditButton;
 
     @FXML
     private void initialize() {
@@ -103,18 +116,29 @@ public class TransactionController extends BaseWireframeController {
                 return;
             }
 
-            transactionDAO.create(new Transaction(
+            Transaction transaction = new Transaction(
                     user.getIdUser(),
                     category.getIdCategory(),
                     parseAmount(amountField.getText()),
                     date,
                     descriptionArea.getText(),
                     type
-            ));
+            );
+
+            if (selectedTransaction == null) {
+                transactionDAO.create(transaction);
+                setMessage(transactionMessageLabel, "Transaksi berhasil disimpan.");
+            } else {
+                transaction.setIdTransaction(selectedTransaction.getIdTransaction());
+                if (!transactionDAO.update(transaction)) {
+                    setMessage(transactionMessageLabel, "Transaksi tidak ditemukan.");
+                    return;
+                }
+                setMessage(transactionMessageLabel, "Transaksi berhasil diperbarui.");
+            }
 
             clearForm();
             refreshTransactions();
-            setMessage(transactionMessageLabel, "Transaksi berhasil disimpan.");
         } catch (NumberFormatException exception) {
             setMessage(transactionMessageLabel, "Nominal tidak valid.");
         } catch (IllegalArgumentException | SQLException exception) {
@@ -142,12 +166,15 @@ public class TransactionController extends BaseWireframeController {
         });
         searchTransactionField.textProperty().addListener((observable, oldValue, newValue) -> refreshTransactions());
         categoryFilterComboBox.valueProperty().addListener((observable, oldValue, newValue) -> refreshTransactions());
+        startDateFilterPicker.valueProperty().addListener((observable, oldValue, newValue) -> refreshTransactions());
+        endDateFilterPicker.valueProperty().addListener((observable, oldValue, newValue) -> refreshTransactions());
     }
 
     private void setupForm() {
         transactionTypeComboBox.setItems(FXCollections.observableArrayList(TransactionType.values()));
         transactionTypeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> refreshFormCategories());
         transactionDatePicker.setValue(LocalDate.now());
+        updateFormState();
     }
 
     @SuppressWarnings("unchecked")
@@ -169,10 +196,17 @@ public class TransactionController extends BaseWireframeController {
         amountColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().getAmount())));
         descriptionColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDescription()));
         actionColumn.setCellFactory(column -> new TableCell<>() {
+            private final Button editButton = new Button("Edit");
             private final Button deleteButton = new Button("Hapus");
+            private final javafx.scene.layout.HBox actions = new javafx.scene.layout.HBox(8, editButton, deleteButton);
 
             {
+                editButton.getStyleClass().add("secondary-button");
                 deleteButton.getStyleClass().add("secondary-button");
+                editButton.setOnAction(event -> {
+                    Transaction transaction = getTableView().getItems().get(getIndex());
+                    startEditTransaction(transaction);
+                });
                 deleteButton.setOnAction(event -> {
                     Transaction transaction = getTableView().getItems().get(getIndex());
                     deleteTransaction(transaction);
@@ -182,7 +216,7 @@ public class TransactionController extends BaseWireframeController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : deleteButton);
+                setGraphic(empty ? null : actions);
             }
         });
     }
@@ -229,16 +263,26 @@ public class TransactionController extends BaseWireframeController {
             Integer idCategory = selectedCategory == null || selectedCategory.getIdCategory() == 0
                     ? null
                     : selectedCategory.getIdCategory();
+            LocalDate startDate = startDateFilterPicker.getValue();
+            LocalDate endDate = endDateFilterPicker.getValue();
+            if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+                setMessage(transactionMessageLabel, "Tanggal mulai tidak boleh melebihi tanggal akhir.");
+                transactionsTable.setItems(FXCollections.emptyObservableList());
+                return;
+            }
             transactionsTable.setItems(FXCollections.observableArrayList(
                     transactionDAO.filter(
                             user.getIdUser(),
-                            null,
-                            null,
+                            startDate,
+                            endDate,
                             type,
                             idCategory,
                             searchTransactionField.getText()
                     )
             ));
+            if (selectedTransaction == null) {
+                setMessage(transactionMessageLabel, "");
+            }
         } catch (SQLException exception) {
             setMessage(transactionMessageLabel, "Gagal memuat transaksi: " + exception.getMessage());
         }
@@ -257,6 +301,9 @@ public class TransactionController extends BaseWireframeController {
     private void deleteTransaction(Transaction transaction) {
         try {
             transactionDAO.deleteById(transaction.getIdTransaction(), transaction.getIdUser());
+            if (selectedTransaction != null && selectedTransaction.getIdTransaction() == transaction.getIdTransaction()) {
+                clearForm();
+            }
             refreshTransactions();
             setMessage(transactionMessageLabel, "Transaksi berhasil dihapus.");
         } catch (SQLException exception) {
@@ -264,9 +311,45 @@ public class TransactionController extends BaseWireframeController {
         }
     }
 
+    @FXML
+    private void handleCancelEdit() {
+        clearForm();
+        setMessage(transactionMessageLabel, "Mode edit dibatalkan.");
+    }
+
+    private void startEditTransaction(Transaction transaction) {
+        selectedTransaction = transaction;
+        transactionTypeComboBox.setValue(transaction.getType());
+        refreshFormCategories();
+        transactionCategoryComboBox.getItems().stream()
+                .filter(category -> category.getIdCategory() == transaction.getIdCategory())
+                .findFirst()
+                .ifPresent(transactionCategoryComboBox::setValue);
+        transactionDatePicker.setValue(transaction.getDate());
+        amountField.setText(String.valueOf(transaction.getAmount()));
+        descriptionArea.setText(transaction.getDescription() == null ? "" : transaction.getDescription());
+        updateFormState();
+        setMessage(transactionMessageLabel, "Sedang mengubah transaksi yang dipilih.");
+    }
+
     private void clearForm() {
+        selectedTransaction = null;
+        transactionTypeComboBox.setValue(null);
+        transactionCategoryComboBox.setValue(null);
         amountField.clear();
         descriptionArea.clear();
         transactionDatePicker.setValue(LocalDate.now());
+        updateFormState();
+    }
+
+    private void updateFormState() {
+        boolean editing = selectedTransaction != null;
+        if (saveTransactionButton != null) {
+            saveTransactionButton.setText(editing ? "Perbarui" : "Simpan");
+        }
+        if (cancelEditButton != null) {
+            cancelEditButton.setVisible(editing);
+            cancelEditButton.setManaged(editing);
+        }
     }
 }

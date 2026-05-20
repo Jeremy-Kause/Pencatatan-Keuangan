@@ -101,7 +101,9 @@ public class ReportController extends BaseWireframeController {
             return;
         }
 
-        Map.Entry<String, Double> top = expenseByCategory.entrySet().iterator().next();
+        Map.Entry<String, Double> top = expenseByCategory.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .orElseThrow();
         double percentage = (top.getValue() / totalExpense) * 100;
         setMessage(topCategoryLabel, top.getKey());
         setMessage(topCategoryPercentLabel, String.format("%.1f%% dari total pengeluaran", percentage));
