@@ -8,34 +8,26 @@
 <?import javafx.scene.layout.VBox?>
 
 <HBox styleClass="auth-root" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.AuthController">
-    <VBox alignment="CENTER_LEFT" spacing="22" styleClass="auth-hero" HBox.hgrow="ALWAYS">
-        <Label text="UangKu" styleClass="auth-brand" />
-        <VBox spacing="10">
-            <Label text="Kelola Keuangan dengan Mudah" styleClass="auth-title" wrapText="true" />
-            <Label text="Pantau pemasukan, pengeluaran, dan anggaran Anda dalam satu tempat. Simple, elegant, dan efisien." styleClass="auth-copy" wrapText="true" />
-        </VBox>
-    </VBox>
-
-    <VBox alignment="CENTER" prefWidth="430" styleClass="auth-panel">
-        <VBox maxWidth="330" spacing="16">
-            <VBox spacing="6">
-                <Label text="Daftar" styleClass="auth-card-title" />
-                <Label text="Buat akun UangKu baru" styleClass="auth-card-subtitle" />
-            </VBox>
+    <VBox alignment="CENTER" styleClass="auth-panel" HBox.hgrow="ALWAYS">
+        <VBox maxWidth="560" minHeight="600" spacing="20" styleClass="auth-card">
+            <HBox alignment="CENTER" spacing="14" styleClass="auth-form-brand-row">
+                <Label text="&#9635;" styleClass="auth-logo" />
+                <Label text="UangKu" styleClass="auth-form-brand" />
+            </HBox>
 
             <VBox spacing="8">
                 <Label text="Username" styleClass="field-label" />
-                <TextField fx:id="registerUsernameField" promptText="Username" />
-            </VBox>
-
-            <VBox spacing="8">
-                <Label text="Email" styleClass="field-label" />
-                <TextField fx:id="emailField" promptText="Email" />
+                <TextField fx:id="registerUsernameField" />
             </VBox>
 
             <VBox spacing="8">
                 <Label text="Password" styleClass="field-label" />
-                <PasswordField fx:id="registerPasswordField" promptText="Password" />
+                <PasswordField fx:id="registerPasswordField" />
+            </VBox>
+
+            <VBox spacing="8">
+                <Label text="Email" styleClass="field-label" />
+                <TextField fx:id="emailField" />
             </VBox>
 
             <Button text="Daftar" maxWidth="Infinity" styleClass="primary-button" onAction="#showDashboard" />
@@ -44,6 +36,19 @@
                 <Label text="Sudah punya akun?" styleClass="muted-text" />
                 <Button text="Masuk" styleClass="link-button" onAction="#showLogin" />
             </HBox>
+        </VBox>
+    </VBox>
+
+    <VBox alignment="CENTER_LEFT" prefWidth="468" spacing="32" styleClass="auth-hero">
+        <VBox spacing="2">
+            <Label text="Kelola Keuangan" styleClass="auth-title" />
+            <Label text="dengan Mudah" styleClass="auth-title" />
+        </VBox>
+        <Label text="Pantau pemasukan, pengeluaran, dan anggaran Anda dalam satu tempat. Simple, elegant, dan efisien." styleClass="auth-copy" wrapText="true" />
+        <VBox spacing="18">
+            <Label text="&#8226;  Tracking transaksi real-time" styleClass="auth-benefit" />
+            <Label text="&#8226;  Budget planning per kategori" styleClass="auth-benefit" />
+            <Label text="&#8226;  Laporan visual yang informatif" styleClass="auth-benefit" wrapText="true" />
         </VBox>
     </VBox>
 </HBox>

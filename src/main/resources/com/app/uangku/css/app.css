@@ -13,7 +13,7 @@
 
 .auth-hero {
     -fx-background-color: #27272A;
-    -fx-padding: 72 64 72 64;
+    -fx-padding: 64 36 64 36;
 }
 
 .auth-brand {
@@ -24,19 +24,59 @@
 
 .auth-title {
     -fx-text-fill: #FFFFFF;
-    -fx-font-size: 28px;
-    -fx-font-weight: 700;
+    -fx-font-size: 42px;
+    -fx-font-weight: 400;
 }
 
 .auth-copy {
-    -fx-text-fill: #E7E5E4;
-    -fx-font-size: 15px;
-    -fx-line-spacing: 4px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 18px;
+    -fx-line-spacing: 6px;
+}
+
+.auth-benefit {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 28px;
+    -fx-font-weight: 400;
+    -fx-line-spacing: 8px;
 }
 
 .auth-panel {
+    -fx-background-color: #F7F7F9;
+    -fx-padding: 20 36 20 36;
+}
+
+.auth-card {
     -fx-background-color: #FFFFFF;
-    -fx-padding: 56 64 56 64;
+    -fx-border-color: #E2E2E5;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 54 54 50 54;
+}
+
+.auth-form-brand-row {
+    -fx-padding: 0 0 48 0;
+}
+
+.auth-logo {
+    -fx-alignment: center;
+    -fx-background-color: #000000;
+    -fx-background-radius: 8px;
+    -fx-min-width: 56px;
+    -fx-pref-width: 56px;
+    -fx-max-width: 56px;
+    -fx-min-height: 56px;
+    -fx-pref-height: 56px;
+    -fx-max-height: 56px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 25px;
+    -fx-font-weight: 800;
+}
+
+.auth-form-brand {
+    -fx-text-fill: #000000;
+    -fx-font-size: 34px;
+    -fx-font-weight: 800;
 }
 
 .auth-card-title {
@@ -48,6 +88,23 @@
 .auth-card-subtitle {
     -fx-text-fill: #6B7280;
     -fx-font-size: 14px;
+}
+
+.auth-card .text-field,
+.auth-card .password-field {
+    -fx-font-size: 19px;
+    -fx-min-height: 62px;
+}
+
+.auth-card .primary-button {
+    -fx-font-size: 22px;
+    -fx-min-height: 60px;
+    -fx-padding: 14 20 14 20;
+}
+
+.auth-card .link-button,
+.auth-card .muted-text {
+    -fx-font-size: 22px;
 }
 
 .field-label {
