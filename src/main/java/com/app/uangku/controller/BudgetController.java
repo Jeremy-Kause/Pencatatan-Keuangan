@@ -63,8 +63,13 @@ public class BudgetController extends BaseWireframeController {
 
         try {
             Category category = budgetCategoryComboBox.getValue();
+            setMessage(budgetMessageLabel, "");
             if (category == null) {
                 setMessage(budgetMessageLabel, "Pilih kategori pengeluaran.");
+                return;
+            }
+            if (category.getType() != TransactionType.PENGELUARAN) {
+                setMessage(budgetMessageLabel, "Anggaran hanya bisa dibuat untuk kategori pengeluaran.");
                 return;
             }
 
@@ -117,9 +122,11 @@ public class BudgetController extends BaseWireframeController {
 
         try {
             User user = SessionManager.getCurrentUser().orElseThrow();
-            budgetCategoryComboBox.setItems(FXCollections.observableArrayList(
-                    categoryDAO.findByUserIdAndType(user.getIdUser(), TransactionType.PENGELUARAN)
-            ));
+            List<Category> categories = categoryDAO.findByUserIdAndType(user.getIdUser(), TransactionType.PENGELUARAN);
+            budgetCategoryComboBox.setItems(FXCollections.observableArrayList(categories));
+            if (categories.isEmpty()) {
+                setMessage(budgetMessageLabel, "Tambahkan kategori pengeluaran terlebih dahulu.");
+            }
         } catch (SQLException exception) {
             setMessage(budgetMessageLabel, "Gagal memuat kategori: " + exception.getMessage());
         }

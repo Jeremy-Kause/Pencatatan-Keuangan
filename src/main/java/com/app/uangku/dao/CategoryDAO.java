@@ -111,6 +111,26 @@ public class CategoryDAO {
         }
     }
 
+    public boolean existsByUserIdAndTypeAndName(int idUser, TransactionType type, String name) throws SQLException {
+        String sql = """
+                SELECT 1
+                FROM categories
+                WHERE id_user = ? AND type = ? AND LOWER(name) = LOWER(?)
+                LIMIT 1
+                """;
+
+        try (Connection connection = DatabaseHelper.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idUser);
+            statement.setString(2, type.toDatabaseValue());
+            statement.setString(3, name.trim());
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
+            }
+        }
+    }
+
     private void insertIfMissing(
             Connection connection,
             int idUser,

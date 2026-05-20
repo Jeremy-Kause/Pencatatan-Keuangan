@@ -13,8 +13,14 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 public class AuthController extends BaseWireframeController {
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    private static final Pattern USERNAME_PATTERN =
+            Pattern.compile("^[A-Za-z0-9._]{3,20}$");
+
     private final UserDAO userDAO = new UserDAO();
     private final CategoryDAO categoryDAO = new CategoryDAO();
 
@@ -44,6 +50,7 @@ public class AuthController extends BaseWireframeController {
         try {
             String usernameOrEmail = usernameField.getText().trim();
             String password = passwordField.getText();
+            setMessage(authMessageLabel, "");
 
             if (usernameOrEmail.isBlank() || password.isBlank()) {
                 setMessage(authMessageLabel, "Username/email dan password wajib diisi.");
@@ -69,14 +76,19 @@ public class AuthController extends BaseWireframeController {
     private void handleRegister(ActionEvent event) {
         try {
             String username = registerUsernameField.getText().trim();
-            String email = emailField.getText().trim();
+            String email = emailField.getText().trim().toLowerCase();
             String password = registerPasswordField.getText();
+            setMessage(registerMessageLabel, "");
 
             if (username.isBlank() || email.isBlank() || password.isBlank()) {
                 setMessage(registerMessageLabel, "Semua field wajib diisi.");
                 return;
             }
-            if (!email.contains("@")) {
+            if (!USERNAME_PATTERN.matcher(username).matches()) {
+                setMessage(registerMessageLabel, "Username 3-20 karakter dan hanya boleh huruf, angka, titik, atau underscore.");
+                return;
+            }
+            if (!EMAIL_PATTERN.matcher(email).matches()) {
                 setMessage(registerMessageLabel, "Format email belum valid.");
                 return;
             }

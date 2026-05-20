@@ -102,6 +102,7 @@ public class TransactionController extends BaseWireframeController {
             TransactionType type = transactionTypeComboBox.getValue();
             Category category = transactionCategoryComboBox.getValue();
             LocalDate date = transactionDatePicker.getValue();
+            setMessage(transactionMessageLabel, "");
 
             if (type == null) {
                 setMessage(transactionMessageLabel, "Pilih tipe transaksi.");
@@ -115,13 +116,22 @@ public class TransactionController extends BaseWireframeController {
                 setMessage(transactionMessageLabel, "Pilih tanggal transaksi.");
                 return;
             }
+            if (category.getType() != type) {
+                setMessage(transactionMessageLabel, "Kategori harus sesuai dengan tipe transaksi yang dipilih.");
+                return;
+            }
+            String description = descriptionArea.getText() == null ? "" : descriptionArea.getText().trim();
+            if (description.length() > 255) {
+                setMessage(transactionMessageLabel, "Deskripsi maksimal 255 karakter.");
+                return;
+            }
 
             Transaction transaction = new Transaction(
                     user.getIdUser(),
                     category.getIdCategory(),
                     parseAmount(amountField.getText()),
                     date,
-                    descriptionArea.getText(),
+                    description,
                     type
             );
 
@@ -248,7 +258,12 @@ public class TransactionController extends BaseWireframeController {
                 .filter(category -> selectedType == null || category.getType() == selectedType)
                 .toList();
         transactionCategoryComboBox.setItems(FXCollections.observableArrayList(categories));
-        transactionCategoryComboBox.setValue(null);
+        if (selectedTransaction == null || selectedType != selectedTransaction.getType()) {
+            transactionCategoryComboBox.setValue(null);
+        }
+        if (selectedType != null && categories.isEmpty()) {
+            setMessage(transactionMessageLabel, "Belum ada kategori untuk tipe transaksi ini.");
+        }
     }
 
     private void refreshTransactions() {

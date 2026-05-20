@@ -54,9 +54,18 @@ public class CategoryController extends BaseWireframeController {
         try {
             String name = categoryNameField.getText().trim();
             TransactionType type = categoryTypeComboBox.getValue();
+            setMessage(categoryMessageLabel, "");
 
             if (name.isBlank()) {
                 setMessage(categoryMessageLabel, "Nama kategori wajib diisi.");
+                return;
+            }
+            if (name.length() < 2) {
+                setMessage(categoryMessageLabel, "Nama kategori minimal 2 karakter.");
+                return;
+            }
+            if (name.length() > 30) {
+                setMessage(categoryMessageLabel, "Nama kategori maksimal 30 karakter.");
                 return;
             }
             if (type == null) {
@@ -65,6 +74,10 @@ public class CategoryController extends BaseWireframeController {
             }
 
             User user = SessionManager.getCurrentUser().orElseThrow();
+            if (categoryDAO.existsByUserIdAndTypeAndName(user.getIdUser(), type, name)) {
+                setMessage(categoryMessageLabel, "Kategori dengan nama yang sama sudah ada.");
+                return;
+            }
             categoryDAO.create(new Category(user.getIdUser(), name, type));
             categoryNameField.clear();
             categoryTypeComboBox.setValue(null);
