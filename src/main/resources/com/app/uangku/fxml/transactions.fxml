@@ -29,7 +29,7 @@
                 <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
                 <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
             </VBox>
-            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#logout" />
         </VBox>
     </left>
 
@@ -43,7 +43,7 @@
                             <Label text="Kelola semua pemasukan dan pengeluaran Anda" styleClass="page-subtitle" />
                         </VBox>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button text="Tambah Transaksi" styleClass="primary-button" />
+                        <Button text="Tambah Transaksi" styleClass="primary-button" onAction="#focusTransactionForm" />
                     </HBox>
 
                     <HBox alignment="CENTER_LEFT" spacing="12" styleClass="filter-bar">
@@ -100,7 +100,8 @@
                                 <Label text="Deskripsi" styleClass="field-label" />
                                 <TextArea fx:id="descriptionArea" prefRowCount="4" wrapText="true" />
                             </VBox>
-                            <Button text="Simpan" maxWidth="Infinity" styleClass="primary-button" />
+                            <Label fx:id="transactionMessageLabel" text="" styleClass="danger-text" wrapText="true" />
+                            <Button text="Simpan" maxWidth="Infinity" styleClass="primary-button" onAction="#handleSaveTransaction" />
                         </VBox>
                     </GridPane>
                 </VBox>

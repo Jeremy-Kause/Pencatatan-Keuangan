@@ -36,7 +36,8 @@
                 <PasswordField fx:id="passwordField" promptText="Password" />
             </VBox>
 
-            <Button text="Masuk" maxWidth="Infinity" styleClass="primary-button" onAction="#showDashboard" />
+            <Button text="Masuk" maxWidth="Infinity" styleClass="primary-button" onAction="#handleLogin" />
+            <Label fx:id="authMessageLabel" text="" styleClass="danger-text" wrapText="true" />
 
             <HBox alignment="CENTER" spacing="6">
                 <Label text="Belum punya akun?" styleClass="muted-text" />

@@ -24,7 +24,7 @@
                 <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
                 <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
             </VBox>
-            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#logout" />
         </VBox>
     </left>
 
@@ -38,7 +38,7 @@
                             <Label text="Kelola kategori pemasukan dan pengeluaran" styleClass="page-subtitle" />
                         </VBox>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button text="Tambah Kategori" styleClass="primary-button" />
+                        <Button text="Tambah Kategori" styleClass="primary-button" onAction="#focusCategoryForm" />
                     </HBox>
 
                     <GridPane hgap="18" vgap="18">
@@ -57,7 +57,8 @@
                                 <Label text="Tipe" styleClass="field-label" />
                                 <ComboBox fx:id="categoryTypeComboBox" promptText="Pemasukan / Pengeluaran" maxWidth="Infinity" />
                             </VBox>
-                            <Button text="Simpan Kategori" maxWidth="Infinity" styleClass="primary-button" />
+                            <Label fx:id="categoryMessageLabel" text="" styleClass="danger-text" wrapText="true" />
+                            <Button text="Simpan Kategori" maxWidth="Infinity" styleClass="primary-button" onAction="#handleSaveCategory" />
                         </VBox>
 
                         <GridPane hgap="18" vgap="18" GridPane.columnIndex="1">
@@ -68,7 +69,7 @@
 
                             <VBox spacing="14" styleClass="panel" GridPane.columnIndex="0">
                                 <Label text="Kategori Pemasukan" styleClass="section-title" />
-                                <VBox spacing="10">
+                                <VBox fx:id="incomeCategoryList" spacing="10">
                                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="category-card">
                                         <Label text="KONTEN 1" styleClass="placeholder-title" />
                                         <Region HBox.hgrow="ALWAYS" />
@@ -89,7 +90,7 @@
 
                             <VBox spacing="14" styleClass="panel" GridPane.columnIndex="1">
                                 <Label text="Kategori Pengeluaran" styleClass="section-title" />
-                                <VBox spacing="10">
+                                <VBox fx:id="expenseCategoryList" spacing="10">
                                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="category-card">
                                         <Label text="KONTEN 4" styleClass="placeholder-title" />
                                         <Region HBox.hgrow="ALWAYS" />

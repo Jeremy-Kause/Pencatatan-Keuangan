@@ -25,7 +25,7 @@
                 <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
                 <Button id="activeNav" text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
             </VBox>
-            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#logout" />
         </VBox>
     </left>
 
@@ -65,7 +65,7 @@
                                 <VBox spacing="6" styleClass="stat-card">
                                     <Label text="Kategori Terbesar" styleClass="metric-label" />
                                     <Label fx:id="topCategoryLabel" text="Makan dan Minum" styleClass="section-title" />
-                                    <Label text="42% dari total pengeluaran" styleClass="muted-text" />
+                                    <Label fx:id="topCategoryPercentLabel" text="0% dari total pengeluaran" styleClass="muted-text" />
                                 </VBox>
                                 <VBox spacing="6" styleClass="stat-card">
                                     <Label text="Jumlah Transaksi" styleClass="metric-label" />
@@ -73,7 +73,7 @@
                                 </VBox>
                                 <VBox spacing="6" styleClass="stat-card">
                                     <Label text="Catatan" styleClass="metric-label" />
-                                    <Label text="Data laporan akan diisi dari TransactionDAO saat integrasi backend." styleClass="muted-text" wrapText="true" />
+                                    <Label fx:id="reportNoteLabel" text="Data laporan akan diisi dari TransactionDAO saat integrasi backend." styleClass="muted-text" wrapText="true" />
                                 </VBox>
                             </VBox>
                         </VBox>
