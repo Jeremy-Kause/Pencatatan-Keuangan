@@ -20,16 +20,21 @@
 
 <BorderPane styleClass="app-shell" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.TransactionController">
     <left>
-        <VBox prefWidth="220" spacing="20" styleClass="sidebar">
-            <Label text="UangKu" styleClass="sidebar-brand" />
-            <VBox spacing="8" VBox.vgrow="ALWAYS">
-                <Button text="Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard" />
-                <Button id="activeNav" text="Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions" />
-                <Button text="Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories" />
-                <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
-                <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
+        <VBox prefWidth="252" spacing="0" styleClass="sidebar">
+            <HBox alignment="CENTER_LEFT" spacing="14" styleClass="sidebar-brand-row">
+                <Label text="&#9635;" styleClass="sidebar-logo" />
+                <Label text="UangKu" styleClass="sidebar-brand" />
+            </HBox>
+            <Region styleClass="sidebar-separator" />
+            <VBox spacing="12" styleClass="sidebar-nav" VBox.vgrow="ALWAYS">
+                <Button text="&#9638; Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard" />
+                <Button id="activeNav" text="&#9636; Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions" />
+                <Button text="&#9671; Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories" />
+                <Button text="&#9635; Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
+                <Button text="&#9684; Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
             </VBox>
-            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+            <Region styleClass="sidebar-separator" />
+            <Button text="&#8618; Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
         </VBox>
     </left>
 

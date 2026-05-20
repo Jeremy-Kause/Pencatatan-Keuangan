@@ -144,45 +144,90 @@
 }
 
 .sidebar {
+    -fx-background-color: #27272A;
+    -fx-border-color: transparent;
+    -fx-padding: 30 20 32 20;
+}
+
+.sidebar-brand-row {
+    -fx-padding: 0 0 28 0;
+}
+
+.sidebar-logo {
+    -fx-alignment: center;
     -fx-background-color: #FFFFFF;
-    -fx-border-color: transparent #E7E5E4 transparent transparent;
-    -fx-padding: 28 20 24 20;
+    -fx-background-radius: 8px;
+    -fx-min-width: 54px;
+    -fx-pref-width: 54px;
+    -fx-max-width: 54px;
+    -fx-min-height: 54px;
+    -fx-pref-height: 54px;
+    -fx-max-height: 54px;
+    -fx-text-fill: #3F6212;
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
 }
 
 .sidebar-brand {
-    -fx-text-fill: #27272A;
-    -fx-font-size: 28px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 30px;
     -fx-font-weight: 800;
+}
+
+.sidebar-separator {
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-min-height: 1px;
+    -fx-pref-height: 1px;
+    -fx-max-height: 1px;
+}
+
+.sidebar-nav {
+    -fx-padding: 40 0 0 0;
 }
 
 .sidebar-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #27272A;
+    -fx-text-fill: #FFFFFF;
     -fx-alignment: center-left;
-    -fx-font-weight: 700;
-    -fx-padding: 11 14 11 14;
-    -fx-background-radius: 6px;
+    -fx-font-size: 21px;
+    -fx-font-weight: 400;
+    -fx-padding: 14 20 14 20;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+    -fx-border-width: 1.5px;
     -fx-cursor: hand;
 }
 
 .sidebar-button:hover {
-    -fx-background-color: #D7F5D3;
-    -fx-text-fill: #3F6212;
+    -fx-background-color: rgba(255, 255, 255, 0.07);
+    -fx-border-color: rgba(255, 255, 255, 0.55);
+    -fx-text-fill: #FFFFFF;
 }
 
 #activeNav {
-    -fx-background-color: #D7F5D3;
-    -fx-text-fill: #3F6212;
+    -fx-background-color: transparent;
+    -fx-border-color: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
 }
 
 .logout-button {
-    -fx-background-color: #FDF2F2;
-    -fx-text-fill: #B91C1C;
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
     -fx-alignment: center-left;
-    -fx-font-weight: 700;
-    -fx-padding: 11 14 11 14;
-    -fx-background-radius: 6px;
+    -fx-font-size: 21px;
+    -fx-font-weight: 400;
+    -fx-padding: 28 20 8 20;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+    -fx-border-width: 1.5px;
     -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.07);
+    -fx-border-color: rgba(255, 255, 255, 0.55);
 }
 
 .page-scroll {
