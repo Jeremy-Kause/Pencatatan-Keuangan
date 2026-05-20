@@ -260,6 +260,7 @@
 .placeholder-card,
 .category-card,
 .budget-card,
+.report-card,
 .stat-card {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #E2E2E5;
@@ -272,6 +273,7 @@
 .placeholder-card:hover,
 .category-card:hover,
 .budget-card:hover,
+.report-card:hover,
 .stat-card:hover {
     -fx-border-color: #D4D4D8;
     -fx-effect: dropshadow(gaussian, rgba(39, 39, 42, 0.08), 12, 0, 0, 2);
@@ -417,6 +419,12 @@
     -fx-alignment: center;
     -fx-padding: 24;
     -fx-min-height: 176px;
+}
+
+.report-card {
+    -fx-alignment: center;
+    -fx-padding: 28;
+    -fx-min-height: 430px;
 }
 
 .success-text {
