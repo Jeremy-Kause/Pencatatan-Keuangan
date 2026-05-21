@@ -14,20 +14,54 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
 <BorderPane styleClass="app-shell" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.BudgetController">
     <left>
-        <VBox prefWidth="220" spacing="20" styleClass="sidebar">
-            <Label text="UangKu" styleClass="sidebar-brand" />
-            <VBox spacing="8" VBox.vgrow="ALWAYS">
-                <Button text="Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard" />
-                <Button text="Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions" />
-                <Button text="Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories" />
-                <Button id="activeNav" text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
-                <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
+        <VBox prefWidth="250" styleClass="sidebar">
+            <HBox alignment="CENTER_LEFT" spacing="14" styleClass="sidebar-logo">
+                <StackPane prefHeight="62" prefWidth="62" styleClass="sidebar-logo-mark">
+                    <SVGPath content="M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v2" scaleX="1.2" scaleY="1.2" styleClass="sidebar-logo-icon" />
+                    <SVGPath content="M16 12h5v5h-5a2.5 2.5 0 0 1 0-5Z" scaleX="1.2" scaleY="1.2" styleClass="sidebar-logo-icon" />
+                </StackPane>
+                <Label text="UangKu" styleClass="sidebar-brand" />
+            </HBox>
+            <Region prefHeight="1" styleClass="sidebar-divider" />
+            <VBox spacing="12" styleClass="sidebar-nav" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard">
+                    <graphic>
+                        <SVGPath content="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z" styleClass="nav-icon" />
+                    </graphic>
+                </Button>
+                <Button text="Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions">
+                    <graphic>
+                        <SVGPath content="M6 3h12v18l-3-2-3 2-3-2-3 2z M9 8h6 M9 12h6 M9 16h4" styleClass="nav-icon" />
+                    </graphic>
+                </Button>
+                <Button text="Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories">
+                    <graphic>
+                        <SVGPath content="M4 12 12 4h7v7l-8 8z M16 8h1" styleClass="nav-icon" />
+                    </graphic>
+                </Button>
+                <Button id="activeNav" text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets">
+                    <graphic>
+                        <SVGPath content="M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v2 M16 13h5v4h-5a2 2 0 0 1 0-4Z" styleClass="nav-icon" />
+                    </graphic>
+                </Button>
+                <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports">
+                    <graphic>
+                        <SVGPath content="M12 3v9h9A9 9 0 1 1 12 3z M15 3.5A9 9 0 0 1 20.5 9H15z" styleClass="nav-icon" />
+                    </graphic>
+                </Button>
             </VBox>
-            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#logout" />
+            <Region prefHeight="1" styleClass="sidebar-divider" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#logout">
+                <graphic>
+                    <SVGPath content="M10 17l5-5-5-5 M15 12H3 M21 4v16" styleClass="nav-icon" />
+                </graphic>
+            </Button>
         </VBox>
     </left>
 
@@ -41,7 +75,6 @@
                             <Label text="Atur batas pengeluaran per kategori bulan ini" styleClass="page-subtitle" />
                         </VBox>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button text="Tambah Anggaran" styleClass="primary-button" onAction="#focusBudgetForm" />
                     </HBox>
 
                     <GridPane hgap="18" vgap="18">
@@ -54,18 +87,18 @@
                             <Label text="Tambah Anggaran" styleClass="section-title" />
                             <VBox spacing="7">
                                 <Label text="Kategori Pengeluaran" styleClass="field-label" />
-                                <ComboBox fx:id="budgetCategoryComboBox" promptText="Pilih kategori" maxWidth="Infinity" />
+                                <ComboBox fx:id="budgetCategoryComboBox" promptText="Pilih kategori" maxWidth="Infinity" onAction="#handleSaveBudget" />
                             </VBox>
                             <VBox spacing="7">
                                 <Label text="Bulan" styleClass="field-label" />
-                                <TextField fx:id="budgetMonthField" promptText="Mei 2026" />
+                                <TextField fx:id="budgetMonthField" promptText="Mei 2026" onAction="#handleSaveBudget" />
                             </VBox>
                             <VBox spacing="7">
                                 <Label text="Limit Anggaran" styleClass="field-label" />
-                                <TextField fx:id="budgetLimitField" promptText="Rp" />
+                                <TextField fx:id="budgetLimitField" promptText="Rp" onAction="#handleSaveBudget" />
                             </VBox>
                             <Label fx:id="budgetMessageLabel" text="" styleClass="danger-text" wrapText="true" />
-                            <Button text="Simpan Anggaran" maxWidth="Infinity" styleClass="primary-button" onAction="#handleSaveBudget" />
+                            <Button text="Simpan Anggaran" maxWidth="Infinity" defaultButton="true" styleClass="primary-button" onAction="#handleSaveBudget" />
                         </VBox>
 
                         <VBox spacing="18" GridPane.columnIndex="1">

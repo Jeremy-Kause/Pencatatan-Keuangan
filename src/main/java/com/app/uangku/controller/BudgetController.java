@@ -91,11 +91,6 @@ public class BudgetController extends BaseWireframeController {
         }
     }
 
-    @FXML
-    private void focusBudgetForm() {
-        budgetCategoryComboBox.requestFocus();
-    }
-
     @SuppressWarnings("unchecked")
     private void setupTable() {
         if (budgetTable == null || budgetTable.getColumns().isEmpty()) {

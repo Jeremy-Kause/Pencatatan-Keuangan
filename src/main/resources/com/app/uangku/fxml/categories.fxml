@@ -84,14 +84,14 @@
                             <Label text="Tambah Kategori" styleClass="section-title" />
                             <VBox spacing="7">
                                 <Label text="Nama Kategori" styleClass="field-label" />
-                                <TextField fx:id="categoryNameField" promptText="Contoh: Gaji, Makan" />
+                                <TextField fx:id="categoryNameField" promptText="Contoh: Gaji, Makan" onAction="#handleSaveCategory" />
                             </VBox>
                             <VBox spacing="7">
                                 <Label text="Tipe" styleClass="field-label" />
-                                <ComboBox fx:id="categoryTypeComboBox" promptText="Pemasukan / Pengeluaran" maxWidth="Infinity" />
+                                <ComboBox fx:id="categoryTypeComboBox" promptText="Pemasukan / Pengeluaran" maxWidth="Infinity" onAction="#handleSaveCategory" />
                             </VBox>
                             <Label fx:id="categoryMessageLabel" text="" styleClass="danger-text" wrapText="true" />
-                            <Button fx:id="saveCategoryButton" text="Simpan Kategori" maxWidth="Infinity" styleClass="primary-button" onAction="#handleSaveCategory" />
+                            <Button fx:id="saveCategoryButton" text="Simpan Kategori" maxWidth="Infinity" defaultButton="true" styleClass="primary-button" onAction="#handleSaveCategory" />
                             <Button fx:id="cancelEditCategoryButton" text="Batal Edit" maxWidth="Infinity" managed="false" visible="false" styleClass="secondary-button" onAction="#handleCancelEditCategory" />
                         </VBox>
 
