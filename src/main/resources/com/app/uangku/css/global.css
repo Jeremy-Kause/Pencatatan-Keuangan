@@ -13,10 +13,12 @@
     -fx-background-color: -color-base;
     -fx-text-fill: -color-primary;
     -fx-base: -color-base;
-    -fx-accent: -color-accent-2;
-    -fx-focus-color: -color-accent-2;
+    -fx-accent: -color-primary;
+    -fx-focus-color: -color-primary;
     -fx-faint-focus-color: transparent;
     -fx-control-inner-background: -color-base;
+    -fx-selection-bar: -color-primary;
+    -fx-selection-bar-text: -color-base;
 }
 
 .label,
@@ -159,7 +161,7 @@
 .text-area:focused,
 .combo-box:focused,
 .date-picker:focused {
-    -fx-border-color: -color-accent-2;
+    -fx-border-color: -color-primary;
 }
 
 .text-area {
@@ -189,7 +191,8 @@
 }
 
 .secondary-button:hover {
-    -fx-background-color: -color-warm-2;
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-base;
 }
 
 .link-button {
@@ -201,7 +204,7 @@
 }
 
 .link-button:hover {
-    -fx-text-fill: -color-accent-1;
+    -fx-text-fill: -color-primary;
 }
 
 .app-shell,
@@ -469,7 +472,13 @@
 }
 
 .toggle-button:selected {
-    -fx-background-color: -color-accent-1;
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-base;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected,
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: -color-primary;
     -fx-text-fill: -color-base;
 }
 

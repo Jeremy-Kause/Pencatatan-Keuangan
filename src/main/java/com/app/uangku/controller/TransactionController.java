@@ -22,6 +22,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -56,6 +58,12 @@ public class TransactionController extends BaseWireframeController {
 
     @FXML
     private TableView<Transaction> transactionsTable;
+
+    @FXML
+    private VBox transactionTablePanel;
+
+    @FXML
+    private VBox transactionFormPanel;
 
     @FXML
     private ComboBox<TransactionType> transactionTypeComboBox;
@@ -158,6 +166,8 @@ public class TransactionController extends BaseWireframeController {
 
     @FXML
     private void focusTransactionForm() {
+        clearForm(false);
+        setMessage(transactionMessageLabel, "");
         transactionTypeComboBox.requestFocus();
     }
 
@@ -184,6 +194,7 @@ public class TransactionController extends BaseWireframeController {
         transactionTypeComboBox.setItems(FXCollections.observableArrayList(TransactionType.values()));
         transactionTypeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> refreshFormCategories());
         transactionDatePicker.setValue(LocalDate.now());
+        setTransactionFormVisible(false);
         updateFormState();
     }
 
@@ -329,10 +340,11 @@ public class TransactionController extends BaseWireframeController {
     @FXML
     private void handleCancelEdit() {
         clearForm();
-        setMessage(transactionMessageLabel, "Mode edit dibatalkan.");
+        setMessage(transactionMessageLabel, "");
     }
 
     private void startEditTransaction(Transaction transaction) {
+        setTransactionFormVisible(true);
         selectedTransaction = transaction;
         transactionTypeComboBox.setValue(transaction.getType());
         refreshFormCategories();
@@ -344,27 +356,45 @@ public class TransactionController extends BaseWireframeController {
         amountField.setText(String.valueOf(transaction.getAmount()));
         descriptionArea.setText(transaction.getDescription() == null ? "" : transaction.getDescription());
         updateFormState();
+        transactionTypeComboBox.requestFocus();
         setMessage(transactionMessageLabel, "Sedang mengubah transaksi yang dipilih.");
     }
 
     private void clearForm() {
+        clearForm(true);
+    }
+
+    private void clearForm(boolean hideForm) {
         selectedTransaction = null;
         transactionTypeComboBox.setValue(null);
         transactionCategoryComboBox.setValue(null);
         amountField.clear();
         descriptionArea.clear();
         transactionDatePicker.setValue(LocalDate.now());
+        setTransactionFormVisible(!hideForm);
         updateFormState();
+    }
+
+    private void setTransactionFormVisible(boolean visible) {
+        if (transactionFormPanel != null) {
+            transactionFormPanel.setVisible(visible);
+            transactionFormPanel.setManaged(visible);
+        }
+        if (transactionTablePanel != null) {
+            GridPane.setColumnSpan(transactionTablePanel, visible ? 1 : 2);
+        }
     }
 
     private void updateFormState() {
         boolean editing = selectedTransaction != null;
+        boolean formVisible = transactionFormPanel == null || transactionFormPanel.isVisible();
         if (saveTransactionButton != null) {
             saveTransactionButton.setText(editing ? "Perbarui" : "Simpan");
         }
         if (cancelEditButton != null) {
-            cancelEditButton.setVisible(editing);
-            cancelEditButton.setManaged(editing);
+            cancelEditButton.setText(editing ? "Batal Edit" : "Batal");
+            cancelEditButton.setVisible(formVisible);
+            cancelEditButton.setManaged(formVisible);
         }
     }
 }
