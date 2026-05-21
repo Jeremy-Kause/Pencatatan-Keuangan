@@ -24,15 +24,15 @@
 
                 <VBox spacing="14">
                     <Label text="Username" styleClass="field-label" />
-                    <TextField fx:id="usernameField" promptText="" />
+                    <TextField fx:id="usernameField" promptText="" onAction="#handleLogin" />
                 </VBox>
 
                 <VBox spacing="14">
                     <Label text="Password" styleClass="field-label" />
-                    <PasswordField fx:id="passwordField" promptText="" />
+                    <PasswordField fx:id="passwordField" promptText="" onAction="#handleLogin" />
                 </VBox>
 
-                <Button text="Masuk" maxWidth="Infinity" styleClass="primary-button" onAction="#handleLogin" />
+                <Button text="Masuk" maxWidth="Infinity" defaultButton="true" styleClass="primary-button" onAction="#handleLogin" />
                 <Label fx:id="authMessageLabel" text="" styleClass="danger-text" wrapText="true" />
 
                 <HBox alignment="CENTER_LEFT" spacing="6" styleClass="auth-switch-row">

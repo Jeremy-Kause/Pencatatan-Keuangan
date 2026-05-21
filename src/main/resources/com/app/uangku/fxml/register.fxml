@@ -23,20 +23,20 @@
 
                 <VBox spacing="10">
                     <Label text="Username" styleClass="field-label" />
-                    <TextField fx:id="registerUsernameField" promptText="" />
+                    <TextField fx:id="registerUsernameField" promptText="" onAction="#handleRegister" />
                 </VBox>
 
                 <VBox spacing="10">
                     <Label text="Email" styleClass="field-label" />
-                    <TextField fx:id="emailField" promptText="" />
+                    <TextField fx:id="emailField" promptText="" onAction="#handleRegister" />
                 </VBox>
 
                 <VBox spacing="10">
                     <Label text="Password" styleClass="field-label" />
-                    <PasswordField fx:id="registerPasswordField" promptText="" />
+                    <PasswordField fx:id="registerPasswordField" promptText="" onAction="#handleRegister" />
                 </VBox>
 
-                <Button text="Daftar" maxWidth="Infinity" styleClass="primary-button" onAction="#handleRegister" />
+                <Button text="Daftar" maxWidth="Infinity" defaultButton="true" styleClass="primary-button" onAction="#handleRegister" />
                 <Label fx:id="registerMessageLabel" text="" styleClass="danger-text" wrapText="true" />
 
                 <HBox alignment="CENTER_LEFT" spacing="6" styleClass="auth-switch-row">
