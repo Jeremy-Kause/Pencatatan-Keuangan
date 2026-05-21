@@ -112,7 +112,10 @@
                                 <Label text="Daftar Anggaran" styleClass="section-title" />
                                 <TableView id="budgetTableView" fx:id="budgetTable" prefHeight="240">
                                     <placeholder>
-                                        <Label text="Data anggaran akan tampil di sini" />
+                                        <VBox alignment="CENTER" spacing="6" styleClass="table-empty-state">
+                                            <Label text="Belum ada anggaran" styleClass="empty-state-title" />
+                                            <Label text="Daftar anggaran bulan ini akan muncul di tabel ini." styleClass="empty-state-copy" wrapText="true" />
+                                        </VBox>
                                     </placeholder>
                                     <columns>
                                         <TableColumn text="Kategori" prefWidth="160" />

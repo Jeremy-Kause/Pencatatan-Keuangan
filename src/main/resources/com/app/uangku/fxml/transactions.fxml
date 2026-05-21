@@ -101,7 +101,10 @@
                             <Label text="Transaksi" styleClass="section-title" />
                             <TableView id="transactionTableView" fx:id="transactionsTable" prefHeight="430">
                                 <placeholder>
-                                    <Label text="Belum ada transaksi" />
+                                    <VBox alignment="CENTER" spacing="6" styleClass="table-empty-state">
+                                        <Label text="Belum ada transaksi" styleClass="empty-state-title" />
+                                        <Label text="Transaksi yang Anda tambahkan akan muncul di tabel ini." styleClass="empty-state-copy" wrapText="true" />
+                                    </VBox>
                                 </placeholder>
                                 <columns>
                                     <TableColumn text="Tanggal" prefWidth="120" />

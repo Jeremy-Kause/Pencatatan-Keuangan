@@ -376,6 +376,17 @@ public class TransactionController extends BaseWireframeController {
     }
 
     private void deleteTransaction(Transaction transaction) {
+        String title = transaction.getDescription() == null || transaction.getDescription().isBlank()
+                ? transaction.getCategoryName()
+                : transaction.getDescription();
+        if (!confirmAction(
+                "Hapus transaksi",
+                "Transaksi \"" + title + "\" akan dihapus permanen. Lanjutkan?",
+                "Hapus"
+        )) {
+            return;
+        }
+
         try {
             transactionDAO.deleteById(transaction.getIdTransaction(), transaction.getIdUser());
             if (selectedTransaction != null && selectedTransaction.getIdTransaction() == transaction.getIdTransaction()) {

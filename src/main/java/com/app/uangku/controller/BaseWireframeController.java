@@ -4,6 +4,9 @@ import com.app.uangku.util.SessionManager;
 import com.app.uangku.util.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 
 import java.io.IOException;
@@ -13,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 public abstract class BaseWireframeController {
     private static final Locale INDONESIA = new Locale("id", "ID");
@@ -126,5 +130,16 @@ public abstract class BaseWireframeController {
         if (label != null) {
             label.setText(message == null ? "" : message);
         }
+    }
+
+    protected boolean confirmAction(String title, String message, String confirmText) {
+        ButtonType confirmButton = new ButtonType(confirmText, ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButton = new ButtonType("Batal", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message, confirmButton, cancelButton);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == confirmButton;
     }
 }

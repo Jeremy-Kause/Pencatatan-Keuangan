@@ -175,9 +175,10 @@ public class BudgetController extends BaseWireframeController {
         budgetCardsGrid.getChildren().clear();
 
         if (budgets.isEmpty()) {
-            Label emptyLabel = new Label("Belum ada anggaran untuk bulan ini");
-            emptyLabel.getStyleClass().add("empty-state-label");
-            budgetCardsGrid.add(emptyLabel, 0, 0, 2, 1);
+            budgetCardsGrid.add(createEmptyState(
+                    "Belum ada anggaran",
+                    "Buat anggaran pengeluaran untuk melihat batas, progres, dan status pemakaian."
+            ), 0, 0, 2, 1);
             return;
         }
 
@@ -261,5 +262,18 @@ public class BudgetController extends BaseWireframeController {
             case MENDEKATI_LIMIT -> "budget-card-warning";
             case MELEBIHI_LIMIT -> "budget-card-danger";
         };
+    }
+
+    private VBox createEmptyState(String title, String copy) {
+        Label titleLabel = new Label(title);
+        titleLabel.getStyleClass().add("empty-state-title");
+
+        Label copyLabel = new Label(copy);
+        copyLabel.getStyleClass().add("empty-state-copy");
+        copyLabel.setWrapText(true);
+
+        VBox emptyState = new VBox(6, titleLabel, copyLabel);
+        emptyState.getStyleClass().add("empty-state-card");
+        return emptyState;
     }
 }

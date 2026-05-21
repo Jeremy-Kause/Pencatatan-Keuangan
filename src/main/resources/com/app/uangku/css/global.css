@@ -663,14 +663,30 @@
     -fx-alignment: center-left;
 }
 
-.empty-state-label {
+.empty-state-card,
+.table-empty-state {
     -fx-background-color: derive(-color-secondary, 82%);
     -fx-border-color: -color-secondary;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-padding: 18;
+}
+
+.table-empty-state {
+    -fx-alignment: center;
+    -fx-min-width: 360px;
+}
+
+.empty-state-title {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 15px;
+    -fx-font-weight: 800;
+}
+
+.empty-state-copy {
     -fx-text-fill: derive(-color-primary, 32%);
-    -fx-font-weight: 600;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
 }
 
 .budget-card-grid {

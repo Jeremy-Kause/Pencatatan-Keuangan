@@ -120,7 +120,8 @@ public class CategoryController extends BaseWireframeController {
         expenseCategoryList.getChildren().clear();
 
         if (!hasActiveSession()) {
-            incomeCategoryList.getChildren().add(new Label("Silakan login terlebih dahulu"));
+            incomeCategoryList.getChildren().add(createEmptyState("Belum login", "Silakan login untuk melihat kategori pemasukan."));
+            expenseCategoryList.getChildren().add(createEmptyState("Belum login", "Silakan login untuk melihat kategori pengeluaran."));
             return;
         }
 
@@ -141,9 +142,10 @@ public class CategoryController extends BaseWireframeController {
 
     private void renderCategoryList(VBox container, List<Category> categories) {
         if (categories.isEmpty()) {
-            Label emptyLabel = new Label("Belum ada kategori");
-            emptyLabel.getStyleClass().add("empty-state-label");
-            container.getChildren().add(emptyLabel);
+            container.getChildren().add(createEmptyState(
+                    "Belum ada kategori",
+                    "Kategori yang dibuat akan muncul di daftar ini."
+            ));
             return;
         }
 
@@ -194,6 +196,13 @@ public class CategoryController extends BaseWireframeController {
                 setMessage(categoryMessageLabel, "Kategori masih dipakai transaksi, tidak bisa dihapus.");
                 return;
             }
+            if (!confirmAction(
+                    "Hapus kategori",
+                    "Kategori \"" + category.getName() + "\" akan dihapus permanen. Lanjutkan?",
+                    "Hapus"
+            )) {
+                return;
+            }
 
             categoryDAO.deleteById(category.getIdCategory(), category.getIdUser());
             if (selectedCategory != null && selectedCategory.getIdCategory() == category.getIdCategory()) {
@@ -241,5 +250,18 @@ public class CategoryController extends BaseWireframeController {
             cancelEditCategoryButton.setVisible(editing);
             cancelEditCategoryButton.setManaged(editing);
         }
+    }
+
+    private VBox createEmptyState(String title, String copy) {
+        Label titleLabel = new Label(title);
+        titleLabel.getStyleClass().add("empty-state-title");
+
+        Label copyLabel = new Label(copy);
+        copyLabel.getStyleClass().add("empty-state-copy");
+        copyLabel.setWrapText(true);
+
+        VBox emptyState = new VBox(6, titleLabel, copyLabel);
+        emptyState.getStyleClass().add("empty-state-card");
+        return emptyState;
     }
 }
