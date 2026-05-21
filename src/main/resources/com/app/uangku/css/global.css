@@ -35,9 +35,45 @@
     -fx-background-color: -color-base;
 }
 
+.auth-form-side {
+    -fx-background-color: -color-base;
+    -fx-padding: 22 32 22 32;
+}
+
+.auth-card {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 46 50 46 50;
+}
+
+.auth-logo-row {
+    -fx-padding: 0 0 22 0;
+}
+
+.auth-logo-mark {
+    -fx-background-color: -color-primary;
+    -fx-background-radius: 13px;
+}
+
+.auth-logo-icon {
+    -fx-fill: transparent;
+    -fx-stroke: -color-base;
+    -fx-stroke-width: 1.8px;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+}
+
+.auth-logo-text {
+    -fx-text-fill: #000000;
+    -fx-font-size: 32px;
+    -fx-font-weight: 800;
+}
+
 .auth-hero {
     -fx-background-color: -color-primary;
-    -fx-padding: 72 64 72 64;
+    -fx-padding: 62 44 62 44;
 }
 
 .auth-brand {
@@ -48,30 +84,57 @@
 
 .auth-title {
     -fx-text-fill: -color-base;
-    -fx-font-size: 28px;
-    -fx-font-weight: 700;
+    -fx-font-size: 42px;
+    -fx-font-weight: 500;
+    -fx-line-spacing: 10px;
 }
 
 .auth-copy {
     -fx-text-fill: -color-secondary;
-    -fx-font-size: 15px;
-    -fx-line-spacing: 4px;
+    -fx-font-size: 19px;
+    -fx-line-spacing: 6px;
 }
 
-.auth-panel {
-    -fx-background-color: -color-base;
-    -fx-padding: 56 64 56 64;
+.auth-feature-list {
+    -fx-padding: 12 0 0 0;
 }
 
-.auth-card-title {
-    -fx-text-fill: -color-primary;
-    -fx-font-size: 26px;
-    -fx-font-weight: 800;
+.auth-feature {
+    -fx-text-fill: -color-base;
+    -fx-font-size: 27px;
+    -fx-font-weight: 500;
+    -fx-line-spacing: 8px;
 }
 
-.auth-card-subtitle {
-    -fx-text-fill: -color-accent-1;
-    -fx-font-size: 14px;
+.auth-card .field-label {
+    -fx-font-size: 23px;
+    -fx-font-weight: 500;
+}
+
+.auth-card .text-field,
+.auth-card .password-field {
+    -fx-min-height: 58px;
+    -fx-font-size: 20px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 14 10 14;
+}
+
+.auth-card .primary-button {
+    -fx-min-height: 62px;
+    -fx-font-size: 22px;
+    -fx-font-weight: 500;
+    -fx-background-radius: 10px;
+}
+
+.auth-switch-row .muted-text,
+.auth-switch-row .link-button {
+    -fx-font-size: 22px;
+    -fx-font-weight: 500;
+}
+
+.auth-switch-row .link-button {
+    -fx-padding: 0;
 }
 
 .field-label {
