@@ -22,7 +22,7 @@
         <VBox prefWidth="272" styleClass="sidebar">
             <HBox alignment="CENTER_LEFT" spacing="14" styleClass="sidebar-logo">
                 <StackPane prefHeight="62" prefWidth="62" styleClass="sidebar-logo-mark">
-                    <SvgIcon source="com/app/uangku/icons/logo.svg" size="29" iconStyleClass="sidebar-logo-icon" />
+                    <SvgIcon source="com/app/uangku/icons/icon.svg" size="29" iconStyleClass="sidebar-logo-icon" />
                 </StackPane>
                 <Label text="UangKu" styleClass="sidebar-brand" />
             </HBox>
@@ -50,7 +50,7 @@
                 </Button>
                 <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports">
                     <graphic>
-                        <SvgIcon source="com/app/uangku/icons/reports.svg" size="20" iconStyleClass="nav-icon" />
+                        <SvgIcon source="com/app/uangku/icons/report.svg" size="20" iconStyleClass="nav-icon" />
                     </graphic>
                 </Button>
             </VBox>

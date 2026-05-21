@@ -16,7 +16,7 @@
             <VBox maxWidth="470" spacing="28">
                 <HBox alignment="CENTER" spacing="14" styleClass="auth-logo-row">
                     <StackPane prefHeight="64" prefWidth="64" styleClass="auth-logo-mark">
-                        <SvgIcon source="com/app/uangku/icons/logo.svg" size="30" iconStyleClass="auth-logo-icon" />
+                        <SvgIcon source="com/app/uangku/icons/icon.svg" size="30" iconStyleClass="auth-logo-icon" />
                     </StackPane>
                     <Label text="UangKu" styleClass="auth-logo-text" />
                 </HBox>
