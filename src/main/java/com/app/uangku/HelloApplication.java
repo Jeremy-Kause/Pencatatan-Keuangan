@@ -1,6 +1,7 @@
 package com.app.uangku;
 
 import com.app.uangku.util.DatabaseHelper;
+import com.app.uangku.util.SceneManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,7 +18,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         DatabaseHelper.initializeDatabase();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("fxml/login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1100, 720);
+        Scene scene = SceneManager.createScene(fxmlLoader.load());
         stage.setTitle("UangKu");
         stage.setMinWidth(980);
         stage.setMinHeight(640);

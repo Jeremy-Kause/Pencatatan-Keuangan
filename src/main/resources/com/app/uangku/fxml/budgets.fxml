@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane styleClass="app-shell" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.BudgetController">
+<BorderPane styleClass="app-shell" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.BudgetController">
     <left>
         <VBox prefWidth="220" spacing="20" styleClass="sidebar">
             <Label text="UangKu" styleClass="sidebar-brand" />

@@ -1,0 +1,371 @@
+.root {
+    -color-primary: #27272A;
+    -color-secondary: #E7E5E4;
+    -color-accent-1: #3F6212;
+    -color-accent-2: #65A30D;
+    -color-negative: #B91C1C;
+    -color-base: #FFFFFF;
+    -color-warm: #FDF2F2;
+    -color-warm-2: #D7F5D3;
+
+    -fx-font-family: "Poppins";
+    -fx-font-size: 13px;
+    -fx-background-color: -color-base;
+    -fx-text-fill: -color-primary;
+    -fx-base: -color-base;
+    -fx-accent: -color-accent-2;
+    -fx-focus-color: -color-accent-2;
+    -fx-faint-focus-color: transparent;
+    -fx-control-inner-background: -color-base;
+}
+
+.label,
+.button,
+.text-field,
+.password-field,
+.text-area,
+.combo-box,
+.date-picker,
+.table-view,
+.chart {
+    -fx-font-family: "Poppins";
+}
+
+.auth-root {
+    -fx-background-color: -color-base;
+}
+
+.auth-hero {
+    -fx-background-color: -color-primary;
+    -fx-padding: 72 64 72 64;
+}
+
+.auth-brand {
+    -fx-text-fill: -color-base;
+    -fx-font-size: 44px;
+    -fx-font-weight: 800;
+}
+
+.auth-title {
+    -fx-text-fill: -color-base;
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
+}
+
+.auth-copy {
+    -fx-text-fill: -color-secondary;
+    -fx-font-size: 15px;
+    -fx-line-spacing: 4px;
+}
+
+.auth-panel {
+    -fx-background-color: -color-base;
+    -fx-padding: 56 64 56 64;
+}
+
+.auth-card-title {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+}
+
+.auth-card-subtitle {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-size: 14px;
+}
+
+.field-label {
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 700;
+}
+
+.text-field,
+.password-field,
+.text-area,
+.combo-box,
+.date-picker {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 9 10 9 10;
+}
+
+.text-field:focused,
+.password-field:focused,
+.text-area:focused,
+.combo-box:focused,
+.date-picker:focused {
+    -fx-border-color: -color-accent-2;
+}
+
+.text-area {
+    -fx-padding: 0;
+}
+
+.primary-button {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-base;
+    -fx-font-weight: 700;
+    -fx-background-radius: 6px;
+    -fx-padding: 10 18 10 18;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-opacity: 0.92;
+}
+
+.secondary-button {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 700;
+    -fx-background-radius: 6px;
+    -fx-padding: 10 16 10 16;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: -color-warm-2;
+}
+
+.link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 700;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.link-button:hover {
+    -fx-text-fill: -color-accent-1;
+}
+
+.app-shell {
+    -fx-background-color: -color-base;
+}
+
+.sidebar {
+    -fx-background-color: -color-base;
+    -fx-border-color: transparent -color-secondary transparent transparent;
+    -fx-padding: 28 20 24 20;
+}
+
+.sidebar-brand {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-primary;
+    -fx-alignment: center-left;
+    -fx-font-weight: 700;
+    -fx-padding: 11 14 11 14;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: -color-warm-2;
+    -fx-text-fill: -color-accent-1;
+}
+
+#activeNav {
+    -fx-background-color: -color-warm-2;
+    -fx-text-fill: -color-accent-1;
+}
+
+.logout-button {
+    -fx-background-color: -color-warm;
+    -fx-text-fill: -color-negative;
+    -fx-alignment: center-left;
+    -fx-font-weight: 700;
+    -fx-padding: 11 14 11 14;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-opacity: 0.9;
+}
+
+.page-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.page-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.content {
+    -fx-padding: 30 34 34 34;
+}
+
+.page-title {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 30px;
+    -fx-font-weight: 800;
+}
+
+.page-subtitle {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-size: 14px;
+}
+
+.panel,
+.metric-card,
+.placeholder-card,
+.category-card,
+.budget-card,
+.stat-card {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.panel {
+    -fx-padding: 20;
+}
+
+.metric-card {
+    -fx-padding: 18;
+}
+
+.metric-label {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-weight: 700;
+}
+
+.metric-value {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+}
+
+#incomeCard {
+    -fx-background-color: -color-warm-2;
+    -fx-border-color: -color-accent-2;
+}
+
+#balanceCard {
+    -fx-background-color: -color-secondary;
+    -fx-border-color: -color-primary;
+}
+
+#expenseCard {
+    -fx-background-color: -color-warm;
+    -fx-border-color: -color-negative;
+}
+
+.section-title {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+}
+
+.placeholder-card {
+    -fx-padding: 20;
+    -fx-min-height: 96px;
+}
+
+.placeholder-title {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-weight: 800;
+}
+
+.filter-bar {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 14;
+}
+
+.toggle-button {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 700;
+    -fx-background-radius: 6px;
+    -fx-padding: 8 12 8 12;
+}
+
+.toggle-button:selected {
+    -fx-background-color: -color-accent-1;
+    -fx-text-fill: -color-base;
+}
+
+.table-view {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.table-view .column-header-background,
+.table-view .column-header {
+    -fx-background-color: -color-secondary;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 700;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: -color-primary;
+    -fx-font-family: "Poppins";
+}
+
+.category-card,
+.budget-card,
+.stat-card {
+    -fx-padding: 16;
+}
+
+.success-text {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-weight: 800;
+}
+
+.danger-text {
+    -fx-text-fill: -color-negative;
+    -fx-font-weight: 800;
+}
+
+.muted-text {
+    -fx-text-fill: -color-primary;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: -color-accent-2;
+    -fx-background-radius: 5px;
+}
+
+.progress-bar > .track {
+    -fx-background-color: -color-secondary;
+    -fx-background-radius: 5px;
+}
+
+.default-color0.chart-pie {
+    -fx-pie-color: -color-accent-2;
+}
+
+.default-color1.chart-pie {
+    -fx-pie-color: -color-accent-1;
+}
+
+.default-color2.chart-pie {
+    -fx-pie-color: -color-primary;
+}
+
+.default-color3.chart-pie {
+    -fx-pie-color: -color-negative;
+}
+
+.default-color4.chart-pie {
+    -fx-pie-color: -color-secondary;
+}

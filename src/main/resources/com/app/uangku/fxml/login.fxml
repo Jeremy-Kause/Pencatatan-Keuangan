@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox styleClass="auth-root" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.AuthController">
+<HBox styleClass="auth-root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.AuthController">
     <VBox alignment="CENTER_LEFT" spacing="22" styleClass="auth-hero" HBox.hgrow="ALWAYS">
         <Label text="UangKu" styleClass="auth-brand" />
         <VBox spacing="10">

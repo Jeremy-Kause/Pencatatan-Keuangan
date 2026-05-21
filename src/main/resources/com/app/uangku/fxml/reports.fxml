@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane styleClass="app-shell" stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.ReportController">
+<BorderPane styleClass="app-shell" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.ReportController">
     <left>
         <VBox prefWidth="220" spacing="20" styleClass="sidebar">
             <Label styleClass="sidebar-brand" text="UangKu" />
