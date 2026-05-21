@@ -1,12 +1,38 @@
 package com.app.uangku.controller;
 
+import com.app.uangku.util.SessionManager;
 import com.app.uangku.util.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
+import java.util.Map;
 
 public abstract class BaseWireframeController {
+    private static final Locale INDONESIA = new Locale("id", "ID");
+    private static final NumberFormat RUPIAH_FORMAT = NumberFormat.getCurrencyInstance(INDONESIA);
+    private static final DateTimeFormatter MONTH_FORMAT = DateTimeFormatter.ofPattern("MMMM yyyy", INDONESIA);
+    private static final Map<String, Integer> MONTHS = Map.ofEntries(
+            Map.entry("januari", 1),
+            Map.entry("februari", 2),
+            Map.entry("maret", 3),
+            Map.entry("april", 4),
+            Map.entry("mei", 5),
+            Map.entry("juni", 6),
+            Map.entry("juli", 7),
+            Map.entry("agustus", 8),
+            Map.entry("september", 9),
+            Map.entry("oktober", 10),
+            Map.entry("november", 11),
+            Map.entry("desember", 12)
+    );
+
     @FXML
     protected void showLogin(ActionEvent event) throws IOException {
         SceneManager.switchTo(event, "login.fxml");
@@ -40,5 +66,65 @@ public abstract class BaseWireframeController {
     @FXML
     protected void showReports(ActionEvent event) throws IOException {
         SceneManager.switchTo(event, "reports.fxml");
+    }
+
+    @FXML
+    protected void logout(ActionEvent event) throws IOException {
+        SessionManager.clear();
+        showLogin(event);
+    }
+
+    protected boolean hasActiveSession() {
+        return SessionManager.isLoggedIn();
+    }
+
+    protected String formatCurrency(double value) {
+        return RUPIAH_FORMAT.format(value).replace(",00", "");
+    }
+
+    protected String formatMonth(YearMonth month) {
+        return MONTH_FORMAT.format(month);
+    }
+
+    protected YearMonth parseMonth(String value) {
+        if (value == null || value.isBlank()) {
+            return YearMonth.now();
+        }
+
+        String trimmed = value.trim();
+        try {
+            return YearMonth.parse(trimmed);
+        } catch (DateTimeParseException ignored) {
+            String[] parts = trimmed.toLowerCase(INDONESIA).split("\\s+");
+            if (parts.length == 2 && MONTHS.containsKey(parts[0])) {
+                return YearMonth.of(Integer.parseInt(parts[1]), MONTHS.get(parts[0]));
+            }
+            throw new IllegalArgumentException("Format bulan gunakan yyyy-MM, contoh 2026-05");
+        }
+    }
+
+    protected double parseAmount(String value) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException("Nominal wajib diisi");
+        }
+
+        String normalized = value
+                .replace("Rp", "")
+                .replace("rp", "")
+                .replace(".", "")
+                .replace(",", ".")
+                .trim();
+        double amount = Double.parseDouble(normalized);
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Nominal harus lebih dari 0");
+        }
+
+        return amount;
+    }
+
+    protected void setMessage(Label label, String message) {
+        if (label != null) {
+            label.setText(message == null ? "" : message);
+        }
     }
 }

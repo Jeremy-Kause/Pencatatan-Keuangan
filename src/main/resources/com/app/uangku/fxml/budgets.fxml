@@ -27,7 +27,7 @@
                 <Button id="activeNav" text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
                 <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
             </VBox>
-            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#logout" />
         </VBox>
     </left>
 
@@ -41,7 +41,7 @@
                             <Label text="Atur batas pengeluaran per kategori bulan ini" styleClass="page-subtitle" />
                         </VBox>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button text="Tambah Anggaran" styleClass="primary-button" />
+                        <Button text="Tambah Anggaran" styleClass="primary-button" onAction="#focusBudgetForm" />
                     </HBox>
 
                     <GridPane hgap="18" vgap="18">
@@ -64,11 +64,12 @@
                                 <Label text="Limit Anggaran" styleClass="field-label" />
                                 <TextField fx:id="budgetLimitField" promptText="Rp" />
                             </VBox>
-                            <Button text="Simpan Anggaran" maxWidth="Infinity" styleClass="primary-button" />
+                            <Label fx:id="budgetMessageLabel" text="" styleClass="danger-text" wrapText="true" />
+                            <Button text="Simpan Anggaran" maxWidth="Infinity" styleClass="primary-button" onAction="#handleSaveBudget" />
                         </VBox>
 
                         <VBox spacing="18" GridPane.columnIndex="1">
-                            <GridPane hgap="14" vgap="14">
+                            <GridPane fx:id="budgetCardsGrid" hgap="14" vgap="14">
                                 <columnConstraints>
                                     <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />
                                     <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />

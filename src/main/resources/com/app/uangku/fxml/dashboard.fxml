@@ -26,7 +26,7 @@
                 <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
                 <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
             </VBox>
-            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#logout" />
         </VBox>
     </left>
 
@@ -88,15 +88,15 @@
 
                         <VBox spacing="16" GridPane.columnIndex="1">
                             <VBox alignment="CENTER_LEFT" spacing="8" styleClass="placeholder-card">
-                                <Label text="KONTEN 2" styleClass="placeholder-title" />
+                                <Label fx:id="budgetSummaryLabel" text="Belum ada anggaran" styleClass="placeholder-title" />
                                 <Label text="Ringkasan anggaran bulan ini" styleClass="muted-text" wrapText="true" />
                             </VBox>
                             <VBox alignment="CENTER_LEFT" spacing="8" styleClass="placeholder-card">
-                                <Label text="KONTEN 3" styleClass="placeholder-title" />
+                                <Label fx:id="topExpenseCategoryLabel" text="Belum ada data" styleClass="placeholder-title" />
                                 <Label text="Kategori pengeluaran terbesar" styleClass="muted-text" wrapText="true" />
                             </VBox>
                             <VBox alignment="CENTER_LEFT" spacing="8" styleClass="placeholder-card">
-                                <Label text="KONTEN 4" styleClass="placeholder-title" />
+                                <Label fx:id="reminderLabel" text="Data bulan ini" styleClass="placeholder-title" />
                                 <Label text="Catatan atau reminder pembayaran" styleClass="muted-text" wrapText="true" />
                             </VBox>
                         </VBox>

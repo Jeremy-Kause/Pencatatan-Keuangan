@@ -29,7 +29,7 @@
                 <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets" />
                 <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports" />
             </VBox>
-            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#showLogin" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#logout" />
         </VBox>
     </left>
 
@@ -43,7 +43,7 @@
                             <Label text="Kelola semua pemasukan dan pengeluaran Anda" styleClass="page-subtitle" />
                         </VBox>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button text="Tambah Transaksi" styleClass="primary-button" />
+                        <Button text="Tambah Transaksi" styleClass="primary-button" onAction="#focusTransactionForm" />
                     </HBox>
 
                     <HBox alignment="CENTER_LEFT" spacing="12" styleClass="filter-bar">
@@ -51,6 +51,8 @@
                         <ToggleButton fx:id="allFilterButton" selected="true" text="Semua" />
                         <ToggleButton fx:id="incomeFilterButton" text="Pemasukan" />
                         <ToggleButton fx:id="expenseFilterButton" text="Pengeluaran" />
+                        <DatePicker fx:id="startDateFilterPicker" promptText="Dari tanggal" />
+                        <DatePicker fx:id="endDateFilterPicker" promptText="Sampai tanggal" />
                         <Region HBox.hgrow="ALWAYS" />
                         <ComboBox fx:id="categoryFilterComboBox" promptText="Semua Kategori" prefWidth="190" />
                     </HBox>
@@ -65,7 +67,7 @@
                             <Label text="Transaksi" styleClass="section-title" />
                             <TableView fx:id="transactionsTable" prefHeight="390">
                                 <placeholder>
-                                    <Label text="KONTEN 1" />
+                                    <Label text="Belum ada transaksi" />
                                 </placeholder>
                                 <columns>
                                     <TableColumn text="Tanggal" prefWidth="95" />
@@ -73,7 +75,7 @@
                                     <TableColumn text="Tipe" prefWidth="110" />
                                     <TableColumn text="Nominal" prefWidth="120" />
                                     <TableColumn text="Deskripsi" prefWidth="160" />
-                                    <TableColumn text="Aksi" prefWidth="90" />
+                                    <TableColumn text="Aksi" prefWidth="170" />
                                 </columns>
                             </TableView>
                         </VBox>
@@ -100,7 +102,9 @@
                                 <Label text="Deskripsi" styleClass="field-label" />
                                 <TextArea fx:id="descriptionArea" prefRowCount="4" wrapText="true" />
                             </VBox>
-                            <Button text="Simpan" maxWidth="Infinity" styleClass="primary-button" />
+                            <Label fx:id="transactionMessageLabel" text="" styleClass="danger-text" wrapText="true" />
+                            <Button fx:id="saveTransactionButton" text="Simpan" maxWidth="Infinity" styleClass="primary-button" onAction="#handleSaveTransaction" />
+                            <Button fx:id="cancelEditButton" text="Batal Edit" maxWidth="Infinity" managed="false" visible="false" styleClass="secondary-button" onAction="#handleCancelEdit" />
                         </VBox>
                     </GridPane>
                 </VBox>
