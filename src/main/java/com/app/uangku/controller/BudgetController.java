@@ -3,6 +3,7 @@ package com.app.uangku.controller;
 import com.app.uangku.dao.BudgetDAO;
 import com.app.uangku.dao.CategoryDAO;
 import com.app.uangku.model.Budget;
+import com.app.uangku.model.BudgetStatus;
 import com.app.uangku.model.Category;
 import com.app.uangku.model.TransactionType;
 import com.app.uangku.model.User;
@@ -14,10 +15,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
@@ -103,11 +108,34 @@ public class BudgetController extends BaseWireframeController {
         TableColumn<Budget, String> usedColumn = (TableColumn<Budget, String>) budgetTable.getColumns().get(3);
         TableColumn<Budget, String> statusColumn = (TableColumn<Budget, String>) budgetTable.getColumns().get(4);
 
+        budgetTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         categoryColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoryName()));
         monthColumn.setCellValueFactory(data -> new SimpleStringProperty(formatMonth(data.getValue().getMonthYear())));
         limitColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().getLimitAmount())));
         usedColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().getUsedAmount())));
         statusColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStatus().getDisplayName()));
+        statusColumn.setCellFactory(column -> new TableCell<>() {
+            private final Label statusLabel = new Label();
+
+            {
+                statusLabel.getStyleClass().add("budget-status-pill");
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
+                    setGraphic(null);
+                    return;
+                }
+
+                Budget budget = getTableView().getItems().get(getIndex());
+                statusLabel.setText(item);
+                statusLabel.getStyleClass().setAll("budget-status-pill", statusStyleClass(budget.getStatus()));
+                setGraphic(statusLabel);
+                setText(null);
+            }
+        });
     }
 
     private void loadCategories() {
@@ -148,8 +176,8 @@ public class BudgetController extends BaseWireframeController {
 
         if (budgets.isEmpty()) {
             Label emptyLabel = new Label("Belum ada anggaran untuk bulan ini");
-            emptyLabel.getStyleClass().add("muted-text");
-            budgetCardsGrid.add(emptyLabel, 0, 0);
+            emptyLabel.getStyleClass().add("empty-state-label");
+            budgetCardsGrid.add(emptyLabel, 0, 0, 2, 1);
             return;
         }
 
@@ -160,26 +188,78 @@ public class BudgetController extends BaseWireframeController {
     }
 
     private VBox createBudgetCard(Budget budget) {
-        Label limitLabel = new Label(formatCurrency(budget.getLimitAmount()));
-        limitLabel.getStyleClass().add("placeholder-title");
-
         Label categoryLabel = new Label(budget.getCategoryName());
-        categoryLabel.getStyleClass().add("muted-text");
+        categoryLabel.getStyleClass().add("budget-card-title");
+
+        Label statusLabel = new Label(budget.getStatus().getDisplayName());
+        statusLabel.getStyleClass().addAll("budget-status-pill", statusStyleClass(budget.getStatus()));
+
+        Region topSpacer = new Region();
+        HBox.setHgrow(topSpacer, Priority.ALWAYS);
+
+        HBox topRow = new HBox(10, categoryLabel, topSpacer, statusLabel);
+        topRow.setAlignment(Pos.CENTER_LEFT);
+
+        Label limitCaptionLabel = new Label("Limit Anggaran");
+        limitCaptionLabel.getStyleClass().add("budget-card-caption");
+
+        Label limitLabel = new Label(formatCurrency(budget.getLimitAmount()));
+        limitLabel.getStyleClass().add("budget-card-amount");
 
         ProgressBar progressBar = new ProgressBar(Math.min(1, budget.getUsagePercentage() / 100));
         progressBar.setMaxWidth(Double.MAX_VALUE);
+        progressBar.getStyleClass().addAll("budget-progress", progressStyleClass(budget.getStatus()));
 
-        Label statusLabel = new Label(budget.getStatus().getDisplayName());
-        statusLabel.getStyleClass().add(
-                budget.getUsedAmount() > budget.getLimitAmount() ? "danger-text" : "success-text"
-        );
+        Label percentageLabel = new Label(String.format("%.0f%% terpakai", budget.getUsagePercentage()));
+        percentageLabel.getStyleClass().add("budget-card-caption");
 
-        Label usedLabel = new Label("Terpakai " + formatCurrency(budget.getUsedAmount()));
-        usedLabel.getStyleClass().add("muted-text");
+        Label usedLabel = new Label("Terpakai");
+        usedLabel.getStyleClass().add("budget-card-caption");
 
-        VBox card = new VBox(10, limitLabel, categoryLabel, progressBar, usedLabel, statusLabel);
+        Label usedValueLabel = new Label(formatCurrency(budget.getUsedAmount()));
+        usedValueLabel.getStyleClass().add("budget-card-detail");
+
+        Label remainingLabel = new Label("Sisa");
+        remainingLabel.getStyleClass().add("budget-card-caption");
+
+        Label remainingValueLabel = new Label(formatCurrency(Math.max(0, budget.getLimitAmount() - budget.getUsedAmount())));
+        remainingValueLabel.getStyleClass().add("budget-card-detail");
+
+        VBox usedBox = new VBox(3, usedLabel, usedValueLabel);
+        VBox remainingBox = new VBox(3, remainingLabel, remainingValueLabel);
+        Region detailSpacer = new Region();
+        HBox.setHgrow(detailSpacer, Priority.ALWAYS);
+
+        HBox detailRow = new HBox(12, usedBox, detailSpacer, remainingBox);
+        detailRow.setAlignment(Pos.CENTER_LEFT);
+
+        VBox card = new VBox(12, topRow, limitCaptionLabel, limitLabel, progressBar, percentageLabel, detailRow);
         card.setAlignment(Pos.CENTER_LEFT);
-        card.getStyleClass().add("budget-card");
+        card.getStyleClass().addAll("budget-card", "budget-summary-card", cardStatusClass(budget.getStatus()));
         return card;
+    }
+
+    private String statusStyleClass(BudgetStatus status) {
+        return switch (status) {
+            case AMAN -> "budget-status-safe";
+            case MENDEKATI_LIMIT -> "budget-status-warning";
+            case MELEBIHI_LIMIT -> "budget-status-danger";
+        };
+    }
+
+    private String progressStyleClass(BudgetStatus status) {
+        return switch (status) {
+            case AMAN -> "budget-progress-safe";
+            case MENDEKATI_LIMIT -> "budget-progress-warning";
+            case MELEBIHI_LIMIT -> "budget-progress-danger";
+        };
+    }
+
+    private String cardStatusClass(BudgetStatus status) {
+        return switch (status) {
+            case AMAN -> "budget-card-safe";
+            case MENDEKATI_LIMIT -> "budget-card-warning";
+            case MELEBIHI_LIMIT -> "budget-card-danger";
+        };
     }
 }

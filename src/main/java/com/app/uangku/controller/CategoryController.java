@@ -142,7 +142,7 @@ public class CategoryController extends BaseWireframeController {
     private void renderCategoryList(VBox container, List<Category> categories) {
         if (categories.isEmpty()) {
             Label emptyLabel = new Label("Belum ada kategori");
-            emptyLabel.getStyleClass().add("muted-text");
+            emptyLabel.getStyleClass().add("empty-state-label");
             container.getChildren().add(emptyLabel);
             return;
         }
@@ -153,23 +153,38 @@ public class CategoryController extends BaseWireframeController {
     }
 
     private HBox createCategoryRow(Category category) {
+        Region marker = new Region();
+        marker.getStyleClass().addAll(
+                "category-marker",
+                category.getType() == TransactionType.PEMASUKAN ? "category-income-marker" : "category-expense-marker"
+        );
+
         Label nameLabel = new Label(category.getName());
-        nameLabel.getStyleClass().add("placeholder-title");
+        nameLabel.getStyleClass().add("category-row-title");
+
+        Label typeLabel = new Label(category.getType().getDisplayName());
+        typeLabel.getStyleClass().addAll(
+                "type-pill",
+                category.getType() == TransactionType.PEMASUKAN ? "type-income" : "type-expense"
+        );
+
+        VBox textGroup = new VBox(6, nameLabel, typeLabel);
+        textGroup.getStyleClass().add("category-row-content");
 
         Button editButton = new Button("Edit");
-        editButton.getStyleClass().add("secondary-button");
+        editButton.getStyleClass().addAll("table-action-button", "table-edit-button");
         editButton.setOnAction(event -> startEditCategory(category));
 
         Button deleteButton = new Button("Hapus");
-        deleteButton.getStyleClass().add("secondary-button");
+        deleteButton.getStyleClass().addAll("table-action-button", "table-delete-button");
         deleteButton.setOnAction(event -> deleteCategory(category));
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        HBox row = new HBox(10, nameLabel, spacer, editButton, deleteButton);
+        HBox row = new HBox(12, marker, textGroup, spacer, editButton, deleteButton);
         row.setAlignment(Pos.CENTER_LEFT);
-        row.getStyleClass().add("category-card");
+        row.getStyleClass().add("category-row-card");
         return row;
     }
 

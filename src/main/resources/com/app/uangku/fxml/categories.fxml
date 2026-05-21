@@ -103,12 +103,12 @@
 
                             <VBox spacing="14" styleClass="panel" GridPane.columnIndex="0">
                                 <Label text="Kategori Pemasukan" styleClass="section-title" />
-                                <VBox fx:id="incomeCategoryList" spacing="10" />
+                                <VBox fx:id="incomeCategoryList" spacing="10" styleClass="category-list" />
                             </VBox>
 
                             <VBox spacing="14" styleClass="panel" GridPane.columnIndex="1">
                                 <Label text="Kategori Pengeluaran" styleClass="section-title" />
-                                <VBox fx:id="expenseCategoryList" spacing="10" />
+                                <VBox fx:id="expenseCategoryList" spacing="10" styleClass="category-list" />
                             </VBox>
                         </GridPane>
                     </GridPane>
