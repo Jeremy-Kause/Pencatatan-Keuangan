@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -23,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
@@ -211,19 +213,68 @@ public class TransactionController extends BaseWireframeController {
         TableColumn<Transaction, String> descriptionColumn = (TableColumn<Transaction, String>) transactionsTable.getColumns().get(4);
         TableColumn<Transaction, Void> actionColumn = (TableColumn<Transaction, Void>) transactionsTable.getColumns().get(5);
 
+        transactionsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         dateColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDate().toString()));
         categoryColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoryName()));
         typeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getType().getDisplayName()));
         amountColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().getAmount())));
-        descriptionColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDescription()));
+        descriptionColumn.setCellValueFactory(data -> new SimpleStringProperty(
+                data.getValue().getDescription() == null || data.getValue().getDescription().isBlank()
+                        ? "-"
+                        : data.getValue().getDescription()
+        ));
+        typeColumn.setCellFactory(column -> new TableCell<>() {
+            private final Label typeLabel = new Label();
+
+            {
+                typeLabel.getStyleClass().add("type-pill");
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
+                    setGraphic(null);
+                    return;
+                }
+
+                Transaction transaction = getTableView().getItems().get(getIndex());
+                typeLabel.setText(item);
+                typeLabel.getStyleClass().setAll(
+                        "type-pill",
+                        transaction.getType() == TransactionType.PEMASUKAN ? "type-income" : "type-expense"
+                );
+                setGraphic(typeLabel);
+                setText(null);
+            }
+        });
+        amountColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                getStyleClass().removeAll("amount-income", "amount-expense");
+                if (empty || item == null || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
+                    setText(null);
+                    return;
+                }
+
+                Transaction transaction = getTableView().getItems().get(getIndex());
+                setText(item);
+                getStyleClass().add(transaction.getType() == TransactionType.PEMASUKAN
+                        ? "amount-income"
+                        : "amount-expense");
+            }
+        });
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button editButton = new Button("Edit");
             private final Button deleteButton = new Button("Hapus");
-            private final javafx.scene.layout.HBox actions = new javafx.scene.layout.HBox(8, editButton, deleteButton);
+            private final HBox actions = new HBox(8, editButton, deleteButton);
 
             {
-                editButton.getStyleClass().add("secondary-button");
-                deleteButton.getStyleClass().add("secondary-button");
+                actions.setAlignment(Pos.CENTER_LEFT);
+                actions.getStyleClass().add("table-actions");
+                editButton.getStyleClass().addAll("table-action-button", "table-edit-button");
+                deleteButton.getStyleClass().addAll("table-action-button", "table-delete-button");
                 editButton.setOnAction(event -> {
                     Transaction transaction = getTableView().getItems().get(getIndex());
                     startEditTransaction(transaction);

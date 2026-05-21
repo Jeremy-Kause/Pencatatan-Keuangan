@@ -209,7 +209,7 @@
 
 .app-shell,
 .dashboard-shell {
-    -fx-background-color: -color-base;
+    -fx-background-color: derive(-color-secondary, 78%);
 }
 
 .sidebar {
@@ -300,21 +300,18 @@
 }
 
 .page-scroll {
-    -fx-background-color: transparent;
-    -fx-background: transparent;
+    -fx-background-color: derive(-color-secondary, 78%);
+    -fx-background: derive(-color-secondary, 78%);
 }
 
 .page-scroll > .viewport {
-    -fx-background-color: transparent;
+    -fx-background-color: derive(-color-secondary, 78%);
 }
 
-.content {
-    -fx-padding: 30 34 34 34;
-}
-
+.content,
 .dashboard-content {
     -fx-background-color: derive(-color-secondary, 78%);
-    -fx-padding: 14 52 8 30;
+    -fx-padding: 18 52 34 30;
 }
 
 .page-title {
@@ -342,7 +339,7 @@
 }
 
 .panel {
-    -fx-padding: 20;
+    -fx-padding: 22;
 }
 
 .metric-card {
@@ -460,15 +457,24 @@
     -fx-border-color: -color-secondary;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-    -fx-padding: 14;
+    -fx-padding: 18;
+}
+
+.filter-bar .text-field,
+.filter-bar .combo-box,
+.filter-bar .date-picker {
+    -fx-min-height: 48px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
 }
 
 .toggle-button {
     -fx-background-color: -color-secondary;
     -fx-text-fill: -color-primary;
-    -fx-font-weight: 700;
-    -fx-background-radius: 6px;
-    -fx-padding: 8 12 8 12;
+    -fx-font-weight: 600;
+    -fx-background-radius: 8px;
+    -fx-padding: 13 17 13 17;
+    -fx-cursor: hand;
 }
 
 .toggle-button:selected {
@@ -487,6 +493,8 @@
     -fx-border-color: -color-secondary;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
+    -fx-padding: 0;
+    -fx-table-cell-border-color: derive(-color-secondary, 50%);
 }
 
 .table-view .column-header-background,
@@ -494,14 +502,117 @@
     -fx-background-color: -color-secondary;
 }
 
+.table-view .column-header {
+    -fx-padding: 8 0 8 0;
+}
+
 .table-view .column-header .label {
     -fx-text-fill: -color-primary;
     -fx-font-weight: 700;
+    -fx-font-size: 13px;
 }
 
 .table-view .table-cell {
     -fx-text-fill: -color-primary;
     -fx-font-family: "Poppins";
+    -fx-font-size: 13px;
+    -fx-padding: 10 8 10 8;
+    -fx-border-color: transparent derive(-color-secondary, 60%) transparent transparent;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: -color-base;
+    -fx-cell-size: 48px;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: derive(-color-secondary, 86%);
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: derive(-color-primary, 72%);
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: derive(-color-primary, 32%);
+}
+
+#transactionFilterBar {
+    -fx-min-height: 78px;
+}
+
+#transactionTableView {
+    -fx-min-height: 430px;
+}
+
+#transactionFormPanelNode {
+    -fx-min-width: 300px;
+}
+
+#transactionFormPanelNode .text-field,
+#transactionFormPanelNode .text-area,
+#transactionFormPanelNode .combo-box,
+#transactionFormPanelNode .date-picker {
+    -fx-min-height: 42px;
+}
+
+.table-actions {
+    -fx-alignment: center-left;
+}
+
+.table-action-button {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-padding: 6 10 6 10;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.table-edit-button {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-primary;
+}
+
+.table-edit-button:hover {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-base;
+}
+
+.table-delete-button {
+    -fx-background-color: -color-warm;
+    -fx-text-fill: -color-negative;
+}
+
+.table-delete-button:hover {
+    -fx-background-color: -color-negative;
+    -fx-text-fill: -color-base;
+}
+
+.type-pill {
+    -fx-background-radius: 999px;
+    -fx-padding: 4 10 4 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+
+.type-income {
+    -fx-background-color: -color-warm-2;
+    -fx-text-fill: -color-accent-1;
+}
+
+.type-expense {
+    -fx-background-color: -color-warm;
+    -fx-text-fill: -color-negative;
+}
+
+.amount-income {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-weight: 700;
+}
+
+.amount-expense {
+    -fx-text-fill: -color-negative;
+    -fx-font-weight: 700;
 }
 
 .category-card,

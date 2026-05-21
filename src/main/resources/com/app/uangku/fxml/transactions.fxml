@@ -80,8 +80,8 @@
                         <Button text="Tambah Transaksi" styleClass="primary-button" onAction="#focusTransactionForm" />
                     </HBox>
 
-                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="filter-bar">
-                        <TextField fx:id="searchTransactionField" promptText="cari....." prefWidth="240" />
+                    <HBox id="transactionFilterBar" alignment="CENTER_LEFT" spacing="12" styleClass="filter-bar">
+                        <TextField fx:id="searchTransactionField" promptText="Cari transaksi" prefWidth="240" />
                         <ToggleButton fx:id="allFilterButton" selected="true" text="Semua" />
                         <ToggleButton fx:id="incomeFilterButton" text="Pemasukan" />
                         <ToggleButton fx:id="expenseFilterButton" text="Pengeluaran" />
@@ -99,22 +99,22 @@
 
                         <VBox fx:id="transactionTablePanel" spacing="14" styleClass="panel" GridPane.columnIndex="0" GridPane.columnSpan="2">
                             <Label text="Transaksi" styleClass="section-title" />
-                            <TableView fx:id="transactionsTable" prefHeight="390">
+                            <TableView id="transactionTableView" fx:id="transactionsTable" prefHeight="430">
                                 <placeholder>
                                     <Label text="Belum ada transaksi" />
                                 </placeholder>
                                 <columns>
-                                    <TableColumn text="Tanggal" prefWidth="95" />
-                                    <TableColumn text="Kategori" prefWidth="125" />
-                                    <TableColumn text="Tipe" prefWidth="110" />
-                                    <TableColumn text="Nominal" prefWidth="120" />
-                                    <TableColumn text="Deskripsi" prefWidth="160" />
-                                    <TableColumn text="Aksi" prefWidth="170" />
+                                    <TableColumn text="Tanggal" prefWidth="120" />
+                                    <TableColumn text="Kategori" prefWidth="150" />
+                                    <TableColumn text="Tipe" prefWidth="130" />
+                                    <TableColumn text="Nominal" prefWidth="145" />
+                                    <TableColumn text="Deskripsi" prefWidth="210" />
+                                    <TableColumn text="Aksi" prefWidth="145" />
                                 </columns>
                             </TableView>
                         </VBox>
 
-                        <VBox fx:id="transactionFormPanel" spacing="12" styleClass="panel" managed="false" visible="false" GridPane.columnIndex="1">
+                        <VBox id="transactionFormPanelNode" fx:id="transactionFormPanel" spacing="12" styleClass="panel" managed="false" visible="false" GridPane.columnIndex="1">
                             <Label text="Tambah Transaksi" styleClass="section-title" />
                             <VBox spacing="7">
                                 <Label text="Tipe" styleClass="field-label" />
