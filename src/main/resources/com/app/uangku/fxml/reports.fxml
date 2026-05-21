@@ -7,10 +7,10 @@
 
 <BorderPane styleClass="app-shell" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.ReportController">
     <left>
-        <VBox prefWidth="250" styleClass="sidebar">
+        <VBox prefWidth="272" styleClass="sidebar">
             <HBox alignment="CENTER_LEFT" spacing="14" styleClass="sidebar-logo">
                 <StackPane prefHeight="62" prefWidth="62" styleClass="sidebar-logo-mark">
-                    <SvgIcon source="com/app/uangku/icons/logo.svg" size="29" iconStyleClass="sidebar-logo-icon" />
+                    <SvgIcon source="com/app/uangku/icons/budget.svg" size="29" iconStyleClass="sidebar-logo-icon" />
                 </StackPane>
                 <Label text="UangKu" styleClass="sidebar-brand" />
             </HBox>
@@ -33,7 +33,7 @@
                 </Button>
                 <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets">
                     <graphic>
-                        <SvgIcon source="com/app/uangku/icons/budget.svg" size="20" iconStyleClass="nav-icon" />
+                        <SvgIcon source="com/app/uangku/icons/logo.svg" size="20" iconStyleClass="nav-icon" />
                     </graphic>
                 </Button>
                 <Button id="activeNav" text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports">
