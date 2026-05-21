@@ -115,11 +115,6 @@ public class CategoryController extends BaseWireframeController {
         }
     }
 
-    @FXML
-    private void focusCategoryForm() {
-        categoryNameField.requestFocus();
-    }
-
     private void loadCategories() {
         incomeCategoryList.getChildren().clear();
         expenseCategoryList.getChildren().clear();
