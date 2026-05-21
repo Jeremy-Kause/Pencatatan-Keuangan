@@ -5,6 +5,8 @@ import com.app.uangku.model.Category;
 import com.app.uangku.model.TransactionType;
 import com.app.uangku.model.User;
 import com.app.uangku.util.SessionManager;
+import com.app.uangku.validation.CategoryInputValidator;
+import com.app.uangku.validation.ValidationResult;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -22,6 +24,7 @@ import java.util.List;
 
 public class CategoryController extends BaseWireframeController {
     private final CategoryDAO categoryDAO = new CategoryDAO();
+    private final CategoryInputValidator categoryInputValidator = new CategoryInputValidator();
     private Category selectedCategory;
 
     @FXML
@@ -64,20 +67,9 @@ public class CategoryController extends BaseWireframeController {
             TransactionType type = categoryTypeComboBox.getValue();
             clearMessage(categoryMessageLabel);
 
-            if (name.isBlank()) {
-                setErrorMessage(categoryMessageLabel, "Nama kategori wajib diisi.");
-                return;
-            }
-            if (name.length() < 2) {
-                setErrorMessage(categoryMessageLabel, "Nama kategori minimal 2 karakter.");
-                return;
-            }
-            if (name.length() > 30) {
-                setErrorMessage(categoryMessageLabel, "Nama kategori maksimal 30 karakter.");
-                return;
-            }
-            if (type == null) {
-                setErrorMessage(categoryMessageLabel, "Pilih tipe kategori.");
+            ValidationResult validationResult = categoryInputValidator.validate(name, type);
+            if (!validationResult.isValid()) {
+                setErrorMessage(categoryMessageLabel, validationResult.getMessage());
                 return;
             }
 

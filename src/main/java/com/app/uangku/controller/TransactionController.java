@@ -7,6 +7,8 @@ import com.app.uangku.model.Transaction;
 import com.app.uangku.model.TransactionType;
 import com.app.uangku.model.User;
 import com.app.uangku.util.SessionManager;
+import com.app.uangku.validation.TransactionInputValidator;
+import com.app.uangku.validation.ValidationResult;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,6 +36,7 @@ import java.util.List;
 public class TransactionController extends BaseWireframeController {
     private final CategoryDAO categoryDAO = new CategoryDAO();
     private final TransactionDAO transactionDAO = new TransactionDAO();
+    private final TransactionInputValidator transactionInputValidator = new TransactionInputValidator();
     private final ObservableList<Category> allCategories = FXCollections.observableArrayList();
     private Transaction selectedTransaction;
 
@@ -114,25 +117,10 @@ public class TransactionController extends BaseWireframeController {
             LocalDate date = transactionDatePicker.getValue();
             clearMessage(transactionMessageLabel);
 
-            if (type == null) {
-                setErrorMessage(transactionMessageLabel, "Pilih tipe transaksi.");
-                return;
-            }
-            if (category == null) {
-                setErrorMessage(transactionMessageLabel, "Pilih kategori transaksi.");
-                return;
-            }
-            if (date == null) {
-                setErrorMessage(transactionMessageLabel, "Pilih tanggal transaksi.");
-                return;
-            }
-            if (category.getType() != type) {
-                setErrorMessage(transactionMessageLabel, "Kategori harus sesuai dengan tipe transaksi yang dipilih.");
-                return;
-            }
             String description = descriptionArea.getText() == null ? "" : descriptionArea.getText().trim();
-            if (description.length() > 255) {
-                setErrorMessage(transactionMessageLabel, "Deskripsi maksimal 255 karakter.");
+            ValidationResult validationResult = transactionInputValidator.validate(type, category, date, description);
+            if (!validationResult.isValid()) {
+                setErrorMessage(transactionMessageLabel, validationResult.getMessage());
                 return;
             }
 
@@ -342,8 +330,9 @@ public class TransactionController extends BaseWireframeController {
                     : selectedCategory.getIdCategory();
             LocalDate startDate = startDateFilterPicker.getValue();
             LocalDate endDate = endDateFilterPicker.getValue();
-            if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
-                setErrorMessage(transactionMessageLabel, "Tanggal mulai tidak boleh melebihi tanggal akhir.");
+            ValidationResult rangeValidation = transactionInputValidator.validateFilterRange(startDate, endDate);
+            if (!rangeValidation.isValid()) {
+                setErrorMessage(transactionMessageLabel, rangeValidation.getMessage());
                 transactionsTable.setItems(FXCollections.emptyObservableList());
                 return;
             }

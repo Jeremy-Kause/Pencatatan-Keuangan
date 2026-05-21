@@ -5,6 +5,8 @@ import com.app.uangku.dao.UserDAO;
 import com.app.uangku.model.User;
 import com.app.uangku.util.SceneManager;
 import com.app.uangku.util.SessionManager;
+import com.app.uangku.validation.AuthInputValidator;
+import com.app.uangku.validation.ValidationResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -13,16 +15,11 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.regex.Pattern;
 
 public class AuthController extends BaseWireframeController {
-    private static final Pattern EMAIL_PATTERN =
-            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    private static final Pattern USERNAME_PATTERN =
-            Pattern.compile("^[A-Za-z0-9._]{3,20}$");
-
     private final UserDAO userDAO = new UserDAO();
     private final CategoryDAO categoryDAO = new CategoryDAO();
+    private final AuthInputValidator authInputValidator = new AuthInputValidator();
 
     @FXML
     private TextField usernameField;
@@ -52,8 +49,9 @@ public class AuthController extends BaseWireframeController {
             String password = passwordField.getText();
             clearMessage(authMessageLabel);
 
-            if (usernameOrEmail.isBlank() || password.isBlank()) {
-                setErrorMessage(authMessageLabel, "Username/email dan password wajib diisi.");
+            ValidationResult validationResult = authInputValidator.validateLogin(usernameOrEmail, password);
+            if (!validationResult.isValid()) {
+                setErrorMessage(authMessageLabel, validationResult.getMessage());
                 return;
             }
 
@@ -80,20 +78,9 @@ public class AuthController extends BaseWireframeController {
             String password = registerPasswordField.getText();
             clearMessage(registerMessageLabel);
 
-            if (username.isBlank() || email.isBlank() || password.isBlank()) {
-                setErrorMessage(registerMessageLabel, "Semua field wajib diisi.");
-                return;
-            }
-            if (!USERNAME_PATTERN.matcher(username).matches()) {
-                setErrorMessage(registerMessageLabel, "Username 3-20 karakter dan hanya boleh huruf, angka, titik, atau underscore.");
-                return;
-            }
-            if (!EMAIL_PATTERN.matcher(email).matches()) {
-                setErrorMessage(registerMessageLabel, "Format email belum valid.");
-                return;
-            }
-            if (password.length() < 6) {
-                setErrorMessage(registerMessageLabel, "Password minimal 6 karakter.");
+            ValidationResult validationResult = authInputValidator.validateRegistration(username, email, password);
+            if (!validationResult.isValid()) {
+                setErrorMessage(registerMessageLabel, validationResult.getMessage());
                 return;
             }
             if (userDAO.isUsernameTaken(username)) {
