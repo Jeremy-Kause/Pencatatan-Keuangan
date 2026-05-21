@@ -8,10 +8,12 @@ import com.app.uangku.model.Category;
 import com.app.uangku.model.TransactionType;
 import com.app.uangku.model.User;
 import com.app.uangku.util.SessionManager;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -32,6 +34,7 @@ import java.util.List;
 public class BudgetController extends BaseWireframeController {
     private final BudgetDAO budgetDAO = new BudgetDAO();
     private final CategoryDAO categoryDAO = new CategoryDAO();
+    private Budget selectedBudget;
 
     @FXML
     private ComboBox<Category> budgetCategoryComboBox;
@@ -52,9 +55,17 @@ public class BudgetController extends BaseWireframeController {
     private Label budgetMessageLabel;
 
     @FXML
+    private Button saveBudgetButton;
+
+    @FXML
+    private Button cancelBudgetButton;
+
+    @FXML
     private void initialize() {
         budgetMonthField.setText(YearMonth.now().toString());
         setupTable();
+        setupForm();
+        updateFormState();
         loadCategories();
         refreshBudgets();
     }
@@ -62,43 +73,75 @@ public class BudgetController extends BaseWireframeController {
     @FXML
     private void handleSaveBudget() {
         if (!hasActiveSession()) {
-            setMessage(budgetMessageLabel, "Silakan login terlebih dahulu.");
+            setErrorMessage(budgetMessageLabel, "Silakan login terlebih dahulu.");
             return;
         }
 
         try {
             Category category = budgetCategoryComboBox.getValue();
-            setMessage(budgetMessageLabel, "");
+            clearMessage(budgetMessageLabel);
+
             if (category == null) {
-                setMessage(budgetMessageLabel, "Pilih kategori pengeluaran.");
+                setErrorMessage(budgetMessageLabel, "Pilih kategori pengeluaran.");
                 return;
             }
             if (category.getType() != TransactionType.PENGELUARAN) {
-                setMessage(budgetMessageLabel, "Anggaran hanya bisa dibuat untuk kategori pengeluaran.");
+                setErrorMessage(budgetMessageLabel, "Anggaran hanya bisa dibuat untuk kategori pengeluaran.");
                 return;
             }
 
             User user = SessionManager.getCurrentUser().orElseThrow();
-            budgetDAO.setBudget(new Budget(
+            YearMonth month = parseMonth(budgetMonthField.getText());
+            Budget budget = new Budget(
                     user.getIdUser(),
                     category.getIdCategory(),
                     parseAmount(budgetLimitField.getText()),
-                    parseMonth(budgetMonthField.getText())
-            ));
+                    month
+            );
 
-            budgetLimitField.clear();
+            if (selectedBudget == null) {
+                budgetDAO.setBudget(budget);
+                setSuccessMessage(budgetMessageLabel, "Anggaran berhasil disimpan.");
+            } else {
+                budget.setIdBudget(selectedBudget.getIdBudget());
+                if (!budgetDAO.update(budget)) {
+                    setErrorMessage(budgetMessageLabel, "Anggaran tidak ditemukan.");
+                    return;
+                }
+                setSuccessMessage(budgetMessageLabel, "Anggaran berhasil diperbarui.");
+            }
+
+            clearForm();
             refreshBudgets();
-            setMessage(budgetMessageLabel, "Anggaran berhasil disimpan.");
         } catch (NumberFormatException exception) {
-            setMessage(budgetMessageLabel, "Nominal anggaran tidak valid.");
+            setErrorMessage(budgetMessageLabel, "Nominal anggaran tidak valid.");
         } catch (IllegalArgumentException | SQLException exception) {
-            setMessage(budgetMessageLabel, exception.getMessage());
+            setErrorMessage(budgetMessageLabel, exception.getMessage());
         }
+    }
+
+    @FXML
+    private void handleCancelBudgetEdit() {
+        clearForm();
+        clearMessage(budgetMessageLabel);
+    }
+
+    @FXML
+    private void handleRefreshBudgetList() {
+        refreshBudgets();
+    }
+
+    private void setupForm() {
+        budgetMonthField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (selectedBudget == null) {
+                clearMessage(budgetMessageLabel);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
     private void setupTable() {
-        if (budgetTable == null || budgetTable.getColumns().isEmpty()) {
+        if (budgetTable == null || budgetTable.getColumns().size() < 6) {
             return;
         }
 
@@ -107,6 +150,7 @@ public class BudgetController extends BaseWireframeController {
         TableColumn<Budget, String> limitColumn = (TableColumn<Budget, String>) budgetTable.getColumns().get(2);
         TableColumn<Budget, String> usedColumn = (TableColumn<Budget, String>) budgetTable.getColumns().get(3);
         TableColumn<Budget, String> statusColumn = (TableColumn<Budget, String>) budgetTable.getColumns().get(4);
+        TableColumn<Budget, Budget> actionColumn = (TableColumn<Budget, Budget>) budgetTable.getColumns().get(5);
 
         budgetTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         categoryColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoryName()));
@@ -114,6 +158,8 @@ public class BudgetController extends BaseWireframeController {
         limitColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().getLimitAmount())));
         usedColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().getUsedAmount())));
         statusColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStatus().getDisplayName()));
+        actionColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue()));
+
         statusColumn.setCellFactory(column -> new TableCell<>() {
             private final Label statusLabel = new Label();
 
@@ -136,6 +182,35 @@ public class BudgetController extends BaseWireframeController {
                 setText(null);
             }
         });
+
+        actionColumn.setCellFactory(column -> new TableCell<>() {
+            private final Button editButton = new Button("Edit");
+            private final Button deleteButton = new Button("Hapus");
+            private final HBox actions = new HBox(8, editButton, deleteButton);
+
+            {
+                actions.setAlignment(Pos.CENTER_LEFT);
+                actions.getStyleClass().add("table-actions");
+                editButton.getStyleClass().addAll("table-action-button", "table-edit-button");
+                deleteButton.getStyleClass().addAll("table-action-button", "table-delete-button");
+
+                editButton.setOnAction(event -> {
+                    Budget budget = getTableView().getItems().get(getIndex());
+                    startEditBudget(budget);
+                });
+                deleteButton.setOnAction(event -> {
+                    Budget budget = getTableView().getItems().get(getIndex());
+                    deleteBudget(budget);
+                });
+            }
+
+            @Override
+            protected void updateItem(Budget item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : actions);
+                setText(null);
+            }
+        });
     }
 
     private void loadCategories() {
@@ -148,10 +223,10 @@ public class BudgetController extends BaseWireframeController {
             List<Category> categories = categoryDAO.findByUserIdAndType(user.getIdUser(), TransactionType.PENGELUARAN);
             budgetCategoryComboBox.setItems(FXCollections.observableArrayList(categories));
             if (categories.isEmpty()) {
-                setMessage(budgetMessageLabel, "Tambahkan kategori pengeluaran terlebih dahulu.");
+                setErrorMessage(budgetMessageLabel, "Tambahkan kategori pengeluaran terlebih dahulu.");
             }
         } catch (SQLException exception) {
-            setMessage(budgetMessageLabel, "Gagal memuat kategori: " + exception.getMessage());
+            setErrorMessage(budgetMessageLabel, "Gagal memuat kategori: " + exception.getMessage());
         }
     }
 
@@ -166,8 +241,11 @@ public class BudgetController extends BaseWireframeController {
             List<Budget> budgets = budgetDAO.findByUserIdAndMonth(user.getIdUser(), month);
             budgetTable.setItems(FXCollections.observableArrayList(budgets));
             renderBudgetCards(budgets);
+            if (selectedBudget == null) {
+                clearMessage(budgetMessageLabel);
+            }
         } catch (IllegalArgumentException | SQLException exception) {
-            setMessage(budgetMessageLabel, "Gagal memuat anggaran: " + exception.getMessage());
+            setErrorMessage(budgetMessageLabel, "Gagal memuat anggaran: " + exception.getMessage());
         }
     }
 
@@ -238,6 +316,63 @@ public class BudgetController extends BaseWireframeController {
         card.setAlignment(Pos.CENTER_LEFT);
         card.getStyleClass().addAll("budget-card", "budget-summary-card", cardStatusClass(budget.getStatus()));
         return card;
+    }
+
+    private void startEditBudget(Budget budget) {
+        selectedBudget = budget;
+        budgetMonthField.setText(budget.getMonthYear().toString());
+        budgetLimitField.setText(String.valueOf(budget.getLimitAmount()));
+        budgetCategoryComboBox.getItems().stream()
+                .filter(category -> category.getIdCategory() == budget.getIdCategory())
+                .findFirst()
+                .ifPresent(budgetCategoryComboBox::setValue);
+        updateFormState();
+        setSuccessMessage(budgetMessageLabel, "Sedang mengubah anggaran yang dipilih.");
+    }
+
+    private void deleteBudget(Budget budget) {
+        if (!confirmAction(
+                "Hapus anggaran",
+                "Anggaran untuk kategori \"" + budget.getCategoryName() + "\" akan dihapus. Lanjutkan?",
+                "Hapus"
+        )) {
+            return;
+        }
+
+        try {
+            if (!budgetDAO.deleteById(budget.getIdBudget(), budget.getIdUser())) {
+                setErrorMessage(budgetMessageLabel, "Anggaran tidak ditemukan.");
+                return;
+            }
+
+            if (selectedBudget != null && selectedBudget.getIdBudget() == budget.getIdBudget()) {
+                clearForm();
+            }
+
+            refreshBudgets();
+            setSuccessMessage(budgetMessageLabel, "Anggaran berhasil dihapus.");
+        } catch (SQLException exception) {
+            setErrorMessage(budgetMessageLabel, "Gagal menghapus anggaran: " + exception.getMessage());
+        }
+    }
+
+    private void clearForm() {
+        selectedBudget = null;
+        budgetCategoryComboBox.setValue(null);
+        budgetMonthField.setText(YearMonth.now().toString());
+        budgetLimitField.clear();
+        updateFormState();
+    }
+
+    private void updateFormState() {
+        boolean editing = selectedBudget != null;
+        if (saveBudgetButton != null) {
+            saveBudgetButton.setText(editing ? "Perbarui Anggaran" : "Simpan Anggaran");
+        }
+        if (cancelBudgetButton != null) {
+            cancelBudgetButton.setVisible(editing);
+            cancelBudgetButton.setManaged(editing);
+        }
     }
 
     private String statusStyleClass(BudgetStatus status) {

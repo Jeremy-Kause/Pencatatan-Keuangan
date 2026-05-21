@@ -103,7 +103,7 @@ public class TransactionController extends BaseWireframeController {
     @FXML
     private void handleSaveTransaction() {
         if (!hasActiveSession()) {
-            setMessage(transactionMessageLabel, "Silakan login terlebih dahulu.");
+            setErrorMessage(transactionMessageLabel, "Silakan login terlebih dahulu.");
             return;
         }
 
@@ -112,27 +112,27 @@ public class TransactionController extends BaseWireframeController {
             TransactionType type = transactionTypeComboBox.getValue();
             Category category = transactionCategoryComboBox.getValue();
             LocalDate date = transactionDatePicker.getValue();
-            setMessage(transactionMessageLabel, "");
+            clearMessage(transactionMessageLabel);
 
             if (type == null) {
-                setMessage(transactionMessageLabel, "Pilih tipe transaksi.");
+                setErrorMessage(transactionMessageLabel, "Pilih tipe transaksi.");
                 return;
             }
             if (category == null) {
-                setMessage(transactionMessageLabel, "Pilih kategori transaksi.");
+                setErrorMessage(transactionMessageLabel, "Pilih kategori transaksi.");
                 return;
             }
             if (date == null) {
-                setMessage(transactionMessageLabel, "Pilih tanggal transaksi.");
+                setErrorMessage(transactionMessageLabel, "Pilih tanggal transaksi.");
                 return;
             }
             if (category.getType() != type) {
-                setMessage(transactionMessageLabel, "Kategori harus sesuai dengan tipe transaksi yang dipilih.");
+                setErrorMessage(transactionMessageLabel, "Kategori harus sesuai dengan tipe transaksi yang dipilih.");
                 return;
             }
             String description = descriptionArea.getText() == null ? "" : descriptionArea.getText().trim();
             if (description.length() > 255) {
-                setMessage(transactionMessageLabel, "Deskripsi maksimal 255 karakter.");
+                setErrorMessage(transactionMessageLabel, "Deskripsi maksimal 255 karakter.");
                 return;
             }
 
@@ -147,29 +147,29 @@ public class TransactionController extends BaseWireframeController {
 
             if (selectedTransaction == null) {
                 transactionDAO.create(transaction);
-                setMessage(transactionMessageLabel, "Transaksi berhasil disimpan.");
+                setSuccessMessage(transactionMessageLabel, "Transaksi berhasil disimpan.");
             } else {
                 transaction.setIdTransaction(selectedTransaction.getIdTransaction());
                 if (!transactionDAO.update(transaction)) {
-                    setMessage(transactionMessageLabel, "Transaksi tidak ditemukan.");
+                    setErrorMessage(transactionMessageLabel, "Transaksi tidak ditemukan.");
                     return;
                 }
-                setMessage(transactionMessageLabel, "Transaksi berhasil diperbarui.");
+                setSuccessMessage(transactionMessageLabel, "Transaksi berhasil diperbarui.");
             }
 
             clearForm();
             refreshTransactions();
         } catch (NumberFormatException exception) {
-            setMessage(transactionMessageLabel, "Nominal tidak valid.");
+            setErrorMessage(transactionMessageLabel, "Nominal tidak valid.");
         } catch (IllegalArgumentException | SQLException exception) {
-            setMessage(transactionMessageLabel, exception.getMessage());
+            setErrorMessage(transactionMessageLabel, exception.getMessage());
         }
     }
 
     @FXML
     private void focusTransactionForm() {
         clearForm(false);
-        setMessage(transactionMessageLabel, "");
+        clearMessage(transactionMessageLabel);
         transactionTypeComboBox.requestFocus();
     }
 
@@ -310,7 +310,7 @@ public class TransactionController extends BaseWireframeController {
             categoryFilterComboBox.setValue(allCategory);
             refreshFormCategories();
         } catch (SQLException exception) {
-            setMessage(transactionMessageLabel, "Gagal memuat kategori: " + exception.getMessage());
+            setErrorMessage(transactionMessageLabel, "Gagal memuat kategori: " + exception.getMessage());
         }
     }
 
@@ -324,7 +324,7 @@ public class TransactionController extends BaseWireframeController {
             transactionCategoryComboBox.setValue(null);
         }
         if (selectedType != null && categories.isEmpty()) {
-            setMessage(transactionMessageLabel, "Belum ada kategori untuk tipe transaksi ini.");
+            setErrorMessage(transactionMessageLabel, "Belum ada kategori untuk tipe transaksi ini.");
         }
     }
 
@@ -343,7 +343,7 @@ public class TransactionController extends BaseWireframeController {
             LocalDate startDate = startDateFilterPicker.getValue();
             LocalDate endDate = endDateFilterPicker.getValue();
             if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
-                setMessage(transactionMessageLabel, "Tanggal mulai tidak boleh melebihi tanggal akhir.");
+                setErrorMessage(transactionMessageLabel, "Tanggal mulai tidak boleh melebihi tanggal akhir.");
                 transactionsTable.setItems(FXCollections.emptyObservableList());
                 return;
             }
@@ -358,10 +358,10 @@ public class TransactionController extends BaseWireframeController {
                     )
             ));
             if (selectedTransaction == null) {
-                setMessage(transactionMessageLabel, "");
+                clearMessage(transactionMessageLabel);
             }
         } catch (SQLException exception) {
-            setMessage(transactionMessageLabel, "Gagal memuat transaksi: " + exception.getMessage());
+            setErrorMessage(transactionMessageLabel, "Gagal memuat transaksi: " + exception.getMessage());
         }
     }
 
@@ -393,16 +393,16 @@ public class TransactionController extends BaseWireframeController {
                 clearForm();
             }
             refreshTransactions();
-            setMessage(transactionMessageLabel, "Transaksi berhasil dihapus.");
+            setSuccessMessage(transactionMessageLabel, "Transaksi berhasil dihapus.");
         } catch (SQLException exception) {
-            setMessage(transactionMessageLabel, "Gagal menghapus transaksi: " + exception.getMessage());
+            setErrorMessage(transactionMessageLabel, "Gagal menghapus transaksi: " + exception.getMessage());
         }
     }
 
     @FXML
     private void handleCancelEdit() {
         clearForm();
-        setMessage(transactionMessageLabel, "");
+        clearMessage(transactionMessageLabel);
     }
 
     private void startEditTransaction(Transaction transaction) {
@@ -419,7 +419,7 @@ public class TransactionController extends BaseWireframeController {
         descriptionArea.setText(transaction.getDescription() == null ? "" : transaction.getDescription());
         updateFormState();
         transactionTypeComboBox.requestFocus();
-        setMessage(transactionMessageLabel, "Sedang mengubah transaksi yang dipilih.");
+        setSuccessMessage(transactionMessageLabel, "Sedang mengubah transaksi yang dipilih.");
     }
 
     private void clearForm() {

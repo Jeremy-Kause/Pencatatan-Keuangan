@@ -55,29 +55,29 @@ public class CategoryController extends BaseWireframeController {
     @FXML
     private void handleSaveCategory() {
         if (!hasActiveSession()) {
-            setMessage(categoryMessageLabel, "Silakan login terlebih dahulu.");
+            setErrorMessage(categoryMessageLabel, "Silakan login terlebih dahulu.");
             return;
         }
 
         try {
             String name = categoryNameField.getText().trim();
             TransactionType type = categoryTypeComboBox.getValue();
-            setMessage(categoryMessageLabel, "");
+            clearMessage(categoryMessageLabel);
 
             if (name.isBlank()) {
-                setMessage(categoryMessageLabel, "Nama kategori wajib diisi.");
+                setErrorMessage(categoryMessageLabel, "Nama kategori wajib diisi.");
                 return;
             }
             if (name.length() < 2) {
-                setMessage(categoryMessageLabel, "Nama kategori minimal 2 karakter.");
+                setErrorMessage(categoryMessageLabel, "Nama kategori minimal 2 karakter.");
                 return;
             }
             if (name.length() > 30) {
-                setMessage(categoryMessageLabel, "Nama kategori maksimal 30 karakter.");
+                setErrorMessage(categoryMessageLabel, "Nama kategori maksimal 30 karakter.");
                 return;
             }
             if (type == null) {
-                setMessage(categoryMessageLabel, "Pilih tipe kategori.");
+                setErrorMessage(categoryMessageLabel, "Pilih tipe kategori.");
                 return;
             }
 
@@ -91,27 +91,27 @@ public class CategoryController extends BaseWireframeController {
                     selectedCategory.getIdCategory()
             );
             if (duplicate) {
-                setMessage(categoryMessageLabel, "Kategori dengan nama yang sama sudah ada.");
+                setErrorMessage(categoryMessageLabel, "Kategori dengan nama yang sama sudah ada.");
                 return;
             }
 
             if (selectedCategory == null) {
                 categoryDAO.create(new Category(user.getIdUser(), name, type));
-                setMessage(categoryMessageLabel, "Kategori berhasil disimpan.");
+                setSuccessMessage(categoryMessageLabel, "Kategori berhasil disimpan.");
             } else {
                 selectedCategory.setName(name);
                 selectedCategory.setType(type);
                 if (!categoryDAO.update(selectedCategory)) {
-                    setMessage(categoryMessageLabel, "Kategori tidak ditemukan.");
+                    setErrorMessage(categoryMessageLabel, "Kategori tidak ditemukan.");
                     return;
                 }
-                setMessage(categoryMessageLabel, "Kategori berhasil diperbarui.");
+                setSuccessMessage(categoryMessageLabel, "Kategori berhasil diperbarui.");
             }
 
             clearForm();
             loadCategories();
         } catch (SQLException exception) {
-            setMessage(categoryMessageLabel, "Gagal menyimpan kategori: " + exception.getMessage());
+            setErrorMessage(categoryMessageLabel, "Gagal menyimpan kategori: " + exception.getMessage());
         }
     }
 
@@ -136,7 +136,7 @@ public class CategoryController extends BaseWireframeController {
                     categoryDAO.findByUserIdAndType(user.getIdUser(), TransactionType.PENGELUARAN)
             );
         } catch (SQLException exception) {
-            setMessage(categoryMessageLabel, "Gagal memuat kategori: " + exception.getMessage());
+            setErrorMessage(categoryMessageLabel, "Gagal memuat kategori: " + exception.getMessage());
         }
     }
 
@@ -193,7 +193,7 @@ public class CategoryController extends BaseWireframeController {
     private void deleteCategory(Category category) {
         try {
             if (categoryDAO.isUsedByTransaction(category.getIdCategory(), category.getIdUser())) {
-                setMessage(categoryMessageLabel, "Kategori masih dipakai transaksi, tidak bisa dihapus.");
+                setErrorMessage(categoryMessageLabel, "Kategori masih dipakai transaksi, tidak bisa dihapus.");
                 return;
             }
             if (!confirmAction(
@@ -209,16 +209,16 @@ public class CategoryController extends BaseWireframeController {
                 clearForm();
             }
             loadCategories();
-            setMessage(categoryMessageLabel, "Kategori berhasil dihapus.");
+            setSuccessMessage(categoryMessageLabel, "Kategori berhasil dihapus.");
         } catch (SQLException exception) {
-            setMessage(categoryMessageLabel, "Gagal menghapus kategori: " + exception.getMessage());
+            setErrorMessage(categoryMessageLabel, "Gagal menghapus kategori: " + exception.getMessage());
         }
     }
 
     @FXML
     private void handleCancelEditCategory() {
         clearForm();
-        setMessage(categoryMessageLabel, "Mode edit kategori dibatalkan.");
+        clearMessage(categoryMessageLabel);
     }
 
     private void startEditCategory(Category category) {
@@ -231,7 +231,7 @@ public class CategoryController extends BaseWireframeController {
         categoryNameField.setText(category.getName());
         categoryTypeComboBox.setValue(category.getType());
         updateFormState();
-        setMessage(categoryMessageLabel, "Sedang mengubah kategori yang dipilih.");
+        setSuccessMessage(categoryMessageLabel, "Sedang mengubah kategori yang dipilih.");
     }
 
     private void clearForm() {

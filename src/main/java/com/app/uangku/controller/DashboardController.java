@@ -72,7 +72,7 @@ public class DashboardController extends BaseWireframeController {
             loadSideSummary(user, month);
         } catch (SQLException exception) {
             setEmptyState();
-            setMessage(reminderLabel, "Gagal memuat dashboard: " + exception.getMessage());
+            setErrorMessage(reminderLabel, "Gagal memuat dashboard: " + exception.getMessage());
         }
     }
 

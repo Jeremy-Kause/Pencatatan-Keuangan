@@ -62,6 +62,7 @@ public class ReportController extends BaseWireframeController {
             setMessage(topCategoryLabel, "Belum ada data");
             setMessage(topCategoryPercentLabel, "Login diperlukan");
             setMessage(transactionCountLabel, "0 transaksi");
+            setErrorMessage(reportNoteLabel, "Silakan login untuk melihat laporan.");
             return;
         }
 
@@ -88,9 +89,10 @@ public class ReportController extends BaseWireframeController {
                     null
             );
             setMessage(transactionCountLabel, transactions.size() + " transaksi");
+            clearMessage(reportNoteLabel);
             setMessage(reportNoteLabel, "Laporan bulan " + formatMonth(month));
         } catch (SQLException exception) {
-            setMessage(reportNoteLabel, "Gagal memuat laporan: " + exception.getMessage());
+            setErrorMessage(reportNoteLabel, "Gagal memuat laporan: " + exception.getMessage());
         }
     }
 

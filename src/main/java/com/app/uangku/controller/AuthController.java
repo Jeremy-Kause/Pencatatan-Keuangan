@@ -50,17 +50,17 @@ public class AuthController extends BaseWireframeController {
         try {
             String usernameOrEmail = usernameField.getText().trim();
             String password = passwordField.getText();
-            setMessage(authMessageLabel, "");
+            clearMessage(authMessageLabel);
 
             if (usernameOrEmail.isBlank() || password.isBlank()) {
-                setMessage(authMessageLabel, "Username/email dan password wajib diisi.");
+                setErrorMessage(authMessageLabel, "Username/email dan password wajib diisi.");
                 return;
             }
 
             User user = userDAO.login(usernameOrEmail, password)
                     .orElse(null);
             if (user == null) {
-                setMessage(authMessageLabel, "Login gagal. Periksa username/email dan password.");
+                setErrorMessage(authMessageLabel, "Login gagal. Periksa username/email dan password.");
                 return;
             }
 
@@ -68,7 +68,7 @@ public class AuthController extends BaseWireframeController {
             categoryDAO.createDefaultCategoriesForUser(user.getIdUser());
             SceneManager.switchTo(event, "dashboard.fxml");
         } catch (SQLException | IOException exception) {
-            setMessage(authMessageLabel, "Terjadi kesalahan: " + exception.getMessage());
+            setErrorMessage(authMessageLabel, "Terjadi kesalahan: " + exception.getMessage());
         }
     }
 
@@ -78,30 +78,30 @@ public class AuthController extends BaseWireframeController {
             String username = registerUsernameField.getText().trim();
             String email = emailField.getText().trim().toLowerCase();
             String password = registerPasswordField.getText();
-            setMessage(registerMessageLabel, "");
+            clearMessage(registerMessageLabel);
 
             if (username.isBlank() || email.isBlank() || password.isBlank()) {
-                setMessage(registerMessageLabel, "Semua field wajib diisi.");
+                setErrorMessage(registerMessageLabel, "Semua field wajib diisi.");
                 return;
             }
             if (!USERNAME_PATTERN.matcher(username).matches()) {
-                setMessage(registerMessageLabel, "Username 3-20 karakter dan hanya boleh huruf, angka, titik, atau underscore.");
+                setErrorMessage(registerMessageLabel, "Username 3-20 karakter dan hanya boleh huruf, angka, titik, atau underscore.");
                 return;
             }
             if (!EMAIL_PATTERN.matcher(email).matches()) {
-                setMessage(registerMessageLabel, "Format email belum valid.");
+                setErrorMessage(registerMessageLabel, "Format email belum valid.");
                 return;
             }
             if (password.length() < 6) {
-                setMessage(registerMessageLabel, "Password minimal 6 karakter.");
+                setErrorMessage(registerMessageLabel, "Password minimal 6 karakter.");
                 return;
             }
             if (userDAO.isUsernameTaken(username)) {
-                setMessage(registerMessageLabel, "Username sudah digunakan.");
+                setErrorMessage(registerMessageLabel, "Username sudah digunakan.");
                 return;
             }
             if (userDAO.isEmailTaken(email)) {
-                setMessage(registerMessageLabel, "Email sudah digunakan.");
+                setErrorMessage(registerMessageLabel, "Email sudah digunakan.");
                 return;
             }
 
@@ -110,7 +110,7 @@ public class AuthController extends BaseWireframeController {
             SessionManager.setCurrentUser(user);
             SceneManager.switchTo(event, "dashboard.fxml");
         } catch (SQLException | IOException exception) {
-            setMessage(registerMessageLabel, "Terjadi kesalahan: " + exception.getMessage());
+            setErrorMessage(registerMessageLabel, "Terjadi kesalahan: " + exception.getMessage());
         }
     }
 }

@@ -128,8 +128,36 @@ public abstract class BaseWireframeController {
 
     protected void setMessage(Label label, String message) {
         if (label != null) {
+            label.getStyleClass().removeAll("success-text", "danger-text");
             label.setText(message == null ? "" : message);
         }
+    }
+
+    protected void setSuccessMessage(Label label, String message) {
+        applyMessageStyle(label, message, "success-text");
+    }
+
+    protected void setErrorMessage(Label label, String message) {
+        applyMessageStyle(label, message, "danger-text");
+    }
+
+    protected void clearMessage(Label label) {
+        if (label != null) {
+            label.getStyleClass().removeAll("success-text", "danger-text");
+            label.setText("");
+        }
+    }
+
+    private void applyMessageStyle(Label label, String message, String styleClass) {
+        if (label == null) {
+            return;
+        }
+
+        label.getStyleClass().removeAll("success-text", "danger-text");
+        if (!label.getStyleClass().contains(styleClass)) {
+            label.getStyleClass().add(styleClass);
+        }
+        label.setText(message == null ? "" : message);
     }
 
     protected boolean confirmAction(String title, String message, String confirmText) {

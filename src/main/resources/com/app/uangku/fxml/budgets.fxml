@@ -85,18 +85,19 @@
                             <Label text="Tambah Anggaran" styleClass="section-title" />
                             <VBox spacing="7">
                                 <Label text="Kategori Pengeluaran" styleClass="field-label" />
-                                <ComboBox fx:id="budgetCategoryComboBox" promptText="Pilih kategori" maxWidth="Infinity" onAction="#handleSaveBudget" />
+                                <ComboBox fx:id="budgetCategoryComboBox" promptText="Pilih kategori" maxWidth="Infinity" />
                             </VBox>
                             <VBox spacing="7">
                                 <Label text="Bulan" styleClass="field-label" />
-                                <TextField fx:id="budgetMonthField" promptText="Mei 2026" onAction="#handleSaveBudget" />
+                                <TextField fx:id="budgetMonthField" promptText="2026-05" onAction="#handleRefreshBudgetList" />
                             </VBox>
                             <VBox spacing="7">
                                 <Label text="Limit Anggaran" styleClass="field-label" />
                                 <TextField fx:id="budgetLimitField" promptText="Rp" onAction="#handleSaveBudget" />
                             </VBox>
                             <Label fx:id="budgetMessageLabel" text="" styleClass="danger-text" wrapText="true" />
-                            <Button text="Simpan Anggaran" maxWidth="Infinity" defaultButton="true" styleClass="primary-button" onAction="#handleSaveBudget" />
+                            <Button fx:id="saveBudgetButton" text="Simpan Anggaran" maxWidth="Infinity" defaultButton="true" styleClass="primary-button" onAction="#handleSaveBudget" />
+                            <Button fx:id="cancelBudgetButton" text="Batal Edit" maxWidth="Infinity" managed="false" visible="false" styleClass="secondary-button" onAction="#handleCancelBudgetEdit" />
                         </VBox>
 
                         <VBox spacing="18" GridPane.columnIndex="1">
@@ -122,6 +123,7 @@
                                         <TableColumn text="Limit" prefWidth="130" />
                                         <TableColumn text="Terpakai" prefWidth="130" />
                                         <TableColumn text="Status" prefWidth="120" />
+                                        <TableColumn text="Aksi" prefWidth="145" />
                                     </columns>
                                 </TableView>
                             </VBox>
