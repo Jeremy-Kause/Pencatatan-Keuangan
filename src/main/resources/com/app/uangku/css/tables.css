@@ -1,0 +1,80 @@
+.table-view {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 0;
+    -fx-table-cell-border-color: derive(-color-secondary, 50%);
+}
+
+.table-view .column-header-background,
+.table-view .column-header {
+    -fx-background-color: -color-secondary;
+}
+
+.table-view .column-header {
+    -fx-padding: 8 0 8 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: -color-primary;
+    -fx-font-family: "Poppins";
+    -fx-font-size: 13px;
+    -fx-padding: 10 8 10 8;
+    -fx-border-color: transparent derive(-color-secondary, 60%) transparent transparent;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: -color-base;
+    -fx-cell-size: 48px;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: derive(-color-secondary, 86%);
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: derive(-color-primary, 72%);
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: derive(-color-primary, 32%);
+}
+
+.table-actions {
+    -fx-alignment: center-left;
+}
+
+.table-action-button {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-padding: 6 10 6 10;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.table-edit-button {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-primary;
+}
+
+.table-edit-button:hover {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-base;
+}
+
+.table-delete-button {
+    -fx-background-color: -color-warm;
+    -fx-text-fill: -color-negative;
+}
+
+.table-delete-button:hover {
+    -fx-background-color: -color-negative;
+    -fx-text-fill: -color-base;
+}

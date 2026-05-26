@@ -1,0 +1,101 @@
+.field-label {
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 700;
+}
+
+.text-field,
+.password-field,
+.text-area,
+.combo-box,
+.date-picker {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 9 10 9 10;
+}
+
+.text-field:focused,
+.password-field:focused,
+.text-area:focused,
+.combo-box:focused,
+.date-picker:focused {
+    -fx-border-color: -color-primary;
+}
+
+.text-area {
+    -fx-padding: 0;
+}
+
+.primary-button {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-base;
+    -fx-font-weight: 700;
+    -fx-background-radius: 6px;
+    -fx-padding: 10 18 10 18;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-opacity: 0.92;
+}
+
+.secondary-button {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 700;
+    -fx-background-radius: 6px;
+    -fx-padding: 10 16 10 16;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-base;
+}
+
+.link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 700;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.link-button:hover {
+    -fx-text-fill: -color-primary;
+}
+
+.toggle-button {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: 600;
+    -fx-background-radius: 8px;
+    -fx-padding: 13 17 13 17;
+    -fx-cursor: hand;
+}
+
+.toggle-button:selected {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-base;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected,
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-base;
+}
+
+.success-text {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-weight: 800;
+}
+
+.danger-text {
+    -fx-text-fill: -color-negative;
+    -fx-font-weight: 800;
+}
+
+.muted-text {
+    -fx-text-fill: -color-primary;
+}

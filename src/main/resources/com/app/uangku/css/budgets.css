@@ -1,0 +1,90 @@
+.budget-card-grid {
+    -fx-padding: 0;
+}
+
+.budget-summary-card {
+    -fx-padding: 18;
+    -fx-min-height: 190px;
+}
+
+.budget-card-safe {
+    -fx-border-color: -color-secondary;
+}
+
+.budget-card-warning {
+    -fx-border-color: derive(-color-negative, 55%);
+}
+
+.budget-card-danger {
+    -fx-border-color: -color-negative;
+}
+
+.budget-card-title {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+}
+
+.budget-card-caption {
+    -fx-text-fill: derive(-color-primary, 42%);
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.budget-card-amount {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+}
+
+.budget-card-detail {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+}
+
+.budget-status-pill {
+    -fx-background-radius: 999px;
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 11px;
+    -fx-font-weight: 800;
+}
+
+.budget-status-safe {
+    -fx-background-color: -color-warm-2;
+    -fx-text-fill: -color-accent-1;
+}
+
+.budget-status-warning {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-primary;
+}
+
+.budget-status-danger {
+    -fx-background-color: -color-warm;
+    -fx-text-fill: -color-negative;
+}
+
+.budget-progress > .bar {
+    -fx-background-radius: 999px;
+}
+
+.budget-progress > .track {
+    -fx-background-radius: 999px;
+}
+
+.budget-progress-safe > .bar {
+    -fx-background-color: -color-accent-2;
+}
+
+.budget-progress-warning > .bar {
+    -fx-background-color: -color-primary;
+}
+
+.budget-progress-danger > .bar {
+    -fx-background-color: -color-negative;
+}
+
+#budgetTableView {
+    -fx-min-height: 240px;
+}

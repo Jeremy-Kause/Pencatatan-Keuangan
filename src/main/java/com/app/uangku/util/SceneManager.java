@@ -13,7 +13,20 @@ import java.net.URL;
 
 public final class SceneManager {
     private static final String FXML_BASE = "/com/app/uangku/fxml/";
-    private static final String GLOBAL_STYLESHEET = "/com/app/uangku/css/global.css";
+    private static final String CSS_BASE = "/com/app/uangku/css/";
+    private static final String[] STYLESHEETS = {
+            "global.css",
+            "controls.css",
+            "layout.css",
+            "cards.css",
+            "tables.css",
+            "auth.css",
+            "dashboard.css",
+            "transactions.css",
+            "categories.css",
+            "budgets.css",
+            "reports.css"
+    };
     private static final String FONT_BASE = "/com/app/uangku/fonts/";
     private static boolean fontsLoaded;
 
@@ -47,14 +60,17 @@ public final class SceneManager {
     public static void applyGlobalTheme(Scene scene) {
         loadFonts();
 
-        URL stylesheet = SceneManager.class.getResource(GLOBAL_STYLESHEET);
-        if (stylesheet == null) {
-            throw new IllegalStateException("CSS global tidak ditemukan: " + GLOBAL_STYLESHEET);
-        }
+        for (String stylesheetName : STYLESHEETS) {
+            String stylesheetPath = CSS_BASE + stylesheetName;
+            URL stylesheet = SceneManager.class.getResource(stylesheetPath);
+            if (stylesheet == null) {
+                throw new IllegalStateException("CSS tidak ditemukan: " + stylesheetPath);
+            }
 
-        String stylesheetUrl = stylesheet.toExternalForm();
-        if (!scene.getStylesheets().contains(stylesheetUrl)) {
-            scene.getStylesheets().add(stylesheetUrl);
+            String stylesheetUrl = stylesheet.toExternalForm();
+            if (!scene.getStylesheets().contains(stylesheetUrl)) {
+                scene.getStylesheets().add(stylesheetUrl);
+            }
         }
     }
 

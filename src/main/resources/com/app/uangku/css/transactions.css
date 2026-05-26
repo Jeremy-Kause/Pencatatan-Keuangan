@@ -1,0 +1,61 @@
+.filter-bar {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 18;
+}
+
+.filter-bar .text-field,
+.filter-bar .combo-box,
+.filter-bar .date-picker {
+    -fx-min-height: 48px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+}
+
+#transactionFilterBar {
+    -fx-min-height: 78px;
+}
+
+#transactionTableView {
+    -fx-min-height: 430px;
+}
+
+#transactionFormPanelNode {
+    -fx-min-width: 300px;
+}
+
+#transactionFormPanelNode .text-field,
+#transactionFormPanelNode .text-area,
+#transactionFormPanelNode .combo-box,
+#transactionFormPanelNode .date-picker {
+    -fx-min-height: 42px;
+}
+
+.type-pill {
+    -fx-background-radius: 999px;
+    -fx-padding: 4 10 4 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+
+.type-income {
+    -fx-background-color: -color-warm-2;
+    -fx-text-fill: -color-accent-1;
+}
+
+.type-expense {
+    -fx-background-color: -color-warm;
+    -fx-text-fill: -color-negative;
+}
+
+.amount-income {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-weight: 700;
+}
+
+.amount-expense {
+    -fx-text-fill: -color-negative;
+    -fx-font-weight: 700;
+}

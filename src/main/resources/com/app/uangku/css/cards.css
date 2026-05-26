@@ -1,0 +1,57 @@
+.panel,
+.metric-card,
+.placeholder-card,
+.category-card,
+.budget-card,
+.stat-card {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.panel {
+    -fx-padding: 22;
+}
+
+.placeholder-card {
+    -fx-padding: 20;
+    -fx-min-height: 96px;
+}
+
+.placeholder-title {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-weight: 800;
+}
+
+.category-card,
+.budget-card,
+.stat-card {
+    -fx-padding: 16;
+}
+
+.empty-state-card,
+.table-empty-state {
+    -fx-background-color: derive(-color-secondary, 82%);
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 18;
+}
+
+.table-empty-state {
+    -fx-alignment: center;
+    -fx-min-width: 360px;
+}
+
+.empty-state-title {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 15px;
+    -fx-font-weight: 800;
+}
+
+.empty-state-copy {
+    -fx-text-fill: derive(-color-primary, 32%);
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+}

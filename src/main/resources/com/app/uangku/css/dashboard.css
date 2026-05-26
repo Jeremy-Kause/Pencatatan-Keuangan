@@ -1,0 +1,93 @@
+.metric-card {
+    -fx-padding: 8 10 26 14;
+    -fx-min-height: 132px;
+}
+
+.metric-label {
+    -fx-text-fill: derive(-color-primary, 42%);
+    -fx-font-size: 17px;
+    -fx-font-weight: 400;
+}
+
+.metric-value {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 35px;
+    -fx-font-weight: 400;
+}
+
+#incomeCard {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+}
+
+#balanceCard {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+}
+
+#expenseCard {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+}
+
+.metric-icon {
+    -fx-background-radius: 6px;
+}
+
+#balanceIcon,
+#incomeIcon {
+    -fx-background-color: -color-warm-2;
+}
+
+#expenseIcon {
+    -fx-background-color: -color-warm;
+}
+
+.metric-icon-path {
+    -fx-fill: transparent;
+    -fx-stroke: -color-accent-1;
+    -fx-stroke-width: 2.2px;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+}
+
+#expenseIcon .metric-icon-path {
+    -fx-stroke: -color-negative;
+}
+
+.transaction-list {
+    -fx-padding: 0;
+}
+
+.transaction-card {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 9px;
+    -fx-background-radius: 9px;
+    -fx-min-height: 96px;
+    -fx-padding: 16 26 16 26;
+}
+
+.transaction-title {
+    -fx-text-fill: #000000;
+    -fx-font-size: 24px;
+    -fx-font-weight: 500;
+}
+
+.transaction-subtitle {
+    -fx-text-fill: derive(-color-primary, 46%);
+    -fx-font-size: 14px;
+}
+
+.transaction-amount {
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+}
+
+.transaction-income {
+    -fx-text-fill: -color-accent-1;
+}
+
+.transaction-expense {
+    -fx-text-fill: -color-negative;
+}

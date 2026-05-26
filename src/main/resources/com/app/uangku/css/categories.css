@@ -1,0 +1,41 @@
+.category-list {
+    -fx-padding: 2 0 0 0;
+}
+
+.category-row-card {
+    -fx-background-color: -color-base;
+    -fx-border-color: -color-secondary;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12 12 12 12;
+    -fx-min-height: 70px;
+}
+
+.category-row-card:hover {
+    -fx-border-color: -color-primary;
+}
+
+.category-marker {
+    -fx-min-width: 7px;
+    -fx-pref-width: 7px;
+    -fx-min-height: 42px;
+    -fx-background-radius: 999px;
+}
+
+.category-income-marker {
+    -fx-background-color: -color-accent-1;
+}
+
+.category-expense-marker {
+    -fx-background-color: -color-negative;
+}
+
+.category-row-title {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+}
+
+.category-row-content {
+    -fx-alignment: center-left;
+}
