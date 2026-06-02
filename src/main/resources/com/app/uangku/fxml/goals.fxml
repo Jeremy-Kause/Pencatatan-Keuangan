@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import com.app.uangku.component.SvgIcon?>
+
+<BorderPane styleClass="app-shell" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.uangku.controller.SavingsGoalController">
+    <left>
+        <VBox prefWidth="272" styleClass="sidebar">
+            <HBox alignment="CENTER_LEFT" spacing="14" styleClass="sidebar-logo">
+                <StackPane prefHeight="62" prefWidth="62" styleClass="sidebar-logo-mark">
+                    <SvgIcon source="com/app/uangku/icons/icon.svg" size="29" iconStyleClass="sidebar-logo-icon" />
+                </StackPane>
+                <Label text="UangKu" styleClass="sidebar-brand" />
+            </HBox>
+            <Region prefHeight="1" styleClass="sidebar-divider" />
+            <VBox spacing="12" styleClass="sidebar-nav" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showDashboard">
+                    <graphic>
+                        <SvgIcon source="com/app/uangku/icons/dashboard.svg" size="20" iconStyleClass="nav-icon" />
+                    </graphic>
+                </Button>
+                <Button text="Transaksi" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showTransactions">
+                    <graphic>
+                        <SvgIcon source="com/app/uangku/icons/transactions.svg" size="20" iconStyleClass="nav-icon" />
+                    </graphic>
+                </Button>
+                <Button text="Kategori" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showCategories">
+                    <graphic>
+                        <SvgIcon source="com/app/uangku/icons/categories.svg" size="20" iconStyleClass="nav-icon" />
+                    </graphic>
+                </Button>
+                <Button text="Anggaran" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showBudgets">
+                    <graphic>
+                        <SvgIcon source="com/app/uangku/icons/budget.svg" size="20" iconStyleClass="nav-icon" />
+                    </graphic>
+                </Button>
+                <Button id="activeNav" text="Target Tabungan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showGoals">
+                    <graphic>
+                        <SvgIcon source="com/app/uangku/icons/goal.svg" size="20" iconStyleClass="nav-icon" />
+                    </graphic>
+                </Button>
+                <Button text="Laporan" maxWidth="Infinity" styleClass="sidebar-button" onAction="#showReports">
+                    <graphic>
+                        <SvgIcon source="com/app/uangku/icons/report.svg" size="20" iconStyleClass="nav-icon" />
+                    </graphic>
+                </Button>
+            </VBox>
+            <Region prefHeight="1" styleClass="sidebar-divider" />
+            <Button text="Logout" maxWidth="Infinity" styleClass="logout-button" onAction="#logout">
+                <graphic>
+                    <SvgIcon source="com/app/uangku/icons/logout.svg" size="20" iconStyleClass="nav-icon" />
+                </graphic>
+            </Button>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="page-scroll">
+            <content>
+                <VBox spacing="22" styleClass="content">
+                    <HBox alignment="CENTER_LEFT">
+                        <VBox spacing="4">
+                            <Label text="Target Tabungan" styleClass="page-title" />
+                            <Label text="Tetapkan target dan pantau progres dari saldo atau surplus bulanan" styleClass="page-subtitle" />
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                    </HBox>
+
+                    <GridPane hgap="18" vgap="18">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="34" hgrow="ALWAYS" />
+                            <ColumnConstraints percentWidth="66" hgrow="ALWAYS" />
+                        </columnConstraints>
+
+                        <VBox spacing="12" styleClass="panel" GridPane.columnIndex="0">
+                            <Label text="Tambah Target" styleClass="section-title" />
+                            <VBox spacing="7">
+                                <Label text="Nama Target" styleClass="field-label" />
+                                <TextField fx:id="goalNameField" promptText="Contoh: Laptop Rp 8.000.000" onAction="#handleSaveGoal" />
+                            </VBox>
+                            <VBox spacing="7">
+                                <Label text="Nominal Target" styleClass="field-label" />
+                                <TextField fx:id="goalTargetField" promptText="Rp 8.000.000" onAction="#handleSaveGoal" />
+                            </VBox>
+                            <VBox spacing="7">
+                                <Label text="Tanggal Target" styleClass="field-label" />
+                                <DatePicker fx:id="goalTargetDatePicker" promptText="Opsional" maxWidth="Infinity" />
+                            </VBox>
+                            <VBox spacing="7">
+                                <Label text="Sumber Progres" styleClass="field-label" />
+                                <ComboBox fx:id="progressSourceComboBox" promptText="Saldo / Surplus" maxWidth="Infinity" />
+                            </VBox>
+                            <VBox spacing="7">
+                                <Label text="Catatan" styleClass="field-label" />
+                                <TextArea fx:id="goalDescriptionArea" prefRowCount="4" wrapText="true" />
+                            </VBox>
+                            <Label fx:id="goalMessageLabel" text="" styleClass="danger-text" wrapText="true" />
+                            <Button fx:id="saveGoalButton" text="Simpan Target" maxWidth="Infinity" defaultButton="true" styleClass="primary-button" onAction="#handleSaveGoal" />
+                            <Button text="Perbarui Daftar" maxWidth="Infinity" styleClass="secondary-button" onAction="#handleRefreshGoals" />
+                            <Button fx:id="cancelGoalButton" text="Batal Edit" maxWidth="Infinity" managed="false" visible="false" styleClass="secondary-button" onAction="#handleCancelGoalEdit" />
+                        </VBox>
+
+                        <VBox spacing="18" GridPane.columnIndex="1">
+                            <GridPane fx:id="goalCardsGrid" hgap="14" vgap="14" styleClass="goal-card-grid">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />
+                                    <ColumnConstraints percentWidth="50" hgrow="ALWAYS" />
+                                </columnConstraints>
+                            </GridPane>
+
+                            <VBox spacing="12" styleClass="panel">
+                                <Label text="Daftar Target" styleClass="section-title" />
+                                <TableView fx:id="goalTable" prefHeight="260">
+                                    <placeholder>
+                                        <VBox alignment="CENTER" spacing="6" styleClass="table-empty-state">
+                                            <Label text="Belum ada target tabungan" styleClass="empty-state-title" />
+                                            <Label text="Target yang Anda buat akan muncul di tabel ini." styleClass="empty-state-copy" wrapText="true" />
+                                        </VBox>
+                                    </placeholder>
+                                    <columns>
+                                        <TableColumn text="Target" prefWidth="170" />
+                                        <TableColumn text="Nominal" prefWidth="130" />
+                                        <TableColumn text="Sumber" prefWidth="145" />
+                                        <TableColumn text="Progres" prefWidth="160" />
+                                        <TableColumn text="Terkini" prefWidth="125" />
+                                        <TableColumn text="Tanggal" prefWidth="115" />
+                                        <TableColumn text="Status" prefWidth="130" />
+                                        <TableColumn text="Aksi" prefWidth="145" />
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

@@ -1,0 +1,96 @@
+.goal-card-grid {
+    -fx-padding: 0;
+}
+
+.goal-card {
+    -fx-padding: 18;
+    -fx-min-height: 210px;
+}
+
+.goal-card-safe {
+    -fx-border-color: -color-secondary;
+}
+
+.goal-card-warning {
+    -fx-border-color: derive(-color-negative, 55%);
+}
+
+.goal-card-success {
+    -fx-border-color: -color-accent-2;
+}
+
+.goal-card-title {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+}
+
+.goal-card-caption {
+    -fx-text-fill: derive(-color-primary, 42%);
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.goal-card-amount {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+}
+
+.goal-card-detail {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+}
+
+.goal-status-pill {
+    -fx-background-radius: 999px;
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 11px;
+    -fx-font-weight: 800;
+}
+
+.goal-status-safe {
+    -fx-background-color: -color-warm-2;
+    -fx-text-fill: -color-accent-1;
+}
+
+.goal-status-warning {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-primary;
+}
+
+.goal-status-success {
+    -fx-background-color: -color-accent-2;
+    -fx-text-fill: white;
+}
+
+.goal-progress > .bar {
+    -fx-background-radius: 999px;
+}
+
+.goal-progress > .track {
+    -fx-background-radius: 999px;
+}
+
+.goal-progress-safe > .bar {
+    -fx-background-color: -color-secondary;
+}
+
+.goal-progress-warning > .bar {
+    -fx-background-color: -color-primary;
+}
+
+.goal-progress-success > .bar {
+    -fx-background-color: -color-accent-2;
+}
+
+.goal-progress-label {
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: 800;
+}
+
+#goalTable {
+    -fx-min-height: 260px;
+}
