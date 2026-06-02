@@ -25,6 +25,7 @@ public final class SceneManager {
             "transactions.css",
             "categories.css",
             "budgets.css",
+            "goals.css",
             "reports.css"
     };
     private static final String FONT_BASE = "/com/app/uangku/fonts/";
