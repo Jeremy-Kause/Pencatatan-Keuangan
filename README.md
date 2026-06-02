@@ -20,6 +20,7 @@ Dokumen dasar perancangan: `Laporan_Perancangan_App_PrakRPL.pdf`.
 - Pencatatan pengeluaran dengan nominal, tanggal, kategori, dan deskripsi.
 - Manajemen kategori kustom untuk pemasukan dan pengeluaran.
 - Set budget bulanan per kategori pengeluaran.
+- Target tabungan dengan progress bar berdasarkan saldo saat ini atau surplus bulanan.
 - Riwayat transaksi dengan pencarian dan filter berdasarkan tanggal, tipe, dan kategori.
 - Laporan visual menggunakan Pie Chart untuk persentase pengeluaran berdasarkan kategori.
 
@@ -141,6 +142,18 @@ CREATE TABLE IF NOT EXISTS budgets (
     month_year TEXT NOT NULL,
     FOREIGN KEY (id_user) REFERENCES users(id_user),
     FOREIGN KEY (id_category) REFERENCES categories(id_category)
+);
+
+CREATE TABLE IF NOT EXISTS savings_goals (
+    id_goal INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_user INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    target_amount REAL NOT NULL,
+    target_date TEXT,
+    progress_source TEXT NOT NULL CHECK (progress_source IN ('BALANCE', 'MONTHLY_SURPLUS')),
+    description TEXT,
+    created_at TEXT NOT NULL DEFAULT (date('now')),
+    FOREIGN KEY (id_user) REFERENCES users(id_user)
 );
 ```
 
