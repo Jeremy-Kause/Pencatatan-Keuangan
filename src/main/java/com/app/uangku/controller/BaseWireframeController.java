@@ -68,6 +68,11 @@ public abstract class BaseWireframeController {
     }
 
     @FXML
+    protected void showGoals(ActionEvent event) throws IOException {
+        SceneManager.switchTo(event, "goals.fxml");
+    }
+
+    @FXML
     protected void showReports(ActionEvent event) throws IOException {
         SceneManager.switchTo(event, "reports.fxml");
     }
