@@ -107,10 +107,24 @@ public final class DatabaseHelper {
                     FOREIGN KEY (id_category) REFERENCES categories(id_category)
                 )
                 """,
+                """
+                CREATE TABLE IF NOT EXISTS savings_goals (
+                    id_goal INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_user INTEGER NOT NULL,
+                    name TEXT NOT NULL,
+                    target_amount REAL NOT NULL,
+                    target_date TEXT,
+                    progress_source TEXT NOT NULL CHECK (progress_source IN ('BALANCE', 'MONTHLY_SURPLUS')),
+                    description TEXT,
+                    created_at TEXT NOT NULL DEFAULT (date('now')),
+                    FOREIGN KEY (id_user) REFERENCES users(id_user)
+                )
+                """,
                 "CREATE INDEX IF NOT EXISTS idx_categories_user_type ON categories(id_user, type)",
                 "CREATE INDEX IF NOT EXISTS idx_transactions_user_date ON transactions(id_user, date)",
                 "CREATE INDEX IF NOT EXISTS idx_transactions_user_type ON transactions(id_user, type)",
-                "CREATE INDEX IF NOT EXISTS idx_budget_user_month ON budget(id_user, month_year)"
+                "CREATE INDEX IF NOT EXISTS idx_budget_user_month ON budget(id_user, month_year)",
+                "CREATE INDEX IF NOT EXISTS idx_savings_goals_user ON savings_goals(id_user)"
         };
     }
 }

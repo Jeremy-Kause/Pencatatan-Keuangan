@@ -2,6 +2,7 @@ package com.app.uangku.util;
 
 import com.app.uangku.dao.BudgetDAO;
 import com.app.uangku.dao.CategoryDAO;
+import com.app.uangku.dao.SavingsGoalDAO;
 import com.app.uangku.dao.TransactionDAO;
 import com.app.uangku.dao.UserDAO;
 import com.app.uangku.model.*;
@@ -106,6 +107,9 @@ public final class DummyDataSeeder {
         BudgetDAO budgetDAO = new BudgetDAO();
         seedBudgets(budgetDAO, uid, catMakanan, catTransport, catBelanja, catTagihan, catHiburan);
 
+        SavingsGoalDAO savingsGoalDAO = new SavingsGoalDAO();
+        seedSavingsGoals(savingsGoalDAO, uid);
+
         LOGGER.info("Data dummy berhasil disisipkan untuk user: " + DEMO_USERNAME);
     }
 
@@ -184,6 +188,19 @@ public final class DummyDataSeeder {
     private static void setBudget(BudgetDAO dao, int uid,
                                    Category cat, double limit, YearMonth month) throws SQLException {
         dao.setBudget(new Budget(uid, cat.getIdCategory(), limit, month));
+    }
+
+    // â”€â”€â”€ Savings Goal Dummy â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    private static void seedSavingsGoals(SavingsGoalDAO dao, int uid) throws SQLException {
+        dao.create(new SavingsGoal(
+                uid,
+                "Laptop Baru",
+                8_000_000,
+                YearMonth.now().plusMonths(6).atEndOfMonth(),
+                SavingsGoalSource.BALANCE,
+                "Target demo untuk pembelian laptop"
+        ));
     }
 
     // ─── Utilitas ─────────────────────────────────────────────────────────────────
