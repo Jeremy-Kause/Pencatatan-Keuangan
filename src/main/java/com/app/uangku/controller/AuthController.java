@@ -5,8 +5,7 @@ import com.app.uangku.dao.UserDAO;
 import com.app.uangku.model.User;
 import com.app.uangku.util.SceneManager;
 import com.app.uangku.util.SessionManager;
-import com.app.uangku.validation.AuthInputValidator;
-import com.app.uangku.validation.ValidationResult;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -19,7 +18,6 @@ import java.sql.SQLException;
 public class AuthController extends BaseWireframeController {
     private final UserDAO userDAO = new UserDAO();
     private final CategoryDAO categoryDAO = new CategoryDAO();
-    private final AuthInputValidator authInputValidator = new AuthInputValidator();
 
     @FXML
     private TextField usernameField;
@@ -49,9 +47,12 @@ public class AuthController extends BaseWireframeController {
             String password = passwordField.getText();
             clearMessage(authMessageLabel);
 
-            ValidationResult validationResult = authInputValidator.validateLogin(usernameOrEmail, password);
-            if (!validationResult.isValid()) {
-                setErrorMessage(authMessageLabel, validationResult.getMessage());
+            if (usernameOrEmail.isEmpty()) {
+                setErrorMessage(authMessageLabel, "Username atau email wajib diisi.");
+                return;
+            }
+            if (password == null || password.isEmpty()) {
+                setErrorMessage(authMessageLabel, "Password wajib diisi.");
                 return;
             }
 
@@ -78,9 +79,32 @@ public class AuthController extends BaseWireframeController {
             String password = registerPasswordField.getText();
             clearMessage(registerMessageLabel);
 
-            ValidationResult validationResult = authInputValidator.validateRegistration(username, email, password);
-            if (!validationResult.isValid()) {
-                setErrorMessage(registerMessageLabel, validationResult.getMessage());
+            if (username.isEmpty()) {
+                setErrorMessage(registerMessageLabel, "Username wajib diisi.");
+                return;
+            }
+            if (username.length() < 4 || username.length() > 20) {
+                setErrorMessage(registerMessageLabel, "Username harus antara 4 hingga 20 karakter.");
+                return;
+            }
+            if (!username.matches("^[a-zA-Z0-9_]+$")) {
+                setErrorMessage(registerMessageLabel, "Username hanya boleh berisi huruf, angka, dan underscore.");
+                return;
+            }
+            if (email.isEmpty()) {
+                setErrorMessage(registerMessageLabel, "Email wajib diisi.");
+                return;
+            }
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                setErrorMessage(registerMessageLabel, "Format email tidak valid.");
+                return;
+            }
+            if (password == null || password.isEmpty()) {
+                setErrorMessage(registerMessageLabel, "Password wajib diisi.");
+                return;
+            }
+            if (password.length() < 6) {
+                setErrorMessage(registerMessageLabel, "Password minimal 6 karakter.");
                 return;
             }
             if (userDAO.isUsernameTaken(username)) {

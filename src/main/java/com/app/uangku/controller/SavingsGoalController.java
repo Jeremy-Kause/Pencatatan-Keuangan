@@ -6,8 +6,7 @@ import com.app.uangku.model.SavingsGoal;
 import com.app.uangku.model.SavingsGoalStatus;
 import com.app.uangku.model.User;
 import com.app.uangku.util.SessionManager;
-import com.app.uangku.validation.SavingsGoalInputValidator;
-import com.app.uangku.validation.ValidationResult;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -35,7 +34,6 @@ import java.util.List;
 
 public class SavingsGoalController extends BaseWireframeController {
     private final SavingsGoalDAO savingsGoalDAO = new SavingsGoalDAO();
-    private final SavingsGoalInputValidator savingsGoalInputValidator = new SavingsGoalInputValidator();
     private SavingsGoal selectedGoal;
 
     @FXML
@@ -93,9 +91,28 @@ public class SavingsGoalController extends BaseWireframeController {
             String description = goalDescriptionArea.getText() == null ? "" : goalDescriptionArea.getText().trim();
             clearMessage(goalMessageLabel);
 
-            ValidationResult validationResult = savingsGoalInputValidator.validate(name, targetAmount, currentAmount, targetDate);
-            if (!validationResult.isValid()) {
-                setErrorMessage(goalMessageLabel, validationResult.getMessage());
+            if (name.isEmpty()) {
+                setErrorMessage(goalMessageLabel, "Nama target wajib diisi.");
+                return;
+            }
+            if (name.length() < 3) {
+                setErrorMessage(goalMessageLabel, "Nama target minimal 3 karakter.");
+                return;
+            }
+            if (name.length() > 50) {
+                setErrorMessage(goalMessageLabel, "Nama target maksimal 50 karakter.");
+                return;
+            }
+            if (targetAmount <= 0) {
+                setErrorMessage(goalMessageLabel, "Target nominal harus lebih dari 0.");
+                return;
+            }
+            if (currentAmount < 0) {
+                setErrorMessage(goalMessageLabel, "Saldo awal tidak boleh negatif.");
+                return;
+            }
+            if (targetDate != null && targetDate.isBefore(LocalDate.now())) {
+                setErrorMessage(goalMessageLabel, "Tanggal target tidak boleh di masa lalu.");
                 return;
             }
 

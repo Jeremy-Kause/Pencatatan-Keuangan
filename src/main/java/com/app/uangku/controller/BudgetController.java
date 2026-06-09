@@ -8,8 +8,7 @@ import com.app.uangku.model.Category;
 import com.app.uangku.model.TransactionType;
 import com.app.uangku.model.User;
 import com.app.uangku.util.SessionManager;
-import com.app.uangku.validation.BudgetInputValidator;
-import com.app.uangku.validation.ValidationResult;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -36,7 +35,6 @@ import java.util.List;
 public class BudgetController extends BaseWireframeController {
     private final BudgetDAO budgetDAO = new BudgetDAO();
     private final CategoryDAO categoryDAO = new CategoryDAO();
-    private final BudgetInputValidator budgetInputValidator = new BudgetInputValidator();
     private Budget selectedBudget;
 
     @FXML
@@ -84,9 +82,8 @@ public class BudgetController extends BaseWireframeController {
             Category category = budgetCategoryComboBox.getValue();
             clearMessage(budgetMessageLabel);
 
-            ValidationResult validationResult = budgetInputValidator.validate(category);
-            if (!validationResult.isValid()) {
-                setErrorMessage(budgetMessageLabel, validationResult.getMessage());
+            if (category == null) {
+                setErrorMessage(budgetMessageLabel, "Kategori wajib dipilih.");
                 return;
             }
 
