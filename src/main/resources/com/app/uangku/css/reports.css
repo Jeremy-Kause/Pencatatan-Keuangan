@@ -8,22 +8,42 @@
     -fx-background-radius: 5px;
 }
 
-.default-color0.chart-pie {
-    -fx-pie-color: -color-accent-2;
-}
-
-.default-color1.chart-pie {
-    -fx-pie-color: -color-accent-1;
-}
-
-.default-color2.chart-pie {
-    -fx-pie-color: -color-primary;
-}
-
-.default-color3.chart-pie {
+.expense-pie-chart .default-color0.chart-pie {
     -fx-pie-color: -color-negative;
 }
 
-.default-color4.chart-pie {
+.expense-pie-chart .default-color1.chart-pie {
+    -fx-pie-color: -color-accent-2;
+}
+
+.expense-pie-chart .default-color2.chart-pie {
+    -fx-pie-color: -color-accent-1;
+}
+
+.expense-pie-chart .default-color3.chart-pie {
+    -fx-pie-color: -color-primary;
+}
+
+.expense-pie-chart .default-color4.chart-pie {
     -fx-pie-color: -color-secondary;
+}
+
+.expense-pie-chart .default-color0.chart-legend-item-symbol {
+    -fx-background-color: -color-negative;
+}
+
+.expense-pie-chart .default-color1.chart-legend-item-symbol {
+    -fx-background-color: -color-accent-2;
+}
+
+.expense-pie-chart .default-color2.chart-legend-item-symbol {
+    -fx-background-color: -color-accent-1;
+}
+
+.expense-pie-chart .default-color3.chart-legend-item-symbol {
+    -fx-background-color: -color-primary;
+}
+
+.expense-pie-chart .default-color4.chart-legend-item-symbol {
+    -fx-background-color: -color-secondary;
 }

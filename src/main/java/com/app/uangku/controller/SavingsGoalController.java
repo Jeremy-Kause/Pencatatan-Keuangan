@@ -24,6 +24,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -75,7 +77,16 @@ public class SavingsGoalController extends BaseWireframeController {
         refreshGoals();
         goalNameField.setOnAction(event -> handleSaveGoal());
         goalTargetField.setOnAction(event -> handleSaveGoal());
+        goalTargetDatePicker.getEditor().setOnAction(event -> handleSaveGoal());
         goalCurrentAmountField.setOnAction(event -> handleSaveGoal());
+        goalDescriptionArea.addEventFilter(KeyEvent.KEY_PRESSED, this::handleDescriptionEnterShortcut);
+    }
+
+    private void handleDescriptionEnterShortcut(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER && !event.isShiftDown()) {
+            event.consume();
+            handleSaveGoal();
+        }
     }
 
     @FXML

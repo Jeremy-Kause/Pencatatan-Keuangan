@@ -84,7 +84,7 @@
                         <VBox spacing="14" styleClass="panel" GridPane.columnIndex="0">
                             <Label styleClass="section-title" text="Piechart" />
                             <StackPane prefHeight="430">
-                                <PieChart fx:id="expensePieChart" labelsVisible="true" legendVisible="true" title="Pengeluaran per Kategori" />
+                                <PieChart fx:id="expensePieChart" labelsVisible="true" legendVisible="true" styleClass="expense-pie-chart" title="Pengeluaran per Kategori" />
                             </StackPane>
                         </VBox>
 
