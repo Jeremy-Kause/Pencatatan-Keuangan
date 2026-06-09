@@ -1,7 +1,7 @@
 package com.app.uangku.model;
 
 public enum TransactionType {
-    PEMASUKAN("PEMASUKAN", "Pemasukan"),
+    PEMASUKAN("PEMASUKKAN", "Pemasukan"),
     PENGELUARAN("PENGELUARAN", "Pengeluaran");
 
     private final String databaseValue;
