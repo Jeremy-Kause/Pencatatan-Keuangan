@@ -15,6 +15,18 @@
     -fx-font-weight: 400;
 }
 
+.metric-value-income {
+    -fx-text-fill: -color-accent-1;
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+}
+
+.metric-value-danger {
+    -fx-text-fill: -color-negative;
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+}
+
 #incomeCard {
     -fx-background-color: -color-base;
     -fx-border-color: -color-secondary;

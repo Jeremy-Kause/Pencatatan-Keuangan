@@ -34,7 +34,13 @@ public class ReportController extends BaseWireframeController {
     private PieChart expensePieChart;
 
     @FXML
+    private Label reportTotalIncomeLabel;
+
+    @FXML
     private Label reportTotalExpenseLabel;
+
+    @FXML
+    private Label reportBalanceLabel;
 
     @FXML
     private Label topCategoryLabel;
@@ -70,7 +76,9 @@ public class ReportController extends BaseWireframeController {
     private void loadReport() {
         if (!hasActiveSession()) {
             expensePieChart.setData(FXCollections.emptyObservableList());
+            setMessage(reportTotalIncomeLabel, formatCurrency(0));
             setMessage(reportTotalExpenseLabel, formatCurrency(0));
+            setMessage(reportBalanceLabel, formatCurrency(0));
             setMessage(topCategoryLabel, "Belum ada data");
             setMessage(topCategoryPercentLabel, "Login diperlukan");
             setMessage(transactionCountLabel, "0 transaksi");
@@ -96,10 +104,26 @@ public class ReportController extends BaseWireframeController {
                     user.getIdUser(),
                     month.atDay(1),
                     month.atEndOfMonth(),
-                    null,
-                    null,
-                    null
+                    null, null, null
             );
+
+            double totalPemasukan = transactions.stream()
+                    .filter(t -> t.getType() == com.app.uangku.model.TransactionType.PEMASUKAN)
+                    .mapToDouble(Transaction::getAmount).sum();
+            double totalPengeluaran = transactions.stream()
+                    .filter(t -> t.getType() == com.app.uangku.model.TransactionType.PENGELUARAN)
+                    .mapToDouble(Transaction::getAmount).sum();
+            double selisih = totalPemasukan - totalPengeluaran;
+
+            setMessage(reportTotalIncomeLabel, formatCurrency(totalPemasukan));
+            setMessage(reportTotalExpenseLabel, formatCurrency(totalExpense));
+            setMessage(reportBalanceLabel, formatCurrency(selisih));
+
+            if (reportBalanceLabel != null) {
+                reportBalanceLabel.getStyleClass().removeAll("metric-value-income", "metric-value-danger");
+                reportBalanceLabel.getStyleClass().add(selisih >= 0 ? "metric-value-income" : "metric-value-danger");
+            }
+
             setMessage(transactionCountLabel, transactions.size() + " transaksi");
             clearMessage(reportNoteLabel);
             setMessage(reportNoteLabel, "Laporan bulan " + formatMonth(month));
@@ -230,10 +254,10 @@ public class ReportController extends BaseWireframeController {
 
             // Ringkasan
             double totalPemasukan = transactions.stream()
-                    .filter(t -> t.getType().toDatabaseValue().equals("pemasukan"))
+                    .filter(t -> t.getType() == com.app.uangku.model.TransactionType.PEMASUKAN)
                     .mapToDouble(Transaction::getAmount).sum();
             double totalPengeluaran = transactions.stream()
-                    .filter(t -> t.getType().toDatabaseValue().equals("pengeluaran"))
+                    .filter(t -> t.getType() == com.app.uangku.model.TransactionType.PENGELUARAN)
                     .mapToDouble(Transaction::getAmount).sum();
 
             String[][] summary = {
@@ -279,9 +303,7 @@ public class ReportController extends BaseWireframeController {
                 if (alt) cDate.setCellStyle(altRowStyle);
 
                 Cell cType = row.createCell(1);
-                String tipe = t.getType().toDatabaseValue().substring(0, 1).toUpperCase()
-                        + t.getType().toDatabaseValue().substring(1);
-                cType.setCellValue(tipe);
+                cType.setCellValue(t.getType().getDisplayName());
                 if (alt) cType.setCellStyle(altRowStyle);
 
                 Cell cCat = row.createCell(2);
@@ -355,9 +377,10 @@ public class ReportController extends BaseWireframeController {
 
                 Cell cPct = row.createCell(2);
                 int excelRow = catRow + 1;
-                int totalDataEnd = catRow + expenseByCategory.size();
-                cPct.setCellFormula("IF(SUM(B" + catDataStart + ":B" + (catDataStart + expenseByCategory.size() - 1)
-                        + ")=0,0,B" + excelRow + "/SUM(B" + catDataStart + ":B" + (catDataStart + expenseByCategory.size() - 1) + "))");
+                int totalStart = catDataStart;
+                int totalEnd = catDataStart + expenseByCategory.size() - 1;
+                cPct.setCellFormula("IF(SUM(B" + totalStart + ":B" + totalEnd
+                        + ")=0,0,B" + excelRow + "/SUM(B" + totalStart + ":B" + totalEnd + "))");
                 cPct.setCellStyle(alt ? altPctStyle : pctStyle);
 
                 catRow++;

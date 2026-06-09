@@ -92,8 +92,16 @@
                             <Label styleClass="section-title" text="Data Statistik" wrapText="true" />
                             <VBox spacing="10">
                                 <VBox spacing="6" styleClass="stat-card">
+                                    <Label styleClass="metric-label" text="Total Pemasukan" />
+                                    <Label fx:id="reportTotalIncomeLabel" styleClass="metric-value-income" text="Rp 0" />
+                                </VBox>
+                                <VBox spacing="6" styleClass="stat-card">
                                     <Label styleClass="metric-label" text="Total Pengeluaran" />
                                     <Label fx:id="reportTotalExpenseLabel" styleClass="metric-value" text="Rp 500.000" />
+                                </VBox>
+                                <VBox spacing="6" styleClass="stat-card">
+                                    <Label styleClass="metric-label" text="Selisih (Sisa)" />
+                                    <Label fx:id="reportBalanceLabel" styleClass="metric-value-income" text="Rp 0" />
                                 </VBox>
                                 <VBox spacing="6" styleClass="stat-card">
                                     <Label styleClass="metric-label" text="Kategori Terbesar" />
