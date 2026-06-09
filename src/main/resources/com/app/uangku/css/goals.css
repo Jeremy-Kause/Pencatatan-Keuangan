@@ -4,7 +4,21 @@
 
 .goal-card {
     -fx-padding: 18;
-    -fx-min-height: 210px;
+    -fx-min-height: 250px;
+}
+
+.goal-deposit-button {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-background-radius: 8px;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+
+.goal-deposit-button:hover {
+    -fx-background-color: derive(-color-secondary, -15%);
 }
 
 .goal-card-safe {

@@ -1,7 +1,6 @@
 package com.app.uangku.dao;
 
 import com.app.uangku.model.SavingsGoal;
-import com.app.uangku.model.TransactionType;
 import com.app.uangku.util.DatabaseHelper;
 
 import java.sql.Connection;
@@ -10,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,6 +67,22 @@ public class SavingsGoalDAO {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idGoal);
             statement.setInt(2, idUser);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+    public boolean deposit(int idGoal, int idUser, double amount) throws SQLException {
+        String sql = """
+                UPDATE savings_goals
+                SET current_amount = current_amount + ?
+                WHERE id_goal = ? AND id_user = ?
+                """;
+
+        try (Connection connection = DatabaseHelper.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setDouble(1, amount);
+            statement.setInt(2, idGoal);
+            statement.setInt(3, idUser);
             return statement.executeUpdate() > 0;
         }
     }

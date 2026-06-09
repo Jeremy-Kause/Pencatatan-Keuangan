@@ -2,19 +2,21 @@ package com.app.uangku.controller;
 
 import com.app.uangku.dao.SavingsGoalDAO;
 import com.app.uangku.model.SavingsGoal;
-
 import com.app.uangku.model.SavingsGoalStatus;
 import com.app.uangku.model.User;
 import com.app.uangku.util.SessionManager;
-
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableCell;
@@ -334,10 +336,80 @@ public class SavingsGoalController extends BaseWireframeController {
         HBox.setHgrow(detailRow.getChildren().get(1), Priority.ALWAYS);
         detailRow.setAlignment(Pos.CENTER_LEFT);
 
-        VBox card = new VBox(12, headerRow, topGroup, progressBar, percentLabel, detailRow);
+        Button depositButton = new Button("+ Setor Dana");
+        depositButton.getStyleClass().add("goal-deposit-button");
+        depositButton.setMaxWidth(Double.MAX_VALUE);
+        depositButton.setOnAction(event -> showDepositDialog(goal));
+
+        VBox card = new VBox(12, headerRow, topGroup, progressBar, percentLabel, detailRow, depositButton);
         card.setAlignment(Pos.CENTER_LEFT);
         card.getStyleClass().addAll("goal-card", "panel", goalStatusCardClass(goal.getStatus()));
         return card;
+    }
+
+    private void showDepositDialog(SavingsGoal goal) {
+        Dialog<Double> dialog = new Dialog<>();
+        dialog.setTitle("Setor Dana");
+        dialog.setHeaderText("Setor dana ke tabungan: " + goal.getName());
+
+        ButtonType confirmButtonType = new ButtonType("Setor", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
+
+        TextField amountField = new TextField();
+        amountField.setPromptText("Contoh: 500000");
+
+        Label infoLabel = new Label("Progres saat ini: " + formatCurrency(goal.getCurrentAmount())
+                + " / " + formatCurrency(goal.getTargetAmount()));
+        infoLabel.getStyleClass().add("goal-card-caption");
+
+        Label errorLabel = new Label();
+        errorLabel.getStyleClass().add("danger-text");
+
+        VBox content = new VBox(10, infoLabel, amountField, errorLabel);
+        content.setPadding(new Insets(16, 16, 8, 16));
+        dialog.getDialogPane().setContent(content);
+
+        Node confirmNode = dialog.getDialogPane().lookupButton(confirmButtonType);
+        confirmNode.addEventFilter(javafx.event.ActionEvent.ACTION, event -> {
+            String raw = amountField.getText();
+            if (raw == null || raw.isBlank()) {
+                errorLabel.setText("Nominal wajib diisi.");
+                event.consume();
+                return;
+            }
+            try {
+                double amount = parseAmount(raw);
+                if (amount <= 0) {
+                    errorLabel.setText("Nominal harus lebih dari 0.");
+                    event.consume();
+                }
+            } catch (IllegalArgumentException ex) {
+                errorLabel.setText("Nominal tidak valid.");
+                event.consume();
+            }
+        });
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == confirmButtonType) {
+                try {
+                    return parseAmount(amountField.getText());
+                } catch (Exception ex) {
+                    return null;
+                }
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(amount -> {
+            try {
+                User user = SessionManager.getCurrentUser().orElseThrow();
+                savingsGoalDAO.deposit(goal.getIdGoal(), user.getIdUser(), amount);
+                refreshGoals();
+                setSuccessMessage(goalMessageLabel, "Dana berhasil disetor ke tabungan \"" + goal.getName() + "\".");
+            } catch (SQLException ex) {
+                setErrorMessage(goalMessageLabel, "Gagal menyetor dana: " + ex.getMessage());
+            }
+        });
     }
 
     private void startEditGoal(SavingsGoal goal) {
