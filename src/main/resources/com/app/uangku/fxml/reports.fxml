@@ -68,7 +68,6 @@
                         <Region HBox.hgrow="ALWAYS" />
                         <HBox spacing="10" alignment="CENTER_RIGHT">
                             <ComboBox fx:id="reportMonthComboBox" prefWidth="160" promptText="Bulan ini" />
-                            <Button text="Export CSV" styleClass="button-primary" onAction="#exportToCsv" />
                             <Button text="Export Excel" styleClass="button-primary" onAction="#exportToExcel" />
                         </HBox>
                     </HBox>

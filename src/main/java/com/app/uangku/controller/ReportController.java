@@ -16,9 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -125,46 +123,7 @@ public class ReportController extends BaseWireframeController {
         setMessage(topCategoryPercentLabel, String.format("%.1f%% dari total pengeluaran", percentage));
     }
 
-    // ─── Export CSV ───────────────────────────────────────────────────────────
 
-    @FXML
-    private void exportToCsv() {
-        if (!hasActiveSession()) {
-            setErrorMessage(exportStatusLabel, "Silakan login terlebih dahulu.");
-            return;
-        }
-
-        YearMonth month = reportMonthComboBox.getValue();
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Simpan Laporan CSV");
-        fileChooser.setInitialFileName("laporan_" + month.toString() + ".csv");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("CSV Files (*.csv)", "*.csv")
-        );
-
-        File file = fileChooser.showSaveDialog(reportMonthComboBox.getScene().getWindow());
-        if (file == null) return;
-
-        try {
-            User user = SessionManager.getCurrentUser().orElseThrow();
-            List<Transaction> transactions = transactionDAO.filter(
-                    user.getIdUser(),
-                    month.atDay(1),
-                    month.atEndOfMonth(),
-                    null,
-                    null,
-                    null
-            );
-
-            writeCsv(file, transactions, month);
-            setSuccessMessage(exportStatusLabel, "Berhasil disimpan: " + file.getName());
-        } catch (SQLException e) {
-            setErrorMessage(exportStatusLabel, "Gagal mengambil data: " + e.getMessage());
-        } catch (IOException e) {
-            setErrorMessage(exportStatusLabel, "Gagal menulis file: " + e.getMessage());
-        }
-    }
 
     // ─── Export Excel ─────────────────────────────────────────────────────────
 
@@ -417,46 +376,6 @@ public class ReportController extends BaseWireframeController {
 
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 wb.write(fos);
-            }
-        }
-    }
-
-    private void writeCsv(File file, List<Transaction> transactions, YearMonth month) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            // Metadata header
-            writer.println("Laporan Keuangan UangKu");
-            writer.println("Bulan," + formatMonth(month));
-            writer.println("Total Transaksi," + transactions.size());
-
-            double totalPemasukan = transactions.stream()
-                    .filter(t -> t.getType().toDatabaseValue().equals("pemasukan"))
-                    .mapToDouble(Transaction::getAmount).sum();
-            double totalPengeluaran = transactions.stream()
-                    .filter(t -> t.getType().toDatabaseValue().equals("pengeluaran"))
-                    .mapToDouble(Transaction::getAmount).sum();
-
-            writer.println("Total Pemasukan," + String.format("%.2f", totalPemasukan));
-            writer.println("Total Pengeluaran," + String.format("%.2f", totalPengeluaran));
-            writer.println("Selisih," + String.format("%.2f", totalPemasukan - totalPengeluaran));
-            writer.println();
-
-            // Column headers
-            writer.println("Tanggal,Tipe,Kategori,Nominal,Deskripsi");
-
-            // Data rows
-            for (Transaction t : transactions) {
-                String tipe = t.getType().toDatabaseValue().substring(0, 1).toUpperCase()
-                        + t.getType().toDatabaseValue().substring(1);
-                String deskripsi = t.getDescription() == null ? "" : t.getDescription().replace(",", ";");
-                String kategori = t.getCategoryName() == null ? "" : t.getCategoryName().replace(",", ";");
-
-                writer.printf("%s,%s,%s,%.2f,%s%n",
-                        t.getDate().format(DATE_FORMAT),
-                        tipe,
-                        kategori,
-                        t.getAmount(),
-                        deskripsi
-                );
             }
         }
     }

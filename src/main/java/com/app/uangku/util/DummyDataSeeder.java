@@ -190,7 +190,6 @@ public final class DummyDataSeeder {
         dao.setBudget(new Budget(uid, cat.getIdCategory(), limit, month));
     }
 
-    // â”€â”€â”€ Savings Goal Dummy â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static void seedSavingsGoals(SavingsGoalDAO dao, int uid) throws SQLException {
         dao.create(new SavingsGoal(
