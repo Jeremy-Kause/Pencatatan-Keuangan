@@ -66,8 +66,15 @@
                             <Label styleClass="page-subtitle" text="Analisis pengeluaran berdasarkan kategori" />
                         </VBox>
                         <Region HBox.hgrow="ALWAYS" />
-                        <ComboBox fx:id="reportMonthComboBox" prefWidth="160" promptText="Bulan ini" />
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <ComboBox fx:id="reportMonthComboBox" prefWidth="160" promptText="Bulan ini" />
+                            <Button text="Export CSV" styleClass="button-primary" onAction="#exportToCsv" />
+                            <Button text="Export Excel" styleClass="button-primary" onAction="#exportToExcel" />
+                        </HBox>
                     </HBox>
+
+                    <!-- Export status label -->
+                    <Label fx:id="exportStatusLabel" styleClass="muted-text" text="" wrapText="true" />
 
                     <GridPane hgap="18" vgap="18">
                         <columnConstraints>
@@ -104,9 +111,9 @@
                                 </VBox>
                             </VBox>
                         </VBox>
-                  <rowConstraints>
-                     <RowConstraints />
-                  </rowConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                        </rowConstraints>
                     </GridPane>
                 </VBox>
             </content>
