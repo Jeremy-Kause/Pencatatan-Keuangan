@@ -79,7 +79,7 @@ public final class DatabaseHelper {
                     id_category INTEGER PRIMARY KEY AUTOINCREMENT,
                     id_user INTEGER NOT NULL,
                     name TEXT NOT NULL,
-                    type TEXT NOT NULL CHECK (type IN ('PEMASUKAN', 'PENGELUARAN')),
+                    type TEXT NOT NULL CHECK (type IN ('PEMASUKKAN', 'PENGELUARAN')),
                     FOREIGN KEY (id_user) REFERENCES users(id_user)
                 )
                 """,
@@ -91,7 +91,7 @@ public final class DatabaseHelper {
                     amount REAL NOT NULL,
                     date TEXT NOT NULL,
                     description TEXT,
-                    type TEXT NOT NULL CHECK (type IN ('PEMASUKAN', 'PENGELUARAN')),
+                    type TEXT NOT NULL CHECK (type IN ('PEMASUKKAN', 'PENGELUARAN')),
                     FOREIGN KEY (id_user) REFERENCES users(id_user),
                     FOREIGN KEY (id_category) REFERENCES categories(id_category)
                 )
