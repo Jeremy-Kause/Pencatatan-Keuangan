@@ -37,14 +37,49 @@ public final class DatabaseHelper {
                 statement.executeUpdate(query);
             }
             
-            // Migrasi otomatis jika tabel sudah ada dari versi sebelumnya
-            try {
-                statement.executeUpdate("ALTER TABLE savings_goals ADD COLUMN current_amount REAL NOT NULL DEFAULT 0");
-            } catch (SQLException ignore) {
-                // Kolom sudah ada, abaikan error
+            // Migrasi: hapus progress_source dan pastikan current_amount ada
+            // SQLite tidak mendukung DROP COLUMN, jadi rebuild tabel jika perlu
+            boolean hasProgressSource = false;
+            boolean hasCurrentAmount = false;
+            try (var rs = statement.executeQuery("PRAGMA table_info(savings_goals)")) {
+                while (rs.next()) {
+                    String col = rs.getString("name");
+                    if ("progress_source".equals(col)) hasProgressSource = true;
+                    if ("current_amount".equals(col)) hasCurrentAmount = true;
+                }
             }
-            
+
+            if (hasProgressSource) {
+                // Rebuild tabel untuk menghapus kolom progress_source
+                statement.executeUpdate("""
+                        CREATE TABLE IF NOT EXISTS savings_goals_new (
+                            id_goal INTEGER PRIMARY KEY AUTOINCREMENT,
+                            id_user INTEGER NOT NULL,
+                            name TEXT NOT NULL,
+                            target_amount REAL NOT NULL,
+                            current_amount REAL NOT NULL DEFAULT 0,
+                            target_date TEXT,
+                            description TEXT,
+                            created_at TEXT NOT NULL DEFAULT (date('now')),
+                            FOREIGN KEY (id_user) REFERENCES users(id_user)
+                        )
+                        """);
+                statement.executeUpdate("""
+                        INSERT INTO savings_goals_new
+                            (id_goal, id_user, name, target_amount, current_amount, target_date, description, created_at)
+                        SELECT id_goal, id_user, name, target_amount,
+                               COALESCE(current_amount, 0),
+                               target_date, description, created_at
+                        FROM savings_goals
+                        """);
+                statement.executeUpdate("DROP TABLE savings_goals");
+                statement.executeUpdate("ALTER TABLE savings_goals_new RENAME TO savings_goals");
+            } else if (!hasCurrentAmount) {
+                statement.executeUpdate("ALTER TABLE savings_goals ADD COLUMN current_amount REAL NOT NULL DEFAULT 0");
+            }
+
             initialized = true;
+
         } catch (SQLException exception) {
             throw new IllegalStateException("Gagal menyiapkan database SQLite", exception);
         }

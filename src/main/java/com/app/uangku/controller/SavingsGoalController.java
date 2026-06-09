@@ -73,6 +73,9 @@ public class SavingsGoalController extends BaseWireframeController {
         setupTable();
         updateFormState();
         refreshGoals();
+        goalNameField.setOnAction(event -> handleSaveGoal());
+        goalTargetField.setOnAction(event -> handleSaveGoal());
+        goalCurrentAmountField.setOnAction(event -> handleSaveGoal());
     }
 
     @FXML
@@ -86,8 +89,15 @@ public class SavingsGoalController extends BaseWireframeController {
             String name = goalNameField.getText() == null ? "" : goalNameField.getText().trim();
             double targetAmount = parseAmount(goalTargetField.getText());
             double currentAmount = 0;
-            if (goalCurrentAmountField.getText() != null && !goalCurrentAmountField.getText().isBlank()) {
-                currentAmount = parseAmount(goalCurrentAmountField.getText());
+            String currentAmountText = goalCurrentAmountField.getText();
+            if (currentAmountText != null && !currentAmountText.isBlank()) {
+                try {
+                    currentAmountText = currentAmountText.replace(".", "").replace(",", ".").trim();
+                    currentAmount = Double.parseDouble(currentAmountText);
+                } catch (NumberFormatException e) {
+                    setErrorMessage(goalMessageLabel, "Saldo awal tidak valid.");
+                    return;
+                }
             }
             LocalDate targetDate = goalTargetDatePicker.getValue();
             String description = goalDescriptionArea.getText() == null ? "" : goalDescriptionArea.getText().trim();
