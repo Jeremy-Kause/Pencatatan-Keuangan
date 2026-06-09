@@ -1,15 +1,19 @@
 package com.app.uangku.model;
 
-public enum SavingsGoalSource {
-    BALANCE("BALANCE", "Saldo Saat Ini"),
-    MONTHLY_SURPLUS("MONTHLY_SURPLUS", "Surplus Bulan Ini");
+public class SavingsGoalSource {
+    public static final SavingsGoalSource BALANCE = new SavingsGoalSource("BALANCE", "Saldo Saat Ini");
+    public static final SavingsGoalSource MONTHLY_SURPLUS = new SavingsGoalSource("MONTHLY_SURPLUS", "Surplus Bulan Ini");
 
     private final String databaseValue;
     private final String displayName;
 
-    SavingsGoalSource(String databaseValue, String displayName) {
+    private SavingsGoalSource(String databaseValue, String displayName) {
         this.databaseValue = databaseValue;
         this.displayName = displayName;
+    }
+
+    public static SavingsGoalSource[] values() {
+        return new SavingsGoalSource[]{BALANCE, MONTHLY_SURPLUS};
     }
 
     public String toDatabaseValue() {

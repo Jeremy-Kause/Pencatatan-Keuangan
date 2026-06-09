@@ -385,27 +385,36 @@ public class SavingsGoalController extends BaseWireframeController {
     }
 
     private String statusStyleClass(SavingsGoalStatus status) {
-        return switch (status) {
-            case ON_TRACK -> "goal-status-safe";
-            case NEAR_TARGET -> "goal-status-warning";
-            case ACHIEVED -> "goal-status-success";
-        };
+        if (status == SavingsGoalStatus.ON_TRACK) {
+            return "goal-status-safe";
+        } else if (status == SavingsGoalStatus.NEAR_TARGET) {
+            return "goal-status-warning";
+        } else if (status == SavingsGoalStatus.ACHIEVED) {
+            return "goal-status-success";
+        }
+        return "";
     }
 
     private String progressStyleClass(SavingsGoalStatus status) {
-        return switch (status) {
-            case ON_TRACK -> "goal-progress-safe";
-            case NEAR_TARGET -> "goal-progress-warning";
-            case ACHIEVED -> "goal-progress-success";
-        };
+        if (status == SavingsGoalStatus.ON_TRACK) {
+            return "goal-progress-safe";
+        } else if (status == SavingsGoalStatus.NEAR_TARGET) {
+            return "goal-progress-warning";
+        } else if (status == SavingsGoalStatus.ACHIEVED) {
+            return "goal-progress-success";
+        }
+        return "";
     }
 
     private String goalStatusCardClass(SavingsGoalStatus status) {
-        return switch (status) {
-            case ON_TRACK -> "goal-card-safe";
-            case NEAR_TARGET -> "goal-card-warning";
-            case ACHIEVED -> "goal-card-success";
-        };
+        if (status == SavingsGoalStatus.ON_TRACK) {
+            return "goal-card-safe";
+        } else if (status == SavingsGoalStatus.NEAR_TARGET) {
+            return "goal-card-warning";
+        } else if (status == SavingsGoalStatus.ACHIEVED) {
+            return "goal-card-success";
+        }
+        return "";
     }
 
     private VBox createEmptyState(String title, String copy) {

@@ -127,15 +127,16 @@ public class SavingsGoalDAO {
     }
 
     private double resolveCurrentAmount(SavingsGoal goal) throws SQLException {
-        return switch (goal.getProgressSource()) {
-            case BALANCE -> Math.max(0, transactionDAO.getBalance(goal.getIdUser()));
-            case MONTHLY_SURPLUS -> {
-                YearMonth month = YearMonth.now();
-                double income = transactionDAO.getTotalIncome(goal.getIdUser(), month);
-                double expense = transactionDAO.getTotalExpense(goal.getIdUser(), month);
-                yield Math.max(0, income - expense);
-            }
-        };
+        SavingsGoalSource source = goal.getProgressSource();
+        if (source == SavingsGoalSource.BALANCE) {
+            return Math.max(0, transactionDAO.getBalance(goal.getIdUser()));
+        } else if (source == SavingsGoalSource.MONTHLY_SURPLUS) {
+            YearMonth month = YearMonth.now();
+            double income = transactionDAO.getTotalIncome(goal.getIdUser(), month);
+            double expense = transactionDAO.getTotalExpense(goal.getIdUser(), month);
+            return Math.max(0, income - expense);
+        }
+        return 0;
     }
 
     private void bindGoal(PreparedStatement statement, SavingsGoal goal) throws SQLException {

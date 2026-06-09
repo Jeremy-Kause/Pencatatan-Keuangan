@@ -376,27 +376,36 @@ public class BudgetController extends BaseWireframeController {
     }
 
     private String statusStyleClass(BudgetStatus status) {
-        return switch (status) {
-            case AMAN -> "budget-status-safe";
-            case MENDEKATI_LIMIT -> "budget-status-warning";
-            case MELEBIHI_LIMIT -> "budget-status-danger";
-        };
+        if (status == BudgetStatus.AMAN) {
+            return "budget-status-safe";
+        } else if (status == BudgetStatus.MENDEKATI_LIMIT) {
+            return "budget-status-warning";
+        } else if (status == BudgetStatus.MELEBIHI_LIMIT) {
+            return "budget-status-danger";
+        }
+        return "";
     }
 
     private String progressStyleClass(BudgetStatus status) {
-        return switch (status) {
-            case AMAN -> "budget-progress-safe";
-            case MENDEKATI_LIMIT -> "budget-progress-warning";
-            case MELEBIHI_LIMIT -> "budget-progress-danger";
-        };
+        if (status == BudgetStatus.AMAN) {
+            return "budget-progress-safe";
+        } else if (status == BudgetStatus.MENDEKATI_LIMIT) {
+            return "budget-progress-warning";
+        } else if (status == BudgetStatus.MELEBIHI_LIMIT) {
+            return "budget-progress-danger";
+        }
+        return "";
     }
 
     private String cardStatusClass(BudgetStatus status) {
-        return switch (status) {
-            case AMAN -> "budget-card-safe";
-            case MENDEKATI_LIMIT -> "budget-card-warning";
-            case MELEBIHI_LIMIT -> "budget-card-danger";
-        };
+        if (status == BudgetStatus.AMAN) {
+            return "budget-card-safe";
+        } else if (status == BudgetStatus.MENDEKATI_LIMIT) {
+            return "budget-card-warning";
+        } else if (status == BudgetStatus.MELEBIHI_LIMIT) {
+            return "budget-card-danger";
+        }
+        return "";
     }
 
     private VBox createEmptyState(String title, String copy) {

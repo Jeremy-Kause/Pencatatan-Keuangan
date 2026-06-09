@@ -1,15 +1,19 @@
 package com.app.uangku.model;
 
-public enum TransactionType {
-    PEMASUKAN("PEMASUKKAN", "Pemasukan"),
-    PENGELUARAN("PENGELUARAN", "Pengeluaran");
+public class TransactionType {
+    public static final TransactionType PEMASUKAN = new TransactionType("PEMASUKKAN", "Pemasukan");
+    public static final TransactionType PENGELUARAN = new TransactionType("PENGELUARAN", "Pengeluaran");
 
     private final String databaseValue;
     private final String displayName;
 
-    TransactionType(String databaseValue, String displayName) {
+    private TransactionType(String databaseValue, String displayName) {
         this.databaseValue = databaseValue;
         this.displayName = displayName;
+    }
+
+    public static TransactionType[] values() {
+        return new TransactionType[]{PEMASUKAN, PENGELUARAN};
     }
 
     public String toDatabaseValue() {
