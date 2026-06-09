@@ -4,6 +4,8 @@ module com.app.uangku {
     requires java.sql;
     requires org.xerial.sqlitejdbc;
     requires java.xml;
+    requires org.apache.poi.ooxml;
+    requires org.apache.poi.poi;
 
 
     opens com.app.uangku to javafx.fxml;
