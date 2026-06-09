@@ -36,6 +36,14 @@ public final class DatabaseHelper {
             for (String query : createSchemaQueries()) {
                 statement.executeUpdate(query);
             }
+            
+            // Migrasi otomatis jika tabel sudah ada dari versi sebelumnya
+            try {
+                statement.executeUpdate("ALTER TABLE savings_goals ADD COLUMN current_amount REAL NOT NULL DEFAULT 0");
+            } catch (SQLException ignore) {
+                // Kolom sudah ada, abaikan error
+            }
+            
             initialized = true;
         } catch (SQLException exception) {
             throw new IllegalStateException("Gagal menyiapkan database SQLite", exception);
@@ -113,8 +121,8 @@ public final class DatabaseHelper {
                     id_user INTEGER NOT NULL,
                     name TEXT NOT NULL,
                     target_amount REAL NOT NULL,
+                    current_amount REAL NOT NULL DEFAULT 0,
                     target_date TEXT,
-                    progress_source TEXT NOT NULL CHECK (progress_source IN ('BALANCE', 'MONTHLY_SURPLUS')),
                     description TEXT,
                     created_at TEXT NOT NULL DEFAULT (date('now')),
                     FOREIGN KEY (id_user) REFERENCES users(id_user)

@@ -196,8 +196,8 @@ public final class DummyDataSeeder {
                 uid,
                 "Laptop Baru",
                 8_000_000,
+                2_000_000,
                 YearMonth.now().plusMonths(6).atEndOfMonth(),
-                SavingsGoalSource.BALANCE,
                 "Target demo untuk pembelian laptop"
         ));
     }

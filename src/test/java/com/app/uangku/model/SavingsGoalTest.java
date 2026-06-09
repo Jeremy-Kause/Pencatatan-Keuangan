@@ -13,8 +13,8 @@ class SavingsGoalTest {
                 1,
                 "Laptop",
                 8_000_000,
+                0,
                 LocalDate.of(2026, 12, 31),
-                SavingsGoalSource.BALANCE,
                 null
         );
         goal.setCurrentAmount(2_000_000);
@@ -28,8 +28,8 @@ class SavingsGoalTest {
                 1,
                 "Laptop",
                 8_000_000,
+                0,
                 LocalDate.of(2026, 12, 31),
-                SavingsGoalSource.BALANCE,
                 null
         );
         goal.setCurrentAmount(8_500_000);
@@ -43,8 +43,8 @@ class SavingsGoalTest {
                 1,
                 "Laptop",
                 8_000_000,
+                0,
                 LocalDate.of(2026, 12, 31),
-                SavingsGoalSource.BALANCE,
                 null
         );
         goal.setCurrentAmount(6_000_000);

@@ -2,7 +2,7 @@ package com.app.uangku.controller;
 
 import com.app.uangku.dao.SavingsGoalDAO;
 import com.app.uangku.model.SavingsGoal;
-import com.app.uangku.model.SavingsGoalSource;
+
 import com.app.uangku.model.SavingsGoalStatus;
 import com.app.uangku.model.User;
 import com.app.uangku.util.SessionManager;
@@ -48,7 +48,7 @@ public class SavingsGoalController extends BaseWireframeController {
     private DatePicker goalTargetDatePicker;
 
     @FXML
-    private ComboBox<SavingsGoalSource> progressSourceComboBox;
+    private TextField goalCurrentAmountField;
 
     @FXML
     private TextArea goalDescriptionArea;
@@ -70,7 +70,6 @@ public class SavingsGoalController extends BaseWireframeController {
 
     @FXML
     private void initialize() {
-        progressSourceComboBox.setItems(FXCollections.observableArrayList(SavingsGoalSource.values()));
         setupTable();
         updateFormState();
         refreshGoals();
@@ -86,12 +85,15 @@ public class SavingsGoalController extends BaseWireframeController {
         try {
             String name = goalNameField.getText() == null ? "" : goalNameField.getText().trim();
             double targetAmount = parseAmount(goalTargetField.getText());
-            SavingsGoalSource source = progressSourceComboBox.getValue();
+            double currentAmount = 0;
+            if (goalCurrentAmountField.getText() != null && !goalCurrentAmountField.getText().isBlank()) {
+                currentAmount = parseAmount(goalCurrentAmountField.getText());
+            }
             LocalDate targetDate = goalTargetDatePicker.getValue();
             String description = goalDescriptionArea.getText() == null ? "" : goalDescriptionArea.getText().trim();
             clearMessage(goalMessageLabel);
 
-            ValidationResult validationResult = savingsGoalInputValidator.validate(name, targetAmount, source, targetDate);
+            ValidationResult validationResult = savingsGoalInputValidator.validate(name, targetAmount, currentAmount, targetDate);
             if (!validationResult.isValid()) {
                 setErrorMessage(goalMessageLabel, validationResult.getMessage());
                 return;
@@ -102,8 +104,8 @@ public class SavingsGoalController extends BaseWireframeController {
                     user.getIdUser(),
                     name,
                     targetAmount,
+                    currentAmount,
                     targetDate,
-                    source,
                     description.isBlank() ? null : description
             );
 
@@ -141,23 +143,21 @@ public class SavingsGoalController extends BaseWireframeController {
 
     @SuppressWarnings("unchecked")
     private void setupTable() {
-        if (goalTable == null || goalTable.getColumns().size() < 8) {
+        if (goalTable == null || goalTable.getColumns().size() < 7) {
             return;
         }
 
         TableColumn<SavingsGoal, String> nameColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(0);
         TableColumn<SavingsGoal, String> targetColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(1);
-        TableColumn<SavingsGoal, String> sourceColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(2);
-        TableColumn<SavingsGoal, String> progressColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(3);
-        TableColumn<SavingsGoal, String> currentColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(4);
-        TableColumn<SavingsGoal, String> dateColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(5);
-        TableColumn<SavingsGoal, String> statusColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(6);
-        TableColumn<SavingsGoal, SavingsGoal> actionColumn = (TableColumn<SavingsGoal, SavingsGoal>) goalTable.getColumns().get(7);
+        TableColumn<SavingsGoal, String> progressColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(2);
+        TableColumn<SavingsGoal, String> currentColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(3);
+        TableColumn<SavingsGoal, String> dateColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(4);
+        TableColumn<SavingsGoal, String> statusColumn = (TableColumn<SavingsGoal, String>) goalTable.getColumns().get(5);
+        TableColumn<SavingsGoal, SavingsGoal> actionColumn = (TableColumn<SavingsGoal, SavingsGoal>) goalTable.getColumns().get(6);
 
         goalTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         nameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
         targetColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().getTargetAmount())));
-        sourceColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getProgressSource().getDisplayName()));
         progressColumn.setCellValueFactory(data -> new SimpleStringProperty(String.format("%.0f%%", data.getValue().getProgressPercentage())));
         currentColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().getCurrentAmount())));
         dateColumn.setCellValueFactory(data -> new SimpleStringProperty(
@@ -309,9 +309,6 @@ public class SavingsGoalController extends BaseWireframeController {
         Label remainingValue = new Label(formatCurrency(goal.getRemainingAmount()));
         remainingValue.getStyleClass().add("goal-card-detail");
 
-        Label sourceLabel = new Label("Sumber: " + goal.getProgressSource().getDisplayName());
-        sourceLabel.getStyleClass().add("goal-card-caption");
-
         VBox topGroup = new VBox(4, targetCaption, targetValue);
         VBox progressGroup = new VBox(4, progressCaption, currentValue);
         VBox remainingGroup = new VBox(4, remainingCaption, remainingValue);
@@ -320,7 +317,7 @@ public class SavingsGoalController extends BaseWireframeController {
         HBox.setHgrow(detailRow.getChildren().get(1), Priority.ALWAYS);
         detailRow.setAlignment(Pos.CENTER_LEFT);
 
-        VBox card = new VBox(12, headerRow, sourceLabel, topGroup, progressBar, percentLabel, detailRow);
+        VBox card = new VBox(12, headerRow, topGroup, progressBar, percentLabel, detailRow);
         card.setAlignment(Pos.CENTER_LEFT);
         card.getStyleClass().addAll("goal-card", "panel", goalStatusCardClass(goal.getStatus()));
         return card;
@@ -331,7 +328,7 @@ public class SavingsGoalController extends BaseWireframeController {
         goalNameField.setText(goal.getName());
         goalTargetField.setText(String.valueOf(goal.getTargetAmount()));
         goalTargetDatePicker.setValue(goal.getTargetDate());
-        progressSourceComboBox.setValue(goal.getProgressSource());
+        goalCurrentAmountField.setText(String.valueOf(goal.getCurrentAmount()));
         goalDescriptionArea.setText(goal.getDescription() == null ? "" : goal.getDescription());
         updateFormState();
         setSuccessMessage(goalMessageLabel, "Sedang mengubah target yang dipilih.");
@@ -368,7 +365,7 @@ public class SavingsGoalController extends BaseWireframeController {
         goalNameField.clear();
         goalTargetField.clear();
         goalTargetDatePicker.setValue(null);
-        progressSourceComboBox.setValue(null);
+        goalCurrentAmountField.clear();
         goalDescriptionArea.clear();
         updateFormState();
     }

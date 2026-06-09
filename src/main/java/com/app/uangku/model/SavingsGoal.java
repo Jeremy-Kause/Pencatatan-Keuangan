@@ -8,7 +8,6 @@ public class SavingsGoal {
     private String name;
     private double targetAmount;
     private LocalDate targetDate;
-    private SavingsGoalSource progressSource;
     private String description;
     private String createdAt;
     private double currentAmount;
@@ -16,8 +15,8 @@ public class SavingsGoal {
     public SavingsGoal() {
     }
 
-    public SavingsGoal(int idUser, String name, double targetAmount, LocalDate targetDate, SavingsGoalSource progressSource, String description) {
-        this(0, idUser, name, targetAmount, targetDate, progressSource, description, null, 0);
+    public SavingsGoal(int idUser, String name, double targetAmount, double currentAmount, LocalDate targetDate, String description) {
+        this(0, idUser, name, targetAmount, targetDate, description, null, currentAmount);
     }
 
     public SavingsGoal(
@@ -26,7 +25,6 @@ public class SavingsGoal {
             String name,
             double targetAmount,
             LocalDate targetDate,
-            SavingsGoalSource progressSource,
             String description,
             String createdAt,
             double currentAmount
@@ -36,7 +34,6 @@ public class SavingsGoal {
         this.name = name;
         this.targetAmount = targetAmount;
         this.targetDate = targetDate;
-        this.progressSource = progressSource;
         this.description = description;
         this.createdAt = createdAt;
         this.currentAmount = currentAmount;
@@ -80,14 +77,6 @@ public class SavingsGoal {
 
     public void setTargetDate(LocalDate targetDate) {
         this.targetDate = targetDate;
-    }
-
-    public SavingsGoalSource getProgressSource() {
-        return progressSource;
-    }
-
-    public void setProgressSource(SavingsGoalSource progressSource) {
-        this.progressSource = progressSource;
     }
 
     public String getDescription() {

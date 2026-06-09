@@ -103,8 +103,8 @@
                                 <DatePicker fx:id="goalTargetDatePicker" promptText="Opsional" maxWidth="Infinity" />
                             </VBox>
                             <VBox spacing="7">
-                                <Label text="Sumber Progres" styleClass="field-label" />
-                                <ComboBox fx:id="progressSourceComboBox" promptText="Saldo / Surplus" maxWidth="Infinity" />
+                                <Label text="Saldo Awal Tabungan" styleClass="field-label" />
+                                <TextField fx:id="goalCurrentAmountField" promptText="Rp 0 (Opsional)" onAction="#handleSaveGoal" />
                             </VBox>
                             <VBox spacing="7">
                                 <Label text="Catatan" styleClass="field-label" />
@@ -136,7 +136,6 @@
                                     <columns>
                                         <TableColumn text="Target" prefWidth="170" />
                                         <TableColumn text="Nominal" prefWidth="130" />
-                                        <TableColumn text="Sumber" prefWidth="145" />
                                         <TableColumn text="Progres" prefWidth="160" />
                                         <TableColumn text="Terkini" prefWidth="125" />
                                         <TableColumn text="Tanggal" prefWidth="115" />

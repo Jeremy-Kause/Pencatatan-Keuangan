@@ -1,7 +1,6 @@
 package com.app.uangku.dao;
 
 import com.app.uangku.model.SavingsGoal;
-import com.app.uangku.model.SavingsGoalSource;
 import com.app.uangku.model.TransactionType;
 import com.app.uangku.util.DatabaseHelper;
 
@@ -17,11 +16,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class SavingsGoalDAO {
-    private final TransactionDAO transactionDAO = new TransactionDAO();
 
     public SavingsGoal create(SavingsGoal goal) throws SQLException {
         String sql = """
-                INSERT INTO savings_goals (id_user, name, target_amount, target_date, progress_source, description)
+                INSERT INTO savings_goals (id_user, name, target_amount, current_amount, target_date, description)
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
@@ -43,7 +41,7 @@ public class SavingsGoalDAO {
     public boolean update(SavingsGoal goal) throws SQLException {
         String sql = """
                 UPDATE savings_goals
-                SET name = ?, target_amount = ?, target_date = ?, progress_source = ?, description = ?
+                SET name = ?, target_amount = ?, current_amount = ?, target_date = ?, description = ?
                 WHERE id_goal = ? AND id_user = ?
                 """;
 
@@ -51,12 +49,12 @@ public class SavingsGoalDAO {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, goal.getName());
             statement.setDouble(2, goal.getTargetAmount());
+            statement.setDouble(3, goal.getCurrentAmount());
             if (goal.getTargetDate() == null) {
-                statement.setNull(3, java.sql.Types.VARCHAR);
+                statement.setNull(4, java.sql.Types.VARCHAR);
             } else {
-                statement.setString(3, goal.getTargetDate().toString());
+                statement.setString(4, goal.getTargetDate().toString());
             }
-            statement.setString(4, goal.getProgressSource().toDatabaseValue());
             statement.setString(5, goal.getDescription());
             statement.setInt(6, goal.getIdGoal());
             statement.setInt(7, goal.getIdUser());
@@ -77,7 +75,7 @@ public class SavingsGoalDAO {
 
     public List<SavingsGoal> findByUserId(int idUser) throws SQLException {
         String sql = """
-                SELECT id_goal, id_user, name, target_amount, target_date, progress_source, description, created_at
+                SELECT id_goal, id_user, name, target_amount, current_amount, target_date, description, created_at
                 FROM savings_goals
                 WHERE id_user = ?
                 ORDER BY created_at DESC, id_goal DESC
@@ -86,13 +84,13 @@ public class SavingsGoalDAO {
         try (Connection connection = DatabaseHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idUser);
-            return enrichWithProgress(findMany(statement), idUser);
+            return findMany(statement);
         }
     }
 
     public Optional<SavingsGoal> findById(int idGoal, int idUser) throws SQLException {
         String sql = """
-                SELECT id_goal, id_user, name, target_amount, target_date, progress_source, description, created_at
+                SELECT id_goal, id_user, name, target_amount, current_amount, target_date, description, created_at
                 FROM savings_goals
                 WHERE id_goal = ? AND id_user = ?
                 LIMIT 1
@@ -105,9 +103,7 @@ public class SavingsGoalDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    SavingsGoal goal = mapGoal(resultSet);
-                    goal.setCurrentAmount(resolveCurrentAmount(goal));
-                    return Optional.of(goal);
+                    return Optional.of(mapGoal(resultSet));
                 }
             }
         }
@@ -115,40 +111,16 @@ public class SavingsGoalDAO {
         return Optional.empty();
     }
 
-    public double getCurrentAmount(SavingsGoal goal) throws SQLException {
-        return resolveCurrentAmount(goal);
-    }
-
-    private List<SavingsGoal> enrichWithProgress(List<SavingsGoal> goals, int idUser) throws SQLException {
-        for (SavingsGoal goal : goals) {
-            goal.setCurrentAmount(resolveCurrentAmount(goal));
-        }
-        return goals;
-    }
-
-    private double resolveCurrentAmount(SavingsGoal goal) throws SQLException {
-        SavingsGoalSource source = goal.getProgressSource();
-        if (source == SavingsGoalSource.BALANCE) {
-            return Math.max(0, transactionDAO.getBalance(goal.getIdUser()));
-        } else if (source == SavingsGoalSource.MONTHLY_SURPLUS) {
-            YearMonth month = YearMonth.now();
-            double income = transactionDAO.getTotalIncome(goal.getIdUser(), month);
-            double expense = transactionDAO.getTotalExpense(goal.getIdUser(), month);
-            return Math.max(0, income - expense);
-        }
-        return 0;
-    }
-
     private void bindGoal(PreparedStatement statement, SavingsGoal goal) throws SQLException {
         statement.setInt(1, goal.getIdUser());
         statement.setString(2, goal.getName());
         statement.setDouble(3, goal.getTargetAmount());
+        statement.setDouble(4, goal.getCurrentAmount());
         if (goal.getTargetDate() == null) {
-            statement.setNull(4, java.sql.Types.VARCHAR);
+            statement.setNull(5, java.sql.Types.VARCHAR);
         } else {
-            statement.setString(4, goal.getTargetDate().toString());
+            statement.setString(5, goal.getTargetDate().toString());
         }
-        statement.setString(5, goal.getProgressSource().toDatabaseValue());
         statement.setString(6, goal.getDescription());
     }
 
@@ -170,10 +142,9 @@ public class SavingsGoalDAO {
                 resultSet.getString("name"),
                 resultSet.getDouble("target_amount"),
                 targetDate == null || targetDate.isBlank() ? null : LocalDate.parse(targetDate),
-                SavingsGoalSource.fromDatabaseValue(resultSet.getString("progress_source")),
                 resultSet.getString("description"),
                 resultSet.getString("created_at"),
-                0
+                resultSet.getDouble("current_amount")
         );
     }
 }

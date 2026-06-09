@@ -1,6 +1,5 @@
 package com.app.uangku.validation;
 
-import com.app.uangku.model.SavingsGoalSource;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ class SavingsGoalInputValidatorTest {
         ValidationResult result = validator.validate(
                 "Laptop",
                 8_000_000,
-                SavingsGoalSource.BALANCE,
+                2_000_000,
                 LocalDate.now().plusMonths(3)
         );
 
@@ -28,7 +27,7 @@ class SavingsGoalInputValidatorTest {
         ValidationResult result = validator.validate(
                 "Laptop",
                 -1,
-                SavingsGoalSource.BALANCE,
+                0,
                 LocalDate.now().plusMonths(3)
         );
 
@@ -40,7 +39,7 @@ class SavingsGoalInputValidatorTest {
         ValidationResult result = validator.validate(
                 "Laptop",
                 8_000_000,
-                SavingsGoalSource.BALANCE,
+                0,
                 LocalDate.now().minusDays(1)
         );
 

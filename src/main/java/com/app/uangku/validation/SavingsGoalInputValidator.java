@@ -1,11 +1,10 @@
 package com.app.uangku.validation;
 
-import com.app.uangku.model.SavingsGoalSource;
 
 import java.time.LocalDate;
 
 public final class SavingsGoalInputValidator {
-    public ValidationResult validate(String name, double targetAmount, SavingsGoalSource source, LocalDate targetDate) {
+    public ValidationResult validate(String name, double targetAmount, double currentAmount, LocalDate targetDate) {
         if (isBlank(name)) {
             return ValidationResult.failure("Nama target wajib diisi.");
         }
@@ -18,8 +17,8 @@ public final class SavingsGoalInputValidator {
         if (targetAmount <= 0) {
             return ValidationResult.failure("Target nominal harus lebih dari 0.");
         }
-        if (source == null) {
-            return ValidationResult.failure("Pilih sumber progres.");
+        if (currentAmount < 0) {
+            return ValidationResult.failure("Saldo awal tidak boleh negatif.");
         }
         if (targetDate != null && targetDate.isBefore(LocalDate.now())) {
             return ValidationResult.failure("Tanggal target tidak boleh di masa lalu.");
